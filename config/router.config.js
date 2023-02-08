@@ -1,0 +1,40 @@
+export default [
+  {
+    path: '/authen',
+    component: '../layouts/AuthenLayout',
+    routes: [
+      { path: '/authen', redirect: '/authen/signin' },
+      { path: '/authen/signin', component: './authen/SignIn/Index' },
+      { path: '/authen/signup', component: './authen/SignUp/Index' },
+    ],
+  },
+
+  {
+    path: '/',
+    component: '../layouts/AdminLayout',
+    routes: [
+      { path: '/', redirect: '/dashboard' },
+      { path: '/dashboard', component: './Dashboard/Home' },
+      {
+        path: '/example',
+        routes: [{ path: '/example/demo', component: './Demo/DemoList' }],
+      },
+      {
+        path: '/system',
+        routes: [
+          { path: '/system/role', component: './system/Role/RoleList' },
+          { path: '/system/user', component: './system/User/UserList' },
+          { path: '/system/dict', component: './system/Dict/DictList' },
+        ],
+      },
+      {
+        path: '/dev',
+        routes: [{ path: '/dev/menu', component: './dev/Menu/MenuList' }],
+      },
+    ],
+  },
+
+  {
+    component: '404',
+  },
+];
