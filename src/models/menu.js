@@ -159,6 +159,7 @@ export default {
         yield put({ type: 'fetch' });
       }
     },
+
     *fetchTree({ payload }, { call, put }) {
       let params = {};
       if (payload) {
@@ -170,6 +171,7 @@ export default {
         payload: response.list || [],
       });
     },
+
     *changeStatus({ payload }, { call, put, select }) {
       let response;
       if (payload.status === 1) {

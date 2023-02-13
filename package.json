@@ -14,11 +14,10 @@
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js"
   },
-  
   "dependencies": {
     "@ant-design/compatible": "^1.0.8",
-    "@ant-design/icons": "^4.0.6",
-    "antd": "^4.15.2",
+    "@ant-design/icons": "4.8.0",
+    "antd": "4.24.8",
     "axios": "^0.21.1",
     "classnames": "^2.3.1",
     "history": "^4.7.2",

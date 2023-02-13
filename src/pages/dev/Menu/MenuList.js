@@ -24,6 +24,7 @@ class MenuList extends PureComponent {
   componentDidMount() {
     this.dispatch({
       type: 'menu/fetchTree',
+      // payload: {parentID: ""}
     });
 
     this.dispatch({
@@ -187,6 +188,27 @@ class MenuList extends PureComponent {
     this.clearSelectRows();
   }
 
+  /*
+  handleTreeLoad = loadedKeys => {
+    const {
+      key,
+      children,
+      dataRef: { id },
+    } = loadedKeys;
+    if (children) {
+      resolve();
+      return;
+    }
+
+    this.dispatch({
+      type: 'menu/fetchTree',
+      // payload: {parentID: id}
+    });
+
+    console.log(' ------ ===== == ', loadedKeys);
+  };
+*/
+
   renderDataForm() {
     return <MenuCard onCancel={this.handleFormCancel} onSubmit={this.handleFormSubmit} />;
   }
@@ -195,12 +217,26 @@ class MenuList extends PureComponent {
     data.map(item => {
       if (item.children) {
         return (
-          <Tree.TreeNode title={item.name} key={item.id} dataRef={item}>
+          <Tree.TreeNode
+            title={item.name}
+            key={item.id}
+            dataRef={item}
+            hasChildren={!item.is_leaf}
+            isLeaf={item.is_leaf}
+          >
             {this.renderTreeNodes(item.children)}
           </Tree.TreeNode>
         );
       }
-      return <Tree.TreeNode title={item.name} key={item.id} dataRef={item} />;
+      return (
+        <Tree.TreeNode
+          title={item.name}
+          key={item.id}
+          hasChildren={!item.is_leaf}
+          isLeaf={item.is_leaf}
+          dataRef={item}
+        />
+      );
     });
 
   renderSearchForm() {
@@ -301,6 +337,8 @@ class MenuList extends PureComponent {
 
     const breadcrumbList = [{ title: '系统管理' }, { title: '菜单管理', href: '/system/menu' }];
 
+    console.log(' ----- ===== == treeData ', treeData);
+
     return (
       <PageHeaderLayout title="菜单管理" breadcrumbList={breadcrumbList}>
         <Layout>
@@ -344,6 +382,9 @@ class MenuList extends PureComponent {
                   payload: keys,
                 });
               }}
+              // fieldNames={{title: "name", key: "id", children: "children"}}
+              treeData={treeData}
+              // loadData={this.handleTreeLoad}
             >
               {this.renderTreeNodes(treeData)}
             </Tree>
