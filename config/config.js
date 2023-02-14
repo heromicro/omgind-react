@@ -34,4 +34,5 @@ export default {
   manifest: {
     basePath: '/',
   },
+  mfsu: {},
 };
