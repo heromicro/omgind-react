@@ -33,13 +33,12 @@ class SignIn extends PureComponent {
     });
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = v => {
+    const { dispatch, signin } = this.props;
 
-    const { form, dispatch, signin } = this.props;
-
-    form.validateFields({ force: true }, (err, values) => {
-      if (!err) {
+    this.formRef.current
+      .validateFields()
+      .then(values => {
         dispatch({
           type: 'signin/submit',
           payload: {
@@ -49,8 +48,8 @@ class SignIn extends PureComponent {
             password: md5Hash(values.password),
           },
         });
-      }
-    });
+      })
+      .catch(err => {});
   };
 
   dispatch = action => {

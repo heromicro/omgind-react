@@ -1,16 +1,32 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Card, Radio, Modal, TreeSelect, Tooltip, InputNumber, Row, Col } from 'antd';
+import {
+  Form,
+  Input,
+  Card,
+  Radio,
+  Modal,
+  TreeSelect,
+  Tooltip,
+  InputNumber,
+  Row,
+  Col,
+  Switch,
+} from 'antd';
 import MenuAction from './MenuAction';
 
 @connect(({ menu }) => ({
   menu,
 }))
-@Form.create()
 class MenuCard extends PureComponent {
+  formRef = React.createRef();
+
+  onFinishFailed({ values, errorFields, outOfDate }) {
+    this.formRef.current.scrollToField(errorFields[0].name);
+  }
+
   onOKClick = () => {
     const { form, onSubmit } = this.props;
     form.validateFieldsAndScroll((err, values) => {
@@ -74,54 +90,58 @@ class MenuCard extends PureComponent {
         bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
       >
         <Card bordered={false}>
-          <Form>
+          <Form
+            ref={this.formRef}
+            onFinishFailed={this.onFinishFailed}
+            initialValues={{
+              name: formData.name,
+              parent_id: formData.parent_id,
+              router: formData.router,
+              icon: formData.icon,
+              is_show: formData.is_show !== undefined ? formData.is_show : true,
+              status: formData.status ? formData.status.toString() : '1',
+              sort: formData.sort ? formData.sort : 10000,
+              memo: formData.memo,
+              open_blank: formData.open_blank !== undefined ? formData.open_blank : false,
+              actions: formData.actions,
+            }}
+          >
             <Row>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="菜单名称">
-                  {getFieldDecorator('name', {
-                    initialValue: formData.name,
-                    rules: [
-                      {
-                        required: true,
-                        message: '请输入菜单名称',
-                      },
-                    ],
-                  })(<Input placeholder="请输入" />)}
+                <Form.Item
+                  {...formItemLayout}
+                  label="菜单名称"
+                  name="name"
+                  rules={[{ required: true, message: '请输入菜单名称' }]}
+                >
+                  <Input placeholder="请输入" />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="上级菜单">
-                  {getFieldDecorator('parent_id', {
-                    initialValue: formData.parent_id,
-                  })(
-                    <TreeSelect
-                      showSearch
-                      treeNodeFilterProp="title"
-                      style={{ width: '100%' }}
-                      dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                      treeData={this.toTreeSelect(treeData)}
-                      placeholder="请选择"
-                    />
-                  )}
+                <Form.Item {...formItemLayout} label="上级菜单" name="parent_id">
+                  <TreeSelect
+                    showSearch
+                    treeNodeFilterProp="title"
+                    style={{ width: '100%' }}
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    treeData={this.toTreeSelect(treeData)}
+                    placeholder="请选择上级菜单"
+                  />
                 </Form.Item>
               </Col>
             </Row>
 
             <Row>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="访问路径">
-                  {getFieldDecorator('router', {
-                    initialValue: formData.router,
-                  })(<Input placeholder="请输入" />)}
+                <Form.Item {...formItemLayout} label="访问路径" name="router">
+                  <Input placeholder="请输入前端路径" />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="菜单图标">
+                <Form.Item {...formItemLayout} label="菜单图标" name="icon">
                   <Row>
                     <Col span={20}>
-                      {getFieldDecorator('icon', {
-                        initialValue: formData.icon,
-                      })(<Input placeholder="请输入" />)}
+                      <Input placeholder="请输入菜单图标" />
                     </Col>
                     <Col span={4} style={{ textAlign: 'center' }}>
                       <Tooltip title="图标仅支持官方Icon图标(V3版本)">
@@ -134,58 +154,47 @@ class MenuCard extends PureComponent {
             </Row>
             <Row>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="是否显示">
-                  {getFieldDecorator('show_status', {
-                    initialValue: formData.show_status ? formData.show_status.toString() : '1',
-                  })(
-                    <Radio.Group>
-                      <Radio value="1">显示</Radio>
-                      <Radio value="2">隐藏</Radio>
-                    </Radio.Group>
-                  )}
+                <Form.Item
+                  {...formItemLayout}
+                  label="是否显示"
+                  name="is_show"
+                  valuePropName="checked"
+                >
+                  <Switch defaultChecked />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="状态">
-                  {getFieldDecorator('status', {
-                    initialValue: formData.status ? formData.status.toString() : '1',
-                  })(
-                    <Radio.Group>
-                      <Radio value="1">启用</Radio>
-                      <Radio value="2">禁用</Radio>
-                    </Radio.Group>
-                  )}
+                <Form.Item {...formItemLayout} label="状态" name="status">
+                  <Radio.Group>
+                    <Radio value="1">启用</Radio>
+                    <Radio value="2">禁用</Radio>
+                  </Radio.Group>
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="排序值">
-                  {getFieldDecorator('sort', {
-                    initialValue: formData.sort ? formData.sort.toString() : '1000000',
-                    rules: [
-                      {
-                        required: true,
-                        message: '请输入排序值',
-                      },
-                    ],
-                  })(<InputNumber min={1} style={{ width: '100%' }} />)}
+                <Form.Item
+                  {...formItemLayout}
+                  label="排序值"
+                  name="sort"
+                  rules={[{ required: true, message: '请输入排序值' }]}
+                >
+                  <InputNumber min={1} style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="备注">
-                  {getFieldDecorator('memo', {
-                    initialValue: formData.memo,
-                  })(<Input placeholder="请输入" />)}
+                <Form.Item {...formItemLayout} label="备注" name="memo">
+                  <Input placeholder="请输入" />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={24}>
                 <Card title="动作(按钮)管理" bordered={false}>
-                  {getFieldDecorator('actions', {
-                    initialValue: formData.actions,
-                  })(<MenuAction />)}
+                  <Form.Item name="actions">
+                    <MenuAction />
+                  </Form.Item>
                 </Card>
               </Col>
             </Row>
