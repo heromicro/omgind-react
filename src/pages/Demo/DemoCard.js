@@ -27,6 +27,10 @@ class DemoCard extends PureComponent {
       });
   };
 
+  onFinishFailed({ values, errorFields, outOfDate }) {
+    this.formRef.current.scrollToField(errorFields[0].name);
+  }
+
   dispatch = action => {
     const { dispatch } = this.props;
     dispatch(action);

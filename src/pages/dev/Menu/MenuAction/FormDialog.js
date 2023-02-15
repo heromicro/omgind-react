@@ -1,11 +1,25 @@
 import React, { PureComponent } from 'react';
-import { Modal, Input, Card } from 'antd';
-import { Form } from '@ant-design/compatible';
+import { Form, Modal, Input, Card } from 'antd';
 import '@ant-design/compatible/assets/index.css';
 import MenuActionResource from '../MenuActionResource';
 
-@Form.create()
 class FormDialog extends PureComponent {
+  formRef = React.createRef();
+
+  onFinishFailed({ values, errorFields, outOfDate }) {
+    this.formRef.current.scrollToField(errorFields[0].name);
+  }
+
+  handleOKClick = () => {
+    const { onSubmit } = this.props;
+    this.formRef.current
+      .validateFields()
+      .then(values => {
+        onSubmit({ ...values });
+      })
+      .catch(err => {});
+  };
+
   handleCancel = () => {
     const { onCancel } = this.props;
     if (onCancel) {
@@ -13,18 +27,8 @@ class FormDialog extends PureComponent {
     }
   };
 
-  handleOKClick = () => {
-    const { form, onSubmit } = this.props;
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        onSubmit({ ...values });
-      }
-    });
-  };
-
   render() {
     const { visible, formData, form } = this.props;
-    const { getFieldDecorator } = form;
 
     const formItemLayout = {
       labelCol: {
@@ -41,7 +45,7 @@ class FormDialog extends PureComponent {
       <Modal
         title="菜单动作(按钮)管理"
         width={650}
-        visible={visible}
+        open={visible}
         maskClosable={false}
         destroyOnClose
         onOk={this.handleOKClick}
@@ -49,34 +53,34 @@ class FormDialog extends PureComponent {
         style={{ top: 20 }}
         bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
       >
-        <Form>
-          <Form.Item {...formItemLayout} label="动作编号">
-            {getFieldDecorator('code', {
-              initialValue: formData.code,
-              rules: [
-                {
-                  required: true,
-                  message: '请输入动作编号',
-                },
-              ],
-            })(<Input placeholder="请输入" />)}
+        <Form
+          ref={this.formRef}
+          onFinishFailed={this.onFinishFailed}
+          initialValues={{
+            code: formData.code,
+            name: formData.name,
+            resources: formData.resources,
+          }}
+        >
+          <Form.Item
+            {...formItemLayout}
+            label="动作编号"
+            name="code"
+            rules={[{ required: true, message: '编号必填' }]}
+          >
+            <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item {...formItemLayout} label="动作名称">
-            {getFieldDecorator('name', {
-              initialValue: formData.name,
-              rules: [
-                {
-                  required: true,
-                  message: '请输入动作名称',
-                },
-              ],
-            })(<Input placeholder="请输入" />)}
+          <Form.Item
+            {...formItemLayout}
+            label="动作名称"
+            name="name"
+            rules={[{ required: true, message: '名称必填' }]}
+          >
+            <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item>
-            <Card title="资源管理(服务端接口映射)" bordered={false}>
-              {getFieldDecorator('resources', {
-                initialValue: formData.resources,
-              })(<MenuActionResource />)}
+            <Card title="资源管理(服务端接口映射)" bordered={false} name="resources">
+              <MenuActionResource />
             </Card>
           </Form.Item>
         </Form>
