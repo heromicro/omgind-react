@@ -107,12 +107,7 @@ export default class MenuActionResource extends PureComponent {
 
   render() {
     const { dataSource } = this.state;
-    const components = {
-      body: {
-        row: EditableFormRow,
-        cell: EditableCell,
-      },
-    };
+
     const columns = this.columns.map(col => {
       if (!col.editable) {
         return col;
@@ -137,7 +132,12 @@ export default class MenuActionResource extends PureComponent {
         </div>
         <Table
           rowKey={record => record.key}
-          components={components}
+          components={{
+            body: {
+              row: EditableFormRow,
+              cell: EditableCell,
+            },
+          }}
           bordered
           dataSource={dataSource}
           columns={columns}

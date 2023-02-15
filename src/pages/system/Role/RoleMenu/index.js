@@ -183,11 +183,7 @@ export default class RoleMenu extends PureComponent {
 
   render() {
     const { dataSource, menuData } = this.state;
-    const components = {
-      body: {
-        cell: EditableCell,
-      },
-    };
+
     const columns = this.columns.map(col => {
       if (!col.editable) {
         return col;
@@ -214,7 +210,11 @@ export default class RoleMenu extends PureComponent {
             onSelectAll: this.handleSelectAll,
           }}
           rowKey={record => record.id}
-          components={components}
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
           dataSource={menuData}
           columns={columns}
           pagination={false}
