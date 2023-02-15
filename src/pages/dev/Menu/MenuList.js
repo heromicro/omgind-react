@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Row, Col, Card, Input, Button, Table, Modal, Layout, Tree, Badge } from 'antd';
+import { Form, Row, Col, Card, Input, Button, Table, Modal, Layout, Tree, Badge } from 'antd';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
-import { formatDate } from '@/utils/utils';
+import { formatDate } from '@/utils/datetime';
 import MenuCard from './MenuCard';
 import styles from './MenuList.less';
 
@@ -13,8 +12,9 @@ import styles from './MenuList.less';
   menu,
   loading: loading.models.menu,
 }))
-@Form.create()
 class MenuList extends PureComponent {
+  formRef = React.createRef();
+
   state = {
     selectedRowKeys: [],
     selectedRows: [],
@@ -54,6 +54,8 @@ class MenuList extends PureComponent {
       return;
     }
     const item = selectedRows[0];
+    console.log(' ------- --- == editing item ', item);
+
     this.dispatch({
       type: 'menu/loadForm',
       payload: {
@@ -112,8 +114,7 @@ class MenuList extends PureComponent {
   };
 
   onResetFormClick = () => {
-    const { form } = this.props;
-    form.resetFields();
+    this.formRef.current.resetFields();
     this.dispatch({
       type: 'menu/fetch',
       search: { parent_id: this.getParentID() },
@@ -121,26 +122,16 @@ class MenuList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = e => {
-    if (e) {
-      e.preventDefault();
-    }
-
-    const { form } = this.props;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-      this.dispatch({
-        type: 'menu/fetch',
-        search: {
-          ...values,
-          parent_id: this.getParentID(),
-        },
-        pagination: {},
-      });
-      this.clearSelectRows();
+  onSearchFormSubmit = values => {
+    this.dispatch({
+      type: 'menu/fetch',
+      search: {
+        ...values,
+        parent_id: this.getParentID(),
+      },
+      pagination: {},
     });
+    this.clearSelectRows();
   };
 
   handleFormSubmit = data => {
@@ -153,7 +144,7 @@ class MenuList extends PureComponent {
 
   handleFormCancel = () => {
     this.dispatch({
-      type: 'menu/changeFormVisible',
+      type: 'menu/changeModalFormVisible',
       payload: false,
     });
   };
@@ -240,15 +231,12 @@ class MenuList extends PureComponent {
     });
 
   renderSearchForm() {
-    const {
-      form: { getFieldDecorator },
-    } = this.props;
     return (
-      <Form onSubmit={this.onSearchFormSubmit}>
+      <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item>
-              {getFieldDecorator('queryValue')(<Input placeholder="请输入需要查询的内容" />)}
+            <Form.Item name="queryValue">
+              <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -337,7 +325,7 @@ class MenuList extends PureComponent {
 
     const breadcrumbList = [{ title: '系统管理' }, { title: '菜单管理', href: '/system/menu' }];
 
-    console.log(' ----- ===== == treeData ', treeData);
+    // console.log(' ----- ===== == treeData ', treeData);
 
     return (
       <PageHeaderLayout title="菜单管理" breadcrumbList={breadcrumbList}>

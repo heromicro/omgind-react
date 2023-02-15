@@ -5,7 +5,7 @@ import '@ant-design/compatible/assets/index.css';
 import { Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
-import { formatDate } from '@/utils/utils';
+import { formatDate } from '@/utils/datetime';
 import RoleCard from './RoleCard';
 
 import styles from './RoleList.less';

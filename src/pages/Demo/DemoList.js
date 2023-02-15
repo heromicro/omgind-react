@@ -4,7 +4,7 @@ import '@ant-design/compatible/assets/index.css';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
-import { formatDate } from '@/utils/utils';
+import { formatDate } from '@/utils/datetime';
 import DemoCard from './DemoCard';
 
 import styles from './DemoList.less';
