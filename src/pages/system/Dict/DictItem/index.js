@@ -49,8 +49,12 @@ class DictItem extends PureComponent {
   };
 
   handleFormSubmit = formData => {
+    console.log(' ===== ----- ===== sss formData ', formData);
+
     const { dataSource } = this.state;
     const data = [...dataSource];
+
+    console.log(' ===== ----- ===== sss data ', data);
     let exists = false;
     // check the same label or the same value
     let labels = [];
@@ -59,6 +63,8 @@ class DictItem extends PureComponent {
       labels.push(data[i].label);
       vals.push(data[i].value);
     }
+
+    console.log(' ===== ----- ===== data： ', data);
 
     if (!formData.id) {
       console.log(' ---- ggggggg === ', labels);
@@ -81,6 +87,7 @@ class DictItem extends PureComponent {
         console.log(' ------ ggggggg === 222 ', data[i].id);
 
         exists = true;
+        // data[i] = { key: formData.label, is_active:formData.is_active, ...formData };
         data[i] = { key: formData.label, ...formData };
       } else {
         /* eslint-disable */
@@ -97,6 +104,7 @@ class DictItem extends PureComponent {
     }
 
     if (!exists) {
+      // data.push({ key: formData.label, is_active:formData.is_active, ...formData });
       data.push({ key: formData.label, ...formData });
     }
 

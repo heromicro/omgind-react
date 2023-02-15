@@ -23,6 +23,7 @@ class DictCard extends PureComponent {
       .validateFields()
       .then(values => {
         const formData = { ...values };
+        console.log(' _ qqqqqqqqqqqq ++++ ', formData);
         onSubmit(formData);
       })
       .catch(err => {});

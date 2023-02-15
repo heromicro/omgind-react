@@ -298,7 +298,7 @@ class MenuList extends PureComponent {
         dataIndex: 'is_active',
         width: 80,
         render: val => {
-          if (val === 1) {
+          if (val) {
             return <Badge status="success" text="启用" />;
           }
           return <Badge status="error" text="停用" />;

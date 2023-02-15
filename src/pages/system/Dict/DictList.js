@@ -205,7 +205,7 @@ class DictList extends PureComponent {
         title: '状态',
         dataIndex: 'is_active',
         render: val => {
-          if (val === 1) {
+          if (val) {
             return <Badge status="success" text="启用" />;
           }
           return <Badge status="error" text="停用" />;
