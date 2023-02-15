@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { CodeOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Button, Alert } from 'antd';
+import { Form, Input, Button, Alert } from 'antd';
 import { md5Hash } from '@/utils/utils';
 
 import styles from './Index.less';
@@ -11,14 +10,19 @@ import styles from './Index.less';
 @connect(({ signin }) => ({
   signin,
 }))
-@Form.create()
 class SignIn extends PureComponent {
+  formRef = React.createRef();
+
   vcodeInput = null;
 
   componentDidMount() {
     this.dispatch({
       type: 'signin/loadCaptcha',
     });
+  }
+
+  onFinishFailed({ values, errorFields, outOfDate }) {
+    this.formRef.current.scrollToField(errorFields[0].name);
   }
 
   reloadCaptcha = () => {
@@ -59,14 +63,11 @@ class SignIn extends PureComponent {
   );
 
   render() {
-    const {
-      form: { getFieldDecorator },
-      signin,
-    } = this.props;
+    const { signin } = this.props;
 
     return (
       <div className={styles.main}>
-        <Form onSubmit={this.handleSubmit}>
+        <Form ref={this.formRef} onFinish={this.handleSubmit} onFinishFailed={this.onFinishFailed}>
           {signin.status === 'FAIL' &&
             signin.submitting === false &&
             this.renderMessage('warning', signin.tip)}
@@ -75,34 +76,28 @@ class SignIn extends PureComponent {
             signin.submitting === false &&
             this.renderMessage('error', signin.tip)}
 
-          <Form.Item>
-            {getFieldDecorator('user_name', {
-              rules: [{ required: true, message: '请输入用户名！' }],
-            })(
-              <Input
-                size="large"
-                prefix={<UserOutlined className={styles.prefixIcon} />}
-                placeholder="请输入用户名"
-              />
-            )}
+          <Form.Item name="user_name" rules={[{ required: true, message: '请输入用户名！' }]}>
+            <Input
+              size="large"
+              prefix={<UserOutlined className={styles.prefixIcon} />}
+              placeholder="请输入用户名"
+            />
           </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: '请输入密码！' }],
-            })(
-              <Input
-                size="large"
-                prefix={<LockOutlined className={styles.prefixIcon} />}
-                type="password"
-                placeholder="请输入密码"
-              />
-            )}
+          <Form.Item name="password" rules={[{ required: true, message: '请输入密码！' }]}>
+            <Input
+              size="large"
+              prefix={<LockOutlined className={styles.prefixIcon} />}
+              type="password"
+              placeholder="请输入密码"
+            />
           </Form.Item>
           <Form.Item style={{ paddingRight: 0 }}>
             <Input.Group compact>
-              {getFieldDecorator('captcha_code', {
-                rules: [{ required: true, message: '请输入图片验证码！' }],
-              })(
+              <Form.Item
+                noStyle
+                name="captcha_code"
+                rules={[{ required: true, message: '请输入图片验证码！' }]}
+              >
                 <Input
                   style={{ width: '60%', marginRight: 10 }}
                   size="large"
@@ -116,7 +111,8 @@ class SignIn extends PureComponent {
                   prefix={<CodeOutlined className={styles.prefixIcon} />}
                   placeholder="请输入图片验证码"
                 />
-              )}
+              </Form.Item>
+
               <div style={{ width: 120, height: 40, paddingRight: 0, paddingLeft: 0 }}>
                 <img
                   style={{ maxWidth: '100%', maxHeight: '100%', paddingRight: 0, paddingLeft: 0 }}
