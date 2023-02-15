@@ -134,7 +134,7 @@ class DictItem extends PureComponent {
       },
       {
         title: '状态',
-        dataIndex: 'status',
+        dataIndex: 'is_active',
         render: val => {
           if (val) {
             return <Badge status="success" text="启用" />;

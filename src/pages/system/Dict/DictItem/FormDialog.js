@@ -17,7 +17,7 @@ class FormDialog extends PureComponent {
     form.validateFieldsAndScroll((err, value) => {
       let val = { ...value };
       if (!err) {
-        val.status = parseInt(value.status, 10);
+        val.is_active = value.is_active;
         val.sort = parseInt(value.sort, 10);
         val.value = parseInt(value.value, 10);
 
@@ -104,8 +104,8 @@ class FormDialog extends PureComponent {
           <Row>
             <Col span={12}>
               <Form.Item {...formItemLayout} label="状态">
-                {getFieldDecorator('status', {
-                  initialValue: formData.status ? formData.status.toString() : '1',
+                {getFieldDecorator('is_active', {
+                  initialValue: formData.is_active === undefined ? true : formData.is_active,
                 })(
                   <Radio.Group>
                     <Radio value="1">启用</Radio>

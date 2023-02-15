@@ -162,7 +162,7 @@ export default {
     },
     *changeStatus({ payload }, { call, put, select }) {
       let response;
-      if (payload.status === 1) {
+      if (payload.is_active === true) {
         response = yield call(demoService.enable, payload.id);
       } else {
         response = yield call(demoService.disable, payload.id);
@@ -170,7 +170,7 @@ export default {
 
       if (response.status === 'OK') {
         let msg = '启用成功';
-        if (payload.status === 2) {
+        if (payload.is_active === false) {
           msg = '停用成功';
         }
         message.success(msg);
@@ -180,7 +180,7 @@ export default {
         for (let i = 0; i < data.list.length; i += 1) {
           const item = data.list[i];
           if (item.id === payload.id) {
-            item.status = payload.status;
+            item.is_active = payload.is_active;
           }
           newData.list.push(item);
         }

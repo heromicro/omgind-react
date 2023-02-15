@@ -54,7 +54,7 @@ export default class RoleSelect extends PureComponent {
         value={value}
         onChange={this.handleChange}
         placeholder="请选择角色"
-        style={{ width: '100%' }}
+        style={{ minWidth: '100px' }}
       >
         {data.map(item => (
           <Select.Option key={item.id} value={item.id}>

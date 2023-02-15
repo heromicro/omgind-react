@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
+import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import { formatDate } from '@/utils/datetime';
@@ -14,8 +13,9 @@ import styles from './RoleList.less';
   role: state.role,
   loading: state.loading.models.role,
 }))
-@Form.create()
 class RoleList extends PureComponent {
+  formRef = React.createRef();
+
   state = {
     selectedRowKeys: [],
     selectedRows: [],
@@ -32,14 +32,14 @@ class RoleList extends PureComponent {
   onItemDisableClick = item => {
     this.dispatch({
       type: 'role/changeStatus',
-      payload: { id: item.id, status: 2 },
+      payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = item => {
     this.dispatch({
       type: 'role/changeStatus',
-      payload: { id: item.id, status: 1 },
+      payload: { id: item.id, is_active: true },
     });
   };
 
@@ -110,8 +110,7 @@ class RoleList extends PureComponent {
   };
 
   onResetFormClick = () => {
-    const { form } = this.props;
-    form.resetFields();
+    this.formRef.current.resetFields();
 
     this.dispatch({
       type: 'role/fetch',
@@ -120,23 +119,18 @@ class RoleList extends PureComponent {
     });
   };
 
-  handleSearchFormSubmit = e => {
-    if (e) {
-      e.preventDefault();
-    }
-
-    const { form } = this.props;
-    form.validateFields({ force: true }, (err, values) => {
-      if (err) {
-        return;
-      }
-      this.dispatch({
-        type: 'role/fetch',
-        search: values,
-        pagination: {},
-      });
-      this.clearSelectRows();
-    });
+  handleSearchFormSubmit = val => {
+    this.formRef
+      .validateFields()
+      .then(values => {
+        this.dispatch({
+          type: 'role/fetch',
+          search: values,
+          pagination: {},
+        });
+        this.clearSelectRows();
+      })
+      .catch(err => {});
   };
 
   handleDataFormSubmit = data => {
@@ -167,16 +161,12 @@ class RoleList extends PureComponent {
   }
 
   renderSearchForm() {
-    const {
-      form: { getFieldDecorator },
-    } = this.props;
-
     return (
-      <Form onSubmit={this.handleSearchFormSubmit}>
+      <Form ref={this.formRef} onFinish={this.handleSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item>
-              {getFieldDecorator('queryValue')(<Input placeholder="请输入需要查询的内容" />)}
+            <Form.Item name="queryValue">
+              <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -215,7 +205,7 @@ class RoleList extends PureComponent {
       },
       {
         title: '状态',
-        dataIndex: 'status',
+        dataIndex: 'is_active',
         render: val => {
           if (val === 1) {
             return <Badge status="success" text="启用" />;
@@ -268,7 +258,7 @@ class RoleList extends PureComponent {
                 >
                   删除
                 </PButton>,
-                selectedRows[0].status === 2 && (
+                !selectedRows[0].is_active && (
                   <PButton
                     key="enable"
                     code="enable"
@@ -277,7 +267,7 @@ class RoleList extends PureComponent {
                     启用
                   </PButton>
                 ),
-                selectedRows[0].status === 1 && (
+                selectedRows[0].is_active === true && (
                   <PButton
                     key="disable"
                     code="disable"

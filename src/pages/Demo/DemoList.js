@@ -32,14 +32,14 @@ class DemoList extends PureComponent {
   onItemDisableClick = item => {
     this.dispatch({
       type: 'demo/changeStatus',
-      payload: { id: item.id, status: 2 },
+      payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = item => {
     this.dispatch({
       type: 'demo/changeStatus',
-      payload: { id: item.id, status: 1 },
+      payload: { id: item.id, is_active: true },
     });
   };
 
@@ -218,7 +218,7 @@ class DemoList extends PureComponent {
       },
       {
         title: '状态',
-        dataIndex: 'status',
+        dataIndex: 'is_active',
         render: val => {
           if (val === 1) {
             return <Badge status="success" text="启用" />;
@@ -267,7 +267,7 @@ class DemoList extends PureComponent {
                 >
                   删除
                 </PButton>,
-                selectedRows[0].status === 2 && (
+                !selectedRows[0].is_active && (
                   <PButton
                     key="enable"
                     code="enable"
@@ -276,7 +276,7 @@ class DemoList extends PureComponent {
                     启用
                   </PButton>
                 ),
-                selectedRows[0].status === 1 && (
+                selectedRows[0].is_active === true && (
                   <PButton
                     key="disable"
                     code="disable"

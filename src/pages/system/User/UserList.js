@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
+import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import PButton from '@/components/PermButton';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { formatDate } from '@/utils/datetime';
@@ -16,8 +15,9 @@ import styles from './UserList.less';
   loading: state.loading.models.user,
   user: state.user,
 }))
-@Form.create()
 class UserList extends PureComponent {
+  formRef = React.createRef();
+
   state = {
     selectedRowKeys: [],
     selectedRows: [],
@@ -34,14 +34,14 @@ class UserList extends PureComponent {
   onItemDisableClick = item => {
     this.dispatch({
       type: 'user/changeStatus',
-      payload: { id: item.id, status: 2 },
+      payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = item => {
     this.dispatch({
       type: 'user/changeStatus',
-      payload: { id: item.id, status: 1 },
+      payload: { id: item.id, is_active: true },
     });
   };
 
@@ -115,8 +115,7 @@ class UserList extends PureComponent {
   };
 
   onResetFormClick = () => {
-    const { form } = this.props;
-    form.resetFields();
+    this.formRef.current.resetFields();
     this.dispatch({
       type: 'user/fetch',
       search: {},
@@ -124,16 +123,8 @@ class UserList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = e => {
-    if (e) {
-      e.preventDefault();
-    }
-    const { form } = this.props;
-    form.validateFields({ force: true }, (err, values) => {
-      if (err) {
-        return;
-      }
-
+  onSearchFormSubmit = val => {
+    this.formRef.current.validateFields(values => {
       const formData = { ...values };
       if (formData.roleIDs) {
         formData.roleIDs = formData.roleIDs.map(v => v.role_id).join(',');
@@ -172,19 +163,18 @@ class UserList extends PureComponent {
   }
 
   renderSearchForm() {
-    const {
-      form: { getFieldDecorator },
-    } = this.props;
     return (
-      <Form onSubmit={this.onSearchFormSubmit}>
+      <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item label="模糊查询">
-              {getFieldDecorator('queryValue')(<Input placeholder="请输入需要查询的内容" />)}
+            <Form.Item label="模糊查询" name="queryValue">
+              <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="所属角色">{getFieldDecorator('roleIDs')(<RoleSelect />)}</Form.Item>
+            <Form.Item label="所属角色" name="roleIDs" style={{ width: '100%' }}>
+              <RoleSelect style={{ width: '100%' }} />
+            </Form.Item>
           </Col>
           <Col span={8}>
             <div style={{ overflow: 'hidden', paddingTop: 4 }}>
@@ -238,9 +228,9 @@ class UserList extends PureComponent {
       },
       {
         title: '用户状态',
-        dataIndex: 'status',
+        dataIndex: 'is_active',
         render: val => {
-          if (val === 1) {
+          if (val) {
             return <Badge status="success" text="启用" />;
           }
           return <Badge status="error" text="停用" />;
@@ -295,7 +285,7 @@ class UserList extends PureComponent {
                 >
                   删除
                 </PButton>,
-                selectedRows[0].status === 2 && (
+                !selectedRows[0].is_active && (
                   <PButton
                     key="enable"
                     code="enable"
@@ -304,7 +294,7 @@ class UserList extends PureComponent {
                     启用
                   </PButton>
                 ),
-                selectedRows[0].status === 1 && (
+                selectedRows[0].is_active === true && (
                   <PButton
                     key="disable"
                     code="disable"

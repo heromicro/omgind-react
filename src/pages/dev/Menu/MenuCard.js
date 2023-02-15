@@ -35,8 +35,6 @@ class MenuCard extends PureComponent {
       .validateFields()
       .then(values => {
         const formData = { ...values };
-        formData.show_status = parseInt(formData.show_status, 10);
-        formData.status = parseInt(formData.status, 10);
         formData.sort = parseInt(formData.sort, 10);
         onSubmit(formData);
       })
@@ -91,7 +89,7 @@ class MenuCard extends PureComponent {
                 router: formData.router,
                 icon: formData.icon,
                 is_show: formData.is_show !== undefined ? formData.is_show : true,
-                status: formData.status ? formData.status.toString() : '1',
+                is_active: formData.is_active === undefined ? true : formData.is_active,
                 sort: formData.sort ? formData.sort : 10000,
                 memo: formData.memo,
                 open_blank: formData.open_blank !== undefined ? formData.open_blank : false,
@@ -156,7 +154,7 @@ class MenuCard extends PureComponent {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item {...formItemLayout} label="状态" name="status">
+                  <Form.Item {...formItemLayout} label="状态" name="is_active">
                     <Radio.Group>
                       <Radio value="1">启用</Radio>
                       <Radio value="2">禁用</Radio>

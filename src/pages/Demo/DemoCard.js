@@ -17,7 +17,6 @@ class DemoCard extends PureComponent {
       .then(values => {
         console.log(' ----- === values :', values);
         const formData = { ...values };
-        formData.status = parseInt(formData.status, 10);
         onSubmit(formData);
       })
       .catch(err => {
@@ -74,7 +73,7 @@ class DemoCard extends PureComponent {
               code: formData.code,
               name: formData.name,
               memo: formData.memo,
-              status: formData.status ? formData.status.toString() : '1',
+              is_active: formData.statuis_actives === undefined ? true : formData.is_active,
             }}
           >
             <Form.Item
@@ -96,7 +95,7 @@ class DemoCard extends PureComponent {
             <Form.Item {...formItemLayout} label="备注" name="memo">
               <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
             </Form.Item>
-            <Form.Item {...formItemLayout} label="状态" name="status">
+            <Form.Item {...formItemLayout} label="状态" name="is_active">
               <Radio.Group>
                 <Radio value="1">正常</Radio>
                 <Radio value="2">停用</Radio>

@@ -1,32 +1,31 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Input, Modal, message, Card, Switch, Radio, Row, Col, InputNumber } from 'antd';
+import { Form, Input, Modal, message, Card, Switch, Radio, Row, Col, InputNumber } from 'antd';
 
 import DictItem from './DictItem';
 
 @connect(state => ({
   dict: state.dict,
 }))
-@Form.create()
 class DictCard extends PureComponent {
+  formRef = React.createRef();
+
+  onFinishFailed({ values, errorFields, outOfDate }) {
+    this.formRef.current.scrollToField(errorFields[0].name);
+  }
+
   onOKClick = () => {
-    const { form, onSubmit } = this.props;
+    const { onSubmit } = this.props;
 
     console.log(' _ qqqqqqqqqqqq ++++ ');
-
-    form.validateFieldsAndScroll((err, values) => {
-      console.log(' +++++ ====== ggggg ', err);
-
-      if (!err) {
+    this.formRef.current
+      .validateFields()
+      .then(values => {
         const formData = { ...values };
-        console.log(` ---- ==== ssdd = ++++ ${formData} `);
-        formData.status = parseInt(formData.status, 10);
-        formData.sort = parseInt(formData.sort, 10);
         onSubmit(formData);
-      }
-    });
+      })
+      .catch(err => {});
   };
 
   dispatch = action => {
@@ -37,7 +36,6 @@ class DictCard extends PureComponent {
   render() {
     const {
       dict: { formTitle, formVisible, formData, submitting },
-      form: { getFieldDecorator },
       onCancel,
     } = this.props;
 
@@ -66,7 +64,7 @@ class DictCard extends PureComponent {
       <Modal
         title={formTitle}
         width={1000}
-        visible={formVisible}
+        open={formVisible}
         maskClosable={false}
         confirmLoading={submitting}
         destroyOnClose
@@ -75,81 +73,66 @@ class DictCard extends PureComponent {
         style={{ top: 20 }}
         bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
       >
-        <Form>
+        <Form
+          ref={this.formRef}
+          onFinishFailed={this.onFinishFailed}
+          initialValues={{
+            name_cn: formData.name_cn,
+            name_en: formData.name_en,
+            is_active: formData.is_active === undefined ? true : formData.is_active,
+            sort: formData.sort ? formData.sort : 9999,
+            memo: formData.memo,
+            items: formData.items,
+          }}
+        >
           <Row>
             <Col span={12}>
-              <Form.Item {...formItemLayout} label="名称(中)">
-                {getFieldDecorator('name_cn', {
-                  initialValue: formData.name_cn,
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入名称(中)',
-                    },
-                  ],
-                })(<Input placeholder="请输入名称(中)" />)}
+              <Form.Item
+                {...formItemLayout}
+                label="名称(中)"
+                name="name_cn"
+                rules={[{ required: true, message: '请输入名称(中)' }]}
+              >
+                <Input placeholder="请输入名称(中)" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item {...formItemLayout} label="名称(英)">
-                {getFieldDecorator('name_en', {
-                  initialValue: formData.name_en,
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入名称(英)',
-                    },
-                  ],
-                })(<Input placeholder="请输入名称(英)" />)}
+              <Form.Item
+                {...formItemLayout}
+                label="名称(英)"
+                name="name_en"
+                rules={[{ required: true, message: '请输入名称(英)' }]}
+              >
+                <Input placeholder="请输入名称(英)" />
               </Form.Item>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <Form.Item {...formItemLayout} label="状态">
-                {getFieldDecorator('status', {
-                  initialValue: formData.status ? formData.status.toString() : '1',
-                })(
-                  <Radio.Group>
-                    <Radio value="1">启用</Radio>
-                    <Radio value="2">禁用</Radio>
-                  </Radio.Group>
-                )}
+              <Form.Item {...formItemLayout} label="状态" name="is_active">
+                <Switch defaultChecked />
               </Form.Item>
-              {/* <Form.Item {...formItemLayout} label="状态">
-                {getFieldDecorator('status', {
-                  initialValue: formData.status,
-                })(<Switch checkedChildren="启用" unCheckedChildren="禁用" defaultChecked />)}
-              </Form.Item> */}
             </Col>
             <Col span={12}>
-              <Form.Item {...formItemLayout} label="排序值">
-                {getFieldDecorator('sort', {
-                  initialValue: formData.sort ? formData.sort.toString() : '9999',
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入排序值',
-                    },
-                  ],
-                })(<InputNumber min={1} style={{ width: '100%' }} />)}
+              <Form.Item
+                {...formItemLayout}
+                label="排序值"
+                name="sort"
+                rules={[{ type: 'number', required: true, message: '请输入排序' }]}
+              >
+                <InputNumber min={1} style={{ width: '100%' }} />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item {...formItemLayout2} label="备注">
-            {getFieldDecorator('memo', {
-              initialValue: formData.memo,
-            })(<Input.TextArea rows={2} placeholder="请输入备注" />)}
+          <Form.Item {...formItemLayout2} label="备注" name="memo">
+            <Input.TextArea rows={2} placeholder="请输入备注" />
           </Form.Item>
-
-          <Form.Item>
-            <Card title="选择数据项" bordered={false}>
-              {getFieldDecorator('items', {
-                initialValue: formData.items,
-              })(<DictItem />)}
-            </Card>
-          </Form.Item>
+          <Card title="选择数据项" bordered={false}>
+            <Form.Item name="items">
+              <DictItem />
+            </Form.Item>
+          </Card>
         </Form>
       </Modal>
     );
