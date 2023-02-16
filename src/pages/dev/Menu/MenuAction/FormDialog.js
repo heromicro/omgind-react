@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Form, Modal, Input, Card } from 'antd';
-import '@ant-design/compatible/assets/index.css';
 import MenuActionResource from '../MenuActionResource';
 
 class FormDialog extends PureComponent {

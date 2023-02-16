@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import '@ant-design/compatible/assets/index.css';
 import {
   Form,
   Input,

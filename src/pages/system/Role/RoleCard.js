@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import '@ant-design/compatible/assets/index.css';
 import { Form, Input, Modal, message, Card, Row, Col, InputNumber } from 'antd';
 
 import RoleMenu from './RoleMenu';

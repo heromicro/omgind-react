@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import '@ant-design/compatible/assets/index.css';
 import { Form, Input, Modal, message } from 'antd';
 import { updatePwd } from '@/services/signin';
 import { md5Hash } from '../../utils/utils';

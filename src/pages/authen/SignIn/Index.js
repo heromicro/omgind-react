@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { CodeOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import '@ant-design/compatible/assets/index.css';
 import { Form, Input, Button, Alert } from 'antd';
 import { md5Hash } from '@/utils/utils';
 

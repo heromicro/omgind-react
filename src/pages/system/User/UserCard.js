@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import '@ant-design/compatible/assets/index.css';
 import { Form, Input, Modal, Radio, Row, Col, Switch } from 'antd';
 import { md5Hash } from '@/utils/utils';
 import { pattern } from '@/utils/regex';

@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Form, Modal, Input, Row, Col, Tooltip } from 'antd';
-import '@ant-design/compatible/assets/index.css';
 
 class TplDialog extends PureComponent {
   formRef = React.createRef();

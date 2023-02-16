@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Form, Modal, Input, Card, Col, Row, Radio, InputNumber, message, Switch } from 'antd';
-import '@ant-design/compatible/assets/index.css';
 
 class FormDialog extends PureComponent {
   formRef = React.createRef();

@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import '@ant-design/compatible/assets/index.css';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import PButton from '@/components/PermButton';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';

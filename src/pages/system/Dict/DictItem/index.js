@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Table, Button, Popconfirm, Divider, Badge, message } from 'antd';
 
-import '@ant-design/compatible/assets/index.css';
-
 import { fillFormKey } from '@/utils/utils';
 
 import FormDialog from './FormDialog';

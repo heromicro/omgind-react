@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import '@ant-design/compatible/assets/index.css';
 import { Form, Input, Modal, message, Card, Switch, Radio, Row, Col, InputNumber } from 'antd';
 
 import DictItem from './DictItem';
