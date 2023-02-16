@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Table, Button, Popconfirm } from 'antd';
+import { EditableFormInstance, ProColumns, ProFormInstance } from '@ant-design/pro-components';
+
 import { fillFormKey, newUUID } from '@/utils/utils';
 import { EditableCell, EditableFormRow } from './EditableCell';
 
@@ -130,6 +132,7 @@ export default class MenuActionResource extends PureComponent {
             新增
           </Button>
         </div>
+
         <Table
           rowKey={record => record.key}
           components={{
