@@ -15,7 +15,9 @@
     "lint-staged:js": "eslint --ext .js"
   },
   "dependencies": {
+    "@ant-design/compatible": "^1.0.2",
     "@ant-design/icons": "4.8.0",
+    "@ant-design/pro-components": "^2.3.54",
     "antd": "4.24.8",
     "axios": "^0.21.1",
     "classnames": "^2.3.2",
