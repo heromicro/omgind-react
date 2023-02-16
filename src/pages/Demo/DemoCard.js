@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Modal, Radio } from 'antd';
+import { Form, Input, Modal, Switch } from 'antd';
 
 @connect(state => ({
   demo: state.demo,
@@ -95,10 +95,7 @@ class DemoCard extends PureComponent {
               <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
             </Form.Item>
             <Form.Item {...formItemLayout} label="状态" name="is_active">
-              <Radio.Group>
-                <Radio value="1">正常</Radio>
-                <Radio value="2">停用</Radio>
-              </Radio.Group>
+              <Switch defaultChecked />
             </Form.Item>
           </Form>
         )}

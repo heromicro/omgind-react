@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
+import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Typography } from 'antd';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import { formatDate } from '@/utils/datetime';
 import DemoCard from './DemoCard';
+import DemoEditableCell from './DemoEditableCell';
 
 import styles from './DemoList.less';
 
@@ -16,9 +17,12 @@ import styles from './DemoList.less';
 class DemoList extends PureComponent {
   formRef = React.createRef();
 
+  tableFormRef = React.createRef();
+
   state = {
     selectedRowKeys: [],
     selectedRows: [],
+    editingKey: '',
   };
 
   componentDidMount() {
@@ -198,8 +202,35 @@ class DemoList extends PureComponent {
         data: { list, pagination },
       },
     } = this.props;
+    const { editingKey } = this.state;
 
     console.log(' ----- ===== --- ', list);
+
+    const isEditing = record => record.key === editingKey;
+    const edit = record => {
+      console.log(' ---- ===== ');
+      this.tableFormRef.current.setFieldsValue({
+        code: '',
+        name: '',
+        memo: '',
+        is_active: '',
+        ...record,
+      });
+
+      this.setState({
+        editingKey: record.key,
+      });
+    };
+
+    const save = async key => {
+      console.log(' ---- ===== key : ', key);
+    };
+
+    const cancel = () => {
+      this.setState({
+        editingKey: '',
+      });
+    };
 
     const { selectedRows, selectedRowKeys } = this.state;
 
@@ -207,14 +238,17 @@ class DemoList extends PureComponent {
       {
         title: '编号',
         dataIndex: 'code',
+        editable: true,
       },
       {
         title: '名称',
         dataIndex: 'name',
+        editable: true,
       },
       {
         title: '备注',
         dataIndex: 'memo',
+        editable: true,
       },
       {
         title: '状态',
@@ -225,13 +259,60 @@ class DemoList extends PureComponent {
           }
           return <Badge status="error" text="停用" />;
         },
+        editable: true,
       },
       {
         title: '创建时间',
         dataIndex: 'created_at',
         render: val => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
+      {
+        title: '操作',
+        dataIndex: 'operation',
+        render: (_, record) => {
+          const editable = isEditing(record);
+
+          return editable ? (
+            <span>
+              <Typography.Link
+                onClick={() => {
+                  console.log(' ----- === ---== save  record.id ', record.id);
+                }}
+              >
+                save
+              </Typography.Link>
+            </span>
+          ) : (
+            <Typography.Link
+              onClick={() => {
+                console.log(' ----- === ---== edit  record.id ', record.id);
+                edit(record);
+              }}
+            >
+              Edit
+            </Typography.Link>
+          );
+        },
+        editable: false,
+      },
     ];
+
+    const mergedColumns = columns.map(col => {
+      if (!col.editable) {
+        return col;
+      }
+
+      return {
+        ...col,
+        onCell: record => ({
+          record,
+          inputType: 'text',
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: isEditing(record),
+        }),
+      };
+    });
 
     const paginationProps = {
       showSizeChanger: true,
@@ -289,19 +370,28 @@ class DemoList extends PureComponent {
               ]}
             </div>
             <div>
-              <Table
-                rowSelection={{
-                  selectedRowKeys,
-                  onSelect: this.handleTableSelectRow,
-                }}
-                loading={loading}
-                rowKey={record => record.id}
-                dataSource={list}
-                columns={columns}
-                pagination={paginationProps}
-                onChange={this.onTableChange}
-                size="small"
-              />
+              <Form ref={this.tableFormRef} component={false}>
+                <Table
+                  components={{
+                    body: {
+                      cell: DemoEditableCell,
+                    },
+                  }}
+                  bordered
+                  rowSelection={{
+                    selectedRowKeys,
+                    onSelect: this.handleTableSelectRow,
+                  }}
+                  loading={loading}
+                  rowKey={record => record.id}
+                  dataSource={list}
+                  columns={mergedColumns}
+                  rowClassName="editable-row"
+                  pagination={paginationProps}
+                  onChange={this.onTableChange}
+                  size="small"
+                />
+              </Form>
             </div>
           </div>
         </Card>
