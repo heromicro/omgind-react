@@ -46,6 +46,9 @@ export default class MenuAction extends PureComponent {
     const { dataSource } = this.state;
     const data = [...dataSource];
     let exists = false;
+
+    console.log(' ====== ----- handleFormSubmit: ', formData);
+
     for (let i = 0; i < data.length; i += 1) {
       if (data[i].code === formData.code) {
         exists = true;
@@ -62,7 +65,7 @@ export default class MenuAction extends PureComponent {
   };
 
   handleAdd = () => {
-    this.setState({ formVisible: true, formData: {} });
+    this.setState({ formVisible: true, formData: { resources: [] } });
   };
 
   handleTplCancel = () => {
@@ -191,6 +194,8 @@ export default class MenuAction extends PureComponent {
       },
     ];
 
+    console.log(' ------- ==formData=== -- ', formData);
+
     return (
       <div className={styles.tableList}>
         <div className={styles.tableListOperator}>
@@ -208,17 +213,16 @@ export default class MenuAction extends PureComponent {
           columns={columns}
           pagination={false}
         />
-        <TplDialog
-          visible={tplVisible}
-          onSubmit={this.handleTplSubmit}
-          onCancel={this.handleTplCancel}
-        />
-        <FormDialog
-          visible={formVisible}
-          formData={formData}
-          onSubmit={this.handleFormSubmit}
-          onCancel={this.handleFormCancel}
-        />
+        {tplVisible && (
+          <TplDialog onSubmit={this.handleTplSubmit} onCancel={this.handleTplCancel} />
+        )}
+        {formVisible && (
+          <FormDialog
+            formData={formData}
+            onSubmit={this.handleFormSubmit}
+            onCancel={this.handleFormCancel}
+          />
+        )}
       </div>
     );
   }

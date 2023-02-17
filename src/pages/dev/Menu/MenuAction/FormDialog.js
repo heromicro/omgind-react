@@ -17,6 +17,15 @@ class FormDialog extends PureComponent {
   editorFormRef = React.createRef();
   editableFormRef = React.createRef();
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      formData: props.formData,
+      editableKeys: [],
+    };
+  }
+
   onFinishFailed({ values, errorFields, outOfDate }) {
     this.formRef.current.scrollToField(errorFields[0].name);
   }
@@ -42,8 +51,7 @@ class FormDialog extends PureComponent {
     const tableDataSource = this.formRef.current?.getFieldValue('resources');
     console.log(' ------ ====== --- tableDataSource --- ', tableDataSource);
     console.log(' ------ ====== --- record --- ', record);
-    const { visible, formData } = this.props;
-    // const { formData } = this.state;
+    const { formData } = this.state;
 
     let newdata = tableDataSource.filter(item => {
       if (record.key !== undefined) {
@@ -60,9 +68,9 @@ class FormDialog extends PureComponent {
     });
 
     const tableDataSource1 = this.formRef.current?.getFieldValue('resources');
-    // this.setState({
-    //   formData: { ...formData, resources: newdata },
-    // });
+    this.setState({
+      formData: { ...formData, resources: newdata },
+    });
 
     console.log(' ------ ====== --- newdata --- ', newdata);
     console.log(' ------ ====== --- tableDataSource1 --- ', tableDataSource1);
@@ -74,7 +82,7 @@ class FormDialog extends PureComponent {
   };
 
   render() {
-    const { visible, formData, form } = this.props;
+    const { formData, editableKeys } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -182,7 +190,7 @@ class FormDialog extends PureComponent {
       <Modal
         title="菜单动作(按钮)管理"
         width={650}
-        open={visible}
+        open
         maskClosable={false}
         destroyOnClose
         onOk={this.handleOKClick}
@@ -227,13 +235,28 @@ class FormDialog extends PureComponent {
                 name="resources"
                 bordered
                 columns={columns}
+                value={formData.resources}
+                dataSource={formData.resources}
                 actionRef={this.actionRef}
                 formRef={this.editorFormRef}
                 editableFormRef={this.editableFormRef}
                 editable={{
+                  form: this.formRef,
                   type: 'multiple',
+                  // type: 'single',
+                  editableKeys,
                   actionRender: (row, config, defaultDom) => {
                     return [defaultDom.save, defaultDom.delete || defaultDom.cancel];
+                  },
+                  // eslint-disable-next-line
+                  onChange: editableKeys => {
+                    this.setState({
+                      editableKeys,
+                    });
+                  },
+                  onDelete: (key, row) => {
+                    console.log(' ------- ==== ==== key: ', key);
+                    console.log(' ------- ==== ==== row: ', row);
                   },
                 }}
                 maxLength={10}
@@ -245,7 +268,11 @@ class FormDialog extends PureComponent {
                       editable: true,
                     };
 
-                    console.log(' --- ======= --------- === ', oneitem);
+                    console.log(' --- ======= --------- ==oneitem= ', oneitem);
+                    // let newdata = [] //[...formData.resources, oneitem];
+                    // this.setState({
+                    //   formData: {...formData, resource: newdata}
+                    // })
 
                     return oneitem;
                   },

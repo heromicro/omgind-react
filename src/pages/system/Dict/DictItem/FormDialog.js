@@ -58,7 +58,7 @@ class FormDialog extends PureComponent {
       <Modal
         title="字典数据项"
         width={900}
-        visible={visible}
+        open={visible}
         maskClosable={false}
         destroyOnClose
         onOk={this.handleOKClick}

@@ -27,8 +27,6 @@ class TplDialog extends PureComponent {
   };
 
   render() {
-    const { visible } = this.props;
-
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -44,7 +42,7 @@ class TplDialog extends PureComponent {
       <Modal
         title="快速创建模板"
         width={450}
-        open={visible}
+        open
         maskClosable={false}
         destroyOnClose
         onOk={this.handleOKClick}

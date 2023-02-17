@@ -17,7 +17,7 @@ export default [
       { path: '/dashboard', component: './Dashboard/Home' },
       {
         path: '/example',
-        routes: [{ path: '/example/demo', component: './Demo/DemoList.edb' }],
+        routes: [{ path: '/example/demo', component: './Demo/DemoList' }],
       },
       {
         path: '/system',

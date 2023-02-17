@@ -1,20 +1,35 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
-import PageHeaderLayout from '@/layouts/PageHeaderLayout';
+import {
+  EditableProTable,
+  ProCard,
+  ProForm,
+  ProFormDependency,
+  ProFormField,
+  ProFormRadio,
+  EditableFormInstance,
+  ProColumns,
+  ProFormInstance,
+} from '@ant-design/pro-components';
 
+import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import { formatDate } from '@/utils/datetime';
-import DictCard from './DictCard';
+import DemoCard from './DemoCard';
 
-import styles from './DictList.less';
+import styles from './DemoList.less';
 
 @connect(state => ({
-  loading: state.loading.models.dict,
-  dict: state.dict,
+  loading: state.loading.models.demo,
+  demo: state.demo,
 }))
-class DictList extends PureComponent {
+class DemoList extends PureComponent {
   formRef = React.createRef();
+
+  actionRef = React.createRef();
+  editorFormRef = React.createRef();
+  editableFormRef = React.createRef();
 
   state = {
     selectedRowKeys: [],
@@ -23,32 +38,52 @@ class DictList extends PureComponent {
 
   componentDidMount() {
     this.dispatch({
-      type: 'dict/fetch',
+      type: 'demo/fetch',
       search: {},
       pagination: {},
     });
   }
 
-  dispatch = action => {
-    const { dispatch } = this.props;
-    console.log(' ----- +++ === dict ', action);
-
-    dispatch(action);
-  };
-
   onItemDisableClick = item => {
     this.dispatch({
-      type: 'dict/changeStatus',
+      type: 'demo/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = item => {
     this.dispatch({
-      type: 'dict/changeStatus',
+      type: 'demo/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
+
+  onItemEditClick = item => {
+    this.dispatch({
+      type: 'demo/loadForm',
+      payload: {
+        type: 'E',
+        id: item.id,
+      },
+    });
+  };
+
+  onAddClick = () => {
+    this.dispatch({
+      type: 'demo/loadForm',
+      payload: {
+        type: 'A',
+      },
+    });
+  };
+
+  onDelOKClick(id) {
+    this.dispatch({
+      type: 'demo/del',
+      payload: { id },
+    });
+    this.clearSelectRows();
+  }
 
   clearSelectRows = () => {
     const { selectedRowKeys } = this.state;
@@ -58,12 +93,13 @@ class DictList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  handleAddClick = () => {
-    this.dispatch({
-      type: 'dict/loadForm',
-      payload: {
-        type: 'A',
-      },
+  onItemDelClick = item => {
+    Modal.confirm({
+      title: `确定删除【基础示例数据：${item.name}】？`,
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: this.onDelOKClick.bind(this, item.id),
     });
   };
 
@@ -80,76 +116,70 @@ class DictList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = e => {
-    if (e) {
-      e.preventDefault();
-    }
-
-    this.formRef.validateFields({ force: true }, (err, values) => {
-      if (err) {
-        return;
-      }
-
-      this.dispatch({
-        type: 'dict/fetch',
-        search: values,
-        pagination: {},
-      });
-      this.clearSelectRows();
-    });
-  };
-
-  handleEditClick = item => {
-    console.log(' - ====== editing ', item);
-
+  onTableChange = pagination => {
     this.dispatch({
-      type: 'dict/loadForm',
-      payload: {
-        type: 'E',
-        id: item.id,
+      type: 'demo/fetch',
+      pagination: {
+        current: pagination.current,
+        pageSize: pagination.pageSize,
       },
     });
+    this.clearSelectRows();
   };
 
-  handleDelClick = item => {
-    Modal.confirm({
-      title: `确定删除【字典数据：${item.name_cn}-${item.name_en}】？`,
-      okText: '确认',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: this.handleDelOKClick.bind(this, item.id),
+  onResetFormClick = () => {
+    this.formRef.current.resetFields();
+
+    this.dispatch({
+      type: 'demo/fetch',
+      search: {},
+      pagination: {},
     });
   };
 
-  handleDataFormSubmit = data => {
-    console.log(' ==== submit ---------  ');
+  onSearchFormSubmit = values => {
+    if (!values.queryValue) {
+      return;
+    }
 
+    this.refetch({
+      search: values,
+      pagination: {},
+    });
+    this.clearSelectRows();
+  };
+
+  onDataFormSubmit = data => {
     this.dispatch({
-      type: 'dict/submit',
+      type: 'demo/submit',
       payload: data,
     });
     this.clearSelectRows();
   };
 
-  handleDataFormCancel = () => {
+  onDataFormCancel = () => {
     this.dispatch({
-      type: 'dict/changeFormVisible',
+      type: 'demo/changeModalFormVisible',
       payload: false,
     });
   };
 
-  handleDelOKClick(id) {
-    console.log(' - ====== deleting ', id);
+  dispatch = action => {
+    const { dispatch } = this.props;
+    dispatch(action);
+  };
 
+  refetch = ({ search = {}, pagination = {} } = {}) => {
+    console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'dict/del',
-      payload: { id },
+      type: 'demo/fetch',
+      search,
+      pagination,
     });
-    this.clearSelectRows();
-  }
+  };
 
   renderDataForm() {
-    return <DictCard onCancel={this.handleDataFormCancel} onSubmit={this.handleDataFormSubmit} />;
+    return <DemoCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -157,17 +187,10 @@ class DictList extends PureComponent {
       <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item label="模糊查询" name="queryValue">
+            <Form.Item name="queryValue">
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
-
-          {/* <Col span={8}>
-            <Form.Item label="所属角色" name="roleIDs">
-              <RoleSelect />
-            </Form.Item>
-          </Col> */}
-
           <Col span={8}>
             <div style={{ overflow: 'hidden', paddingTop: 4 }}>
               <Button type="primary" htmlType="submit">
@@ -186,23 +209,30 @@ class DictList extends PureComponent {
   render() {
     const {
       loading,
-      dict: {
+      demo: {
         data: { list, pagination },
       },
     } = this.props;
 
-    console.log(' -++__+++++ ', list);
+    console.log(' -- --- == === --- ', list);
 
-    const { selectedRowKeys, selectedRows } = this.state;
+    const { selectedRows, selectedRowKeys } = this.state;
 
     const columns = [
       {
-        title: '名称(中)',
-        dataIndex: 'name_cn',
+        title: '编号',
+        dataIndex: 'code',
+        editable: true,
       },
       {
-        title: '名称(英)',
-        dataIndex: 'name_en',
+        title: '名称',
+        dataIndex: 'name',
+        editable: true,
+      },
+      {
+        title: '备注',
+        dataIndex: 'memo',
+        editable: true,
       },
       {
         title: '状态',
@@ -213,19 +243,13 @@ class DictList extends PureComponent {
           }
           return <Badge status="error" text="停用" />;
         },
-      },
-      {
-        title: '序号',
-        dataIndex: 'sort',
-      },
-      {
-        title: '备注',
-        dataIndex: 'memo',
+        editable: true,
       },
       {
         title: '创建时间',
         dataIndex: 'created_at',
         render: val => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+        editable: false,
       },
     ];
 
@@ -236,22 +260,22 @@ class DictList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '系统管理' }, { title: '数据字典', href: '/system/dict' }];
+    const breadcrumbList = [{ title: '演示用例' }, { title: '基础示例', href: '/example/demo' }];
 
     return (
-      <PageHeaderLayout title="数据字典" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="基础示例" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <PButton code="add" type="primary" onClick={() => this.handleAddClick()}>
+              <PButton code="add" type="primary" onClick={() => this.onAddClick()}>
                 新建
               </PButton>
               {selectedRows.length === 1 && [
                 <PButton
                   key="edit"
                   code="edit"
-                  onClick={() => this.handleEditClick(selectedRows[0])}
+                  onClick={() => this.onItemEditClick(selectedRows[0])}
                 >
                   编辑
                 </PButton>,
@@ -259,7 +283,7 @@ class DictList extends PureComponent {
                   key="del"
                   code="del"
                   type="danger"
-                  onClick={() => this.handleDelClick(selectedRows[0])}
+                  onClick={() => this.onItemDelClick(selectedRows[0])}
                 >
                   删除
                 </PButton>,
@@ -285,18 +309,40 @@ class DictList extends PureComponent {
               ]}
             </div>
             <div>
-              <Table
+              <EditableProTable
                 rowSelection={{
                   selectedRowKeys,
                   onSelect: this.handleTableSelectRow,
                 }}
                 loading={loading}
-                rowKey={record => record.id}
+                rowKey={record => {
+                  if (record.id) {
+                    return record.id;
+                  }
+                  return record.no;
+                }}
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}
-                onChange={this.handleTableChange}
+                onChange={this.onTableChange}
                 size="small"
+                recordCreatorProps={{
+                  newRecordType: 'dataSource',
+                  record: () => {
+                    return {
+                      no: (Math.random() * 1000000).toFixed(0),
+                    };
+                    // this.actionRef.current.addEditRecord({
+                    //   no: (Math.random() * 1000000).toFixed(0),
+                    // });
+                  },
+                }}
+                editable={{
+                  type: 'multiple',
+                }}
+                actionRef={this.actionRef}
+                formRef={this.editorFormRef}
+                editableFormRef={this.editableFormRef}
               />
             </div>
           </div>
@@ -307,4 +353,4 @@ class DictList extends PureComponent {
   }
 }
 
-export default DictList;
+export default DemoList;

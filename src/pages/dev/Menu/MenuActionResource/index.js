@@ -3,6 +3,7 @@ import { Table, Button, Popconfirm } from 'antd';
 import {
   EditableProTable,
   ProCard,
+  ProForm,
   ProFormField,
   ProFormRadio,
   EditableFormInstance,
@@ -10,11 +11,13 @@ import {
   ProFormInstance,
 } from '@ant-design/pro-components';
 import { fillFormKey, newUUID } from '@/utils/utils';
-import { EditableCell, EditableFormRow } from './EditableCell';
+
+import { methods } from '@/utils/request';
 
 import styles from './index.less';
 
-export default class MenuActionResource extends PureComponent {
+export default class MenuActionResource extends React.PureComponent {
+  // formRef = React.createRef();
   actionRef = React.createRef();
   editorFormRef = React.createRef();
   editableFormRef = React.createRef();
@@ -22,43 +25,17 @@ export default class MenuActionResource extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.columns = [
-      {
-        title: '请求方式',
-        dataIndex: 'method',
-        editable: true,
-        width: '30%',
-      },
-      {
-        title: '请求路径',
-        dataIndex: 'path',
-        editable: true,
-        width: '45%',
-      },
-      {
-        title: '操作',
-        dataIndex: 'key',
-        width: '25%',
-        render: (_, record) => {
-          const { dataSource } = this.state;
-          if (dataSource.length === 0) {
-            return null;
-          }
-          return (
-            <Popconfirm title="确定要删除该数据吗?" onConfirm={() => this.handleDelete(record.key)}>
-              <a>删除</a>
-            </Popconfirm>
-          );
-        },
-        editable: false,
-      },
-    ];
-
     this.state = {
       dataSource: fillFormKey(props.value),
       addVisible: false,
+      editableKeys: [],
     };
+
+    // console.log(" ---- ===== this.state.dataSource ", this.state.dataSource.length)
   }
+
+  // componentDidMount() {
+  // }
 
   static getDerivedStateFromProps(nextProps, state) {
     if ('value' in nextProps) {
@@ -71,12 +48,30 @@ export default class MenuActionResource extends PureComponent {
     this.setState({ addVisible: false });
   };
 
-  handleDelete = key => {
+  handleDeleteOneItem = record => {
+    console.log(' ---- ======= === delete record ', record);
     const { dataSource } = this.state;
-    const data = dataSource.filter(item => item.key !== key);
-    this.setState({ dataSource: data }, () => {
-      this.triggerChange(data);
+    console.log(' ---- ======= ===  dataSource ', dataSource.length);
+
+    const data = dataSource.filter(item => {
+      if (record.id) {
+        if (record.id === item.id) {
+          return true;
+        }
+        return false;
+      }
+      if (record.no) {
+        if (record.no === item.no) {
+          return true;
+        }
+        return false;
+      }
+      return false;
     });
+
+    // this.setState({ dataSource: data }, () => {
+    //   this.triggerChange(data);
+    // });
   };
 
   handleSave = row => {
@@ -88,9 +83,9 @@ export default class MenuActionResource extends PureComponent {
       ...item,
       ...row,
     });
-    this.setState({ dataSource: data }, () => {
-      this.triggerChange(data);
-    });
+    // this.setState({ dataSource: data }, () => {
+    //   this.triggerChange(data);
+    // });
   };
 
   triggerChange = data => {
@@ -101,9 +96,77 @@ export default class MenuActionResource extends PureComponent {
   };
 
   render() {
-    const { dataSource } = this.state;
+    const { dataSource, editableKeys, started } = this.state;
 
-    const columns = this.columns.map(col => {
+    const columns = [
+      {
+        title: '请求方式',
+        dataIndex: 'method',
+        editable: true,
+        width: '30%',
+        formItemProps: () => {
+          return {
+            rules: [{ required: true, message: '此项为必填项' }],
+          };
+        },
+        valueType: 'select',
+        valueEnum: {
+          GET: {
+            text: methods.GET,
+          },
+          POST: {
+            text: methods.POST,
+          },
+          PUT: {
+            text: methods.PUT,
+          },
+          DELETE: {
+            text: methods.DELETE,
+          },
+          PATCH: {
+            text: methods.PATCH,
+          },
+          HEAD: {
+            text: methods.HEAD,
+          },
+          OPTIONS: {
+            text: methods.OPTIONS,
+          },
+        },
+      },
+      {
+        title: '请求路径',
+        dataIndex: 'path',
+        editable: true,
+        width: '45%',
+        formItemProps: () => {
+          return {
+            rules: [{ required: true, message: '此项为必填项' }],
+          };
+        },
+      },
+      {
+        title: '操作',
+        dataIndex: 'key',
+        width: '25%',
+        render: (_, record) => {
+          if (dataSource.length === 0) {
+            return null;
+          }
+          return (
+            <Popconfirm
+              title="确定要删除该数据吗?"
+              onConfirm={() => this.handleDeleteOneItem(record)}
+            >
+              <a>删除</a>
+            </Popconfirm>
+          );
+        },
+        editable: false,
+      },
+    ];
+
+    const mregedColumns = columns.map(col => {
       if (!col.editable) {
         return col;
       }
@@ -120,18 +183,24 @@ export default class MenuActionResource extends PureComponent {
     });
 
     return (
-      <div className={styles.tableList}>
+      <div
+        className={styles.tableList}
+        // formRef={this.formRef}
+        // initialValues={{
+        //   resources: dataSource,
+        // }}
+        // validateTrigger="onBlur"
+      >
         <EditableProTable
+          name="resources"
           rowKey={record => {
-            if (record.id) {
-              return record.id;
-            }
-            return record.no;
+            return record.key;
           }}
           bordered
           loading={false}
           dataSource={dataSource}
-          columns={columns}
+          columns={mregedColumns}
+          // columns={this.columns}
           pagination={false}
           actionRef={this.actionRef}
           formRef={this.editorFormRef}
@@ -145,12 +214,18 @@ export default class MenuActionResource extends PureComponent {
             newRecordType: 'dataSource',
             record: () => {
               let oneitem = {
-                no: dataSource.length + 1, // (Math.random() * 1000000).toFixed(0),
+                key: newUUID(),
+                editable: true,
               };
               dataSource.push(oneitem);
               this.setState({
                 dataSource,
               });
+              console.log(' ------ == == == recordCreatorProps dataSource ', dataSource.length);
+              console.log(
+                ' --- --- = ===== recordCreatorProps dataSource ',
+                JSON.stringify(dataSource)
+              );
               return oneitem;
             },
             creatorButtonText: ' 新 增',
