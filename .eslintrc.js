@@ -37,6 +37,13 @@ module.exports = {
     'no-unused-vars': 0,
     'prefer-const': 0,
     'no-irregular-whitespace': 0,
+    'lines-between-class-members': [
+      'error',
+      'always',
+      {
+        exceptAfterSingleLine: true,
+      },
+    ],
   },
   settings: {
     polyfills: ['fetch', 'promises', 'url'],
