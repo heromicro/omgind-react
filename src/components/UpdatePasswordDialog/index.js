@@ -65,7 +65,7 @@ class UpdatePasswordDialog extends PureComponent {
       <Modal
         title="修改个人密码"
         width={450}
-        visible={visible}
+        open={visible}
         maskClosable={false}
         confirmLoading={submitting}
         destroyOnClose

@@ -5,8 +5,9 @@ import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Typography } 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import { formatDate } from '@/utils/datetime';
+
+import { EditableRow, EditableCell } from '@/components/EditableRow';
 import DemoCard from './DemoCard';
-import DemoEditableCell from './DemoEditableCell';
 
 import styles from './DemoList.less';
 
@@ -167,9 +168,13 @@ class DemoList extends PureComponent {
     });
   };
 
-  renderDataForm() {
-    return <DemoCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
-  }
+  toggleEdit = record => {
+    console.log(' ----- ======== ====== handleSave record: ', record);
+  };
+
+  handleSave = record => {
+    console.log(' ----- ======== ====== handleSave record: ', record);
+  };
 
   renderSearchForm() {
     return (
@@ -193,6 +198,10 @@ class DemoList extends PureComponent {
         </Row>
       </Form>
     );
+  }
+
+  renderDataForm() {
+    return <DemoCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
   }
 
   render() {
@@ -306,10 +315,12 @@ class DemoList extends PureComponent {
         ...col,
         onCell: record => ({
           record,
-          inputType: 'text',
+          editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: isEditing(record),
+          handleSave: this.handleSave,
+          toggleEdit: this.toggleEdit,
+          editing: true, // isEditing(record),
         }),
       };
     });
@@ -370,28 +381,34 @@ class DemoList extends PureComponent {
               ]}
             </div>
             <div>
-              <Form ref={this.tableFormRef} component={false}>
-                <Table
-                  components={{
-                    body: {
-                      cell: DemoEditableCell,
-                    },
-                  }}
-                  bordered
-                  rowSelection={{
-                    selectedRowKeys,
-                    onSelect: this.handleTableSelectRow,
-                  }}
-                  loading={loading}
-                  rowKey={record => record.id}
-                  dataSource={list}
-                  columns={mergedColumns}
-                  rowClassName="editable-row"
-                  pagination={paginationProps}
-                  onChange={this.onTableChange}
-                  size="small"
-                />
-              </Form>
+              {/* <Form ref={this.tableFormRef} component={false}> */}
+              <Table
+                components={{
+                  body: {
+                    row: EditableRow,
+                    cell: EditableCell,
+                  },
+                }}
+                bordered
+                rowSelection={{
+                  selectedRowKeys,
+                  onSelect: this.handleTableSelectRow,
+                }}
+                loading={loading}
+                rowKey={record => {
+                  if (record.id) {
+                    return record.id;
+                  }
+                  return record.no;
+                }}
+                dataSource={list}
+                columns={mergedColumns}
+                rowClassName="editable-row"
+                pagination={paginationProps}
+                onChange={this.onTableChange}
+                size="small"
+              />
+              {/* </Form> */}
             </div>
           </div>
         </Card>

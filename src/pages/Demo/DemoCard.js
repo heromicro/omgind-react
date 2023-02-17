@@ -55,7 +55,7 @@ class DemoCard extends PureComponent {
       <Modal
         title={formTitle}
         width={600}
-        visible={formModalVisible}
+        open={formModalVisible}
         maskClosable={false}
         confirmLoading={submitting}
         destroyOnClose
