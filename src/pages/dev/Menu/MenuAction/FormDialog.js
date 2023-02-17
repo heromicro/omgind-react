@@ -230,6 +230,12 @@ class FormDialog extends PureComponent {
                 actionRef={this.actionRef}
                 formRef={this.editorFormRef}
                 editableFormRef={this.editableFormRef}
+                editable={{
+                  type: 'multiple',
+                  actionRender: (row, config, defaultDom) => {
+                    return [defaultDom.save, defaultDom.delete || defaultDom.cancel];
+                  },
+                }}
                 maxLength={10}
                 recordCreatorProps={{
                   // position: 'top',
