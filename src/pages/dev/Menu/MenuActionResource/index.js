@@ -79,25 +79,6 @@ export default class MenuActionResource extends PureComponent {
     });
   };
 
-  handleAdd1 = () => {
-    const { dataSource } = this.state;
-    const item = {
-      key: newUUID(),
-      method: '',
-      path: '',
-    };
-
-    const data = [...dataSource, item];
-    this.setState(
-      {
-        dataSource: data,
-      },
-      () => {
-        this.triggerChange(data);
-      }
-    );
-  };
-
   handleSave = row => {
     const { dataSource } = this.state;
     const data = [...dataSource];
@@ -158,15 +139,21 @@ export default class MenuActionResource extends PureComponent {
           editable={{
             type: 'multiple',
           }}
+          maxLength={10}
           recordCreatorProps={{
             position: 'top',
             newRecordType: 'dataSource',
             record: () => {
-              return {
-                no: (Math.random() * 1000000).toFixed(0),
+              let oneitem = {
+                no: dataSource.length + 1, // (Math.random() * 1000000).toFixed(0),
               };
+              dataSource.push(oneitem);
+              this.setState({
+                dataSource,
+              });
+              return oneitem;
             },
-            creatorButtonText: '新 增',
+            creatorButtonText: ' 新 增',
           }}
         />
       </div>
