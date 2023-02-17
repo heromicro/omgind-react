@@ -1,5 +1,11 @@
 // https://umijs.org/config/
+import { theme } from 'antd';
 import pageRoutes from './router.config';
+
+const { defaultAlgorithm, defaultSeed } = theme;
+const mapToken = defaultAlgorithm(defaultSeed);
+
+const themevars = require('@ant-design/antd-theme-variable');
 
 export default {
   // add for transfer to umi
@@ -23,6 +29,7 @@ export default {
   // https://ant.design/docs/react/customize-theme-cn
   theme: {
     'primary-color': '#1890ff',
+    ...themevars,
   },
   proxy: {
     '/api/': {
@@ -35,4 +42,7 @@ export default {
     basePath: '/',
   },
   mfsu: {},
+  lessLoader: {
+    modifyVars: mapToken,
+  },
 };
