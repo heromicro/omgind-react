@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 // 格式化时间戳
 export function formatTimestamp(val, format) {
@@ -6,17 +6,17 @@ export function formatTimestamp(val, format) {
   if (format) {
     f = format;
   }
-  return moment.unix(val).format(f);
+  return dayjs.unix(val).format(f);
 }
 
 // 解析时间戳
 export function parseTimestamp(val) {
-  return moment.unix(val);
+  return dayjs.unix(val);
 }
 
 // 解析日期
 export function parseDate(val) {
-  return moment(val);
+  return dayjs(val);
 }
 
 // 格式化日期
@@ -25,5 +25,5 @@ export function formatDate(val, format) {
   if (format) {
     f = format;
   }
-  return moment(val).format(f);
+  return dayjs(val).format(f);
 }

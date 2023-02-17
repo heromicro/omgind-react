@@ -1,2 +1,2 @@
 import './global.less';
-import 'moment/locale/zh-cn';
+import 'dayjs/locale/zh-cn';

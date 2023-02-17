@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Typography, Card, Alert } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './Home.less';
@@ -18,12 +18,12 @@ const CodePreview = ({ children }) => (
 }))
 class Home extends PureComponent {
   state = {
-    currentTime: moment().format('HH:mm:ss'),
+    currentTime: dayjs().format('HH:mm:ss'),
   };
 
   componentDidMount() {
     this.interval = setInterval(() => {
-      this.setState({ currentTime: moment().format('HH:mm:ss') });
+      this.setState({ currentTime: dayjs().format('HH:mm:ss') });
     }, 1000);
   }
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { history } from 'umi';
 import qs from 'qs';
 
@@ -94,7 +94,7 @@ export default function request(url, options = { method: methods.GET }) {
     // eslint-disable-next-line compat/compat
     return Promise.reject(new Error('The token has expired'));
   }
-  lastAccessTime = moment().unix();
+  lastAccessTime = dayjs().unix();
 
   const opts = { ...options };
   console.log(' o oo ==== opts: ', opts);
@@ -164,7 +164,7 @@ export function setToken(token) {
   }
 
   // 提前10分钟更新令牌
-  const timeout = token.expires_at - moment().unix() - 10;
+  const timeout = token.expires_at - dayjs().unix() - 10;
   if (timeout > 0) {
     refreshTimeout = setTimeout(() => {
       const oldToken = store.get(storeKeys.AccessToken);
