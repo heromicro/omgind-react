@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import '@ant-design/compatible/assets/index.css';
+
 import { Form, Input, Select } from 'antd';
 
 const FormItem = Form.Item;
