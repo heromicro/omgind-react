@@ -1,13 +1,24 @@
 import React, { PureComponent } from 'react';
 import { Table, Button, Popconfirm } from 'antd';
-import { EditableFormInstance, ProColumns, ProFormInstance } from '@ant-design/pro-components';
-
+import {
+  EditableProTable,
+  ProCard,
+  ProFormField,
+  ProFormRadio,
+  EditableFormInstance,
+  ProColumns,
+  ProFormInstance,
+} from '@ant-design/pro-components';
 import { fillFormKey, newUUID } from '@/utils/utils';
 import { EditableCell, EditableFormRow } from './EditableCell';
 
 import styles from './index.less';
 
 export default class MenuActionResource extends PureComponent {
+  actionRef = React.createRef();
+  editorFormRef = React.createRef();
+  editableFormRef = React.createRef();
+
   constructor(props) {
     super(props);
 
@@ -39,6 +50,7 @@ export default class MenuActionResource extends PureComponent {
             </Popconfirm>
           );
         },
+        editable: false,
       },
     ];
 
@@ -67,7 +79,7 @@ export default class MenuActionResource extends PureComponent {
     });
   };
 
-  handleAdd = () => {
+  handleAdd1 = () => {
     const { dataSource } = this.state;
     const item = {
       key: newUUID(),
@@ -125,26 +137,37 @@ export default class MenuActionResource extends PureComponent {
         }),
       };
     });
+
     return (
       <div className={styles.tableList}>
-        <div className={styles.tableListOperator}>
-          <Button onClick={this.handleAdd} size="small" type="primary">
-            新增
-          </Button>
-        </div>
-
-        <Table
-          rowKey={record => record.key}
-          components={{
-            body: {
-              row: EditableFormRow,
-              cell: EditableCell,
-            },
+        <EditableProTable
+          rowKey={record => {
+            if (record.id) {
+              return record.id;
+            }
+            return record.no;
           }}
           bordered
+          loading={false}
           dataSource={dataSource}
           columns={columns}
           pagination={false}
+          actionRef={this.actionRef}
+          formRef={this.editorFormRef}
+          editableFormRef={this.editableFormRef}
+          editable={{
+            type: 'multiple',
+          }}
+          recordCreatorProps={{
+            position: 'top',
+            newRecordType: 'dataSource',
+            record: () => {
+              return {
+                no: (Math.random() * 1000000).toFixed(0),
+              };
+            },
+            creatorButtonText: '新 增',
+          }}
         />
       </div>
     );
