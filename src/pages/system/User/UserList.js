@@ -10,7 +10,7 @@ import RoleSelect from './RoleSelect';
 
 import styles from './UserList.less';
 
-@connect(state => ({
+@connect((state) => ({
   loading: state.loading.models.user,
   user: state.user,
 }))
@@ -30,21 +30,21 @@ class UserList extends PureComponent {
     });
   }
 
-  onItemDisableClick = item => {
+  onItemDisableClick = (item) => {
     this.dispatch({
       type: 'user/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
-  onItemEnableClick = item => {
+  onItemEnableClick = (item) => {
     this.dispatch({
       type: 'user/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
-  onItemEditClick = item => {
+  onItemEditClick = (item) => {
     this.dispatch({
       type: 'user/loadForm',
       payload: {
@@ -79,7 +79,7 @@ class UserList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  onItemDelClick = item => {
+  onItemDelClick = (item) => {
     Modal.confirm({
       title: `确定删除【用户数据：${item.user_name}】？`,
       okText: '确认',
@@ -102,7 +102,7 @@ class UserList extends PureComponent {
     });
   };
 
-  onTableChange = pagination => {
+  onTableChange = (pagination) => {
     this.dispatch({
       type: 'user/fetch',
       pagination: {
@@ -122,11 +122,11 @@ class UserList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = val => {
-    this.formRef.current.validateFields(values => {
+  onSearchFormSubmit = (val) => {
+    this.formRef.current.validateFields((values) => {
       const formData = { ...values };
       if (formData.roleIDs) {
-        formData.roleIDs = formData.roleIDs.map(v => v.role_id).join(',');
+        formData.roleIDs = formData.roleIDs.map((v) => v.role_id).join(',');
       }
       this.dispatch({
         type: 'user/fetch',
@@ -137,7 +137,7 @@ class UserList extends PureComponent {
     });
   };
 
-  onDataFormSubmit = data => {
+  onDataFormSubmit = (data) => {
     this.dispatch({
       type: 'user/submit',
       payload: data,
@@ -152,7 +152,7 @@ class UserList extends PureComponent {
     });
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
@@ -207,9 +207,7 @@ class UserList extends PureComponent {
       {
         title: '真实姓名',
         dataIndex: 'real_name',
-        render: (val, record, index) => {
-          return `${record.last_name} ${record.first_name}`;
-        },
+        render: (val, record, index) => `${record.last_name} ${record.first_name}`,
       },
       {
         title: '角色名称',
@@ -228,7 +226,7 @@ class UserList extends PureComponent {
       {
         title: '用户状态',
         dataIndex: 'is_active',
-        render: val => {
+        render: (val) => {
           if (val) {
             return <Badge status="success" text="启用" />;
           }
@@ -246,14 +244,14 @@ class UserList extends PureComponent {
       {
         title: '创建时间',
         dataIndex: 'created_at',
-        render: val => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+        render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
     ];
 
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      showTotal: total => <span>共{total}条</span>,
+      showTotal: (total) => <span>共{total}条</span>,
       ...pagination,
     };
 
@@ -312,7 +310,7 @@ class UserList extends PureComponent {
                   onSelect: this.handleTableSelectRow,
                 }}
                 loading={loading}
-                rowKey={record => record.id}
+                rowKey={(record) => record.id}
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}

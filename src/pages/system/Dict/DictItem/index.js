@@ -27,15 +27,15 @@ class DictItem extends PureComponent {
     return state;
   }
 
-  handleDelete = key => {
+  handleDelete = (key) => {
     const { dataSource } = this.state;
-    const data = dataSource.filter(item => item.key !== key);
+    const data = dataSource.filter((item) => item.key !== key);
     this.setState({ dataSource: data }, () => {
       this.triggerChange(data);
     });
   };
 
-  handleEdit = item => {
+  handleEdit = (item) => {
     this.setState({
       formVisible: true,
       formData: item,
@@ -46,7 +46,7 @@ class DictItem extends PureComponent {
     this.setState({ formVisible: false });
   };
 
-  handleFormSubmit = formData => {
+  handleFormSubmit = (formData) => {
     console.log(' ===== ----- ===== sss formData ', formData);
 
     const { dataSource } = this.state;
@@ -115,7 +115,7 @@ class DictItem extends PureComponent {
     this.setState({ formVisible: true, formData: {} });
   };
 
-  triggerChange = data => {
+  triggerChange = (data) => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(data);
@@ -141,7 +141,7 @@ class DictItem extends PureComponent {
       {
         title: '状态',
         dataIndex: 'is_active',
-        render: val => {
+        render: (val) => {
           if (val) {
             return <Badge status="success" text="启用" />;
           }
@@ -159,17 +159,19 @@ class DictItem extends PureComponent {
       {
         title: '操作',
         dataIndex: 'key',
-        render: (_, record) => {
-          return [
-            <a href="#" onClick={() => this.handleEdit(record)}>
-              编辑
-            </a>,
-            <Divider type="vertical" />,
-            <Popconfirm title="确定要删除该数据吗?" onConfirm={() => this.handleDelete(record.key)}>
-              <a href="#">删除</a>
-            </Popconfirm>,
-          ];
-        },
+        render: (_, record) => [
+          <a key="edit" href="#" onClick={() => this.handleEdit(record)}>
+            编辑
+          </a>,
+          <Divider key="divivder0" type="vertical" />,
+          <Popconfirm
+            key="delete"
+            title="确定要删除该数据吗?"
+            onConfirm={() => this.handleDelete(record.key)}
+          >
+            <a href="#">删除</a>
+          </Popconfirm>,
+        ],
       },
     ];
 
@@ -181,7 +183,7 @@ class DictItem extends PureComponent {
           </Button>
         </div>
         <Table
-          rowKey={record => record.key}
+          rowKey={(record) => record.key}
           bordered
           dataSource={dataSource}
           columns={columns}
