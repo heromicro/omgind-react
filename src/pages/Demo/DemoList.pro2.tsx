@@ -1,21 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   EditableProTable,
   ProCard,
-  ProForm,
-  ProFormDependency,
   ProFormField,
   ProFormRadio,
-  EditableFormInstance,
   ProColumns,
-  ProFormInstance,
 } from '@ant-design/pro-components';
 
-import { Button } from 'antd';
+const waitTime = (time = 100) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
 
 type DataSourceType = {
   id: React.Key;
   title?: string;
+  readonly?: string;
   decs?: string;
   state?: string;
   created_at?: string;
@@ -25,16 +27,18 @@ type DataSourceType = {
 
 const defaultData: DataSourceType[] = [
   {
-    id: '624748504',
+    id: 624748504,
     title: '活动名称一',
+    readonly: '活动名称一',
     decs: '这个活动真好玩',
     state: 'open',
     created_at: '1590486176000',
     update_at: '1590486176000',
   },
   {
-    id: '624691229',
+    id: 624691229,
     title: '活动名称二',
+    readonly: '活动名称二',
     decs: '这个活动真好玩',
     state: 'closed',
     created_at: '1590481162000',
@@ -42,21 +46,29 @@ const defaultData: DataSourceType[] = [
   },
 ];
 
-let i = 0;
-
 export default function () {
-  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() => []);
+  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
+  const [dataSource, setDataSource] = useState<DataSourceType[]>([]);
   const [position, setPosition] = useState<'top' | 'bottom' | 'hidden'>('bottom');
-  const formRef = useRef<ProFormInstance<any>>();
-  const editorFormRef = useRef<EditableFormInstance<DataSourceType>>();
+
   const columns: ProColumns<DataSourceType>[] = [
     {
       title: '活动名称',
       dataIndex: 'title',
-      formItemProps: () => ({
-        rules: [{ required: true, message: '此项为必填项' }],
+      tooltip: '只读，使用form.getFieldValue获取不到值',
+      formItemProps: (form, { rowIndex }) => ({
+        rules: rowIndex > 1 ? [{ required: true, message: '此项为必填项' }] : [],
       }),
-      width: '30%',
+      // 第一行不允许编辑
+      editable: (text, record, index) => index !== 0,
+      width: '15%',
+    },
+    {
+      title: '活动名称二',
+      dataIndex: 'readonly',
+      tooltip: '只读，使用form.getFieldValue可以获取到值',
+      readonly: true,
+      width: '15%',
     },
     {
       title: '状态',
@@ -78,6 +90,19 @@ export default function () {
     {
       title: '描述',
       dataIndex: 'decs',
+      fieldProps: (from, { rowKey, rowIndex }) => {
+        if (from.getFieldValue([rowKey || '', 'title']) === '不好玩') {
+          return {
+            disabled: true,
+          };
+        }
+        if (rowIndex > 9) {
+          return {
+            disabled: true,
+          };
+        }
+        return {};
+      },
     },
     {
       title: '活动时间',
@@ -100,10 +125,7 @@ export default function () {
         <a
           key="delete"
           onClick={() => {
-            const tableDataSource = formRef.current?.getFieldValue('table') as DataSourceType[];
-            formRef.current?.setFieldsValue({
-              table: tableDataSource.filter((item) => item.id !== record.id),
-            });
+            setDataSource(dataSource.filter((item) => item.id !== record.id));
           }}
         >
           删除
@@ -113,24 +135,14 @@ export default function () {
   ];
 
   return (
-    <ProForm<{
-      table: DataSourceType[];
-    }>
-      formRef={formRef}
-      initialValues={{
-        table: defaultData,
-      }}
-      validateTrigger="onBlur"
-    >
+    <>
       <EditableProTable<DataSourceType>
         rowKey="id"
+        headerTitle="可编辑表格"
+        maxLength={5}
         scroll={{
           x: 960,
         }}
-        editableFormRef={editorFormRef}
-        headerTitle="可编辑表格"
-        maxLength={5}
-        name="table"
         recordCreatorProps={
           position !== 'hidden'
             ? {
@@ -139,13 +151,11 @@ export default function () {
               }
             : false
         }
+        loading={false}
         toolBarRender={() => [
           <ProFormRadio.Group
             key="render"
             fieldProps={{
-              style: {
-                marginBlockEnd: 0,
-              },
               value: position,
               onChange: (e) => setPosition(e.target.value),
             }}
@@ -164,58 +174,38 @@ export default function () {
               },
             ]}
           />,
-          <Button
-            type="text"
-            key="rows"
-            onClick={() => {
-              const rows = editorFormRef.current?.getRowsData?.();
-              console.log(rows);
-            }}
-          >
-            获取 table 的数据
-          </Button>,
         ]}
         columns={columns}
+        request={async () => ({
+          data: defaultData,
+          total: 3,
+          success: true,
+        })}
+        value={dataSource}
+        onChange={setDataSource}
         editable={{
           type: 'multiple',
           editableKeys,
+          onSave: async (rowKey, data, row) => {
+            console.log(rowKey, data, row);
+            await waitTime(2000);
+          },
           onChange: setEditableRowKeys,
-          actionRender: (row, config, defaultDom) => [
-            defaultDom.save,
-            defaultDom.delete || defaultDom.cancel,
-            <a
-              key="set"
-              onClick={() => {
-                i += 1;
-                editorFormRef.current?.setRowData?.(config.index!, {
-                  title: `动态设置的title${i}`,
-                });
-              }}
-            >
-              动态设置此行
-            </a>,
-          ],
         }}
       />
-      <ProForm.Item>
-        <ProCard title="表格数据" headerBordered collapsible defaultCollapsed>
-          <ProFormDependency name={['table']}>
-            {({ table }) => (
-              <ProFormField
-                ignoreFormItem
-                fieldProps={{
-                  style: {
-                    width: '100%',
-                  },
-                }}
-                mode="read"
-                valueType="jsonCode"
-                text={JSON.stringify(table)}
-              />
-            )}
-          </ProFormDependency>
-        </ProCard>
-      </ProForm.Item>
-    </ProForm>
+      <ProCard title="表格数据" headerBordered collapsible defaultCollapsed>
+        <ProFormField
+          ignoreFormItem
+          fieldProps={{
+            style: {
+              width: '100%',
+            },
+          }}
+          mode="read"
+          valueType="jsonCode"
+          text={JSON.stringify(dataSource)}
+        />
+      </ProCard>
+    </>
   );
 }

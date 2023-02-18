@@ -20,7 +20,7 @@ import DemoCard from './DemoCard';
 
 import styles from './DemoList.less';
 
-@connect(state => ({
+@connect((state) => ({
   loading: state.loading.models.demo,
   demo: state.demo,
 }))
@@ -44,21 +44,21 @@ class DemoList extends PureComponent {
     });
   }
 
-  onItemDisableClick = item => {
+  onItemDisableClick = (item) => {
     this.dispatch({
       type: 'demo/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
-  onItemEnableClick = item => {
+  onItemEnableClick = (item) => {
     this.dispatch({
       type: 'demo/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
-  onItemEditClick = item => {
+  onItemEditClick = (item) => {
     this.dispatch({
       type: 'demo/loadForm',
       payload: {
@@ -93,7 +93,7 @@ class DemoList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  onItemDelClick = item => {
+  onItemDelClick = (item) => {
     Modal.confirm({
       title: `确定删除【基础示例数据：${item.name}】？`,
       okText: '确认',
@@ -116,7 +116,7 @@ class DemoList extends PureComponent {
     });
   };
 
-  onTableChange = pagination => {
+  onTableChange = (pagination) => {
     this.dispatch({
       type: 'demo/fetch',
       pagination: {
@@ -137,7 +137,7 @@ class DemoList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = values => {
+  onSearchFormSubmit = (values) => {
     if (!values.queryValue) {
       return;
     }
@@ -149,7 +149,7 @@ class DemoList extends PureComponent {
     this.clearSelectRows();
   };
 
-  onDataFormSubmit = data => {
+  onDataFormSubmit = (data) => {
     this.dispatch({
       type: 'demo/submit',
       payload: data,
@@ -164,7 +164,7 @@ class DemoList extends PureComponent {
     });
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
@@ -237,7 +237,7 @@ class DemoList extends PureComponent {
       {
         title: '状态',
         dataIndex: 'is_active',
-        render: val => {
+        render: (val) => {
           if (val) {
             return <Badge status="success" text="启用" />;
           }
@@ -248,7 +248,7 @@ class DemoList extends PureComponent {
       {
         title: '创建时间',
         dataIndex: 'created_at',
-        render: val => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+        render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
         editable: false,
       },
     ];
@@ -256,7 +256,7 @@ class DemoList extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      showTotal: total => <span>共{total}条</span>,
+      showTotal: (total) => <span>共{total}条</span>,
       ...pagination,
     };
 
@@ -315,7 +315,7 @@ class DemoList extends PureComponent {
                   onSelect: this.handleTableSelectRow,
                 }}
                 loading={loading}
-                rowKey={record => {
+                rowKey={(record) => {
                   if (record.id) {
                     return record.id;
                   }
@@ -328,14 +328,12 @@ class DemoList extends PureComponent {
                 size="small"
                 recordCreatorProps={{
                   newRecordType: 'dataSource',
-                  record: () => {
-                    return {
-                      no: (Math.random() * 1000000).toFixed(0),
-                    };
-                    // this.actionRef.current.addEditRecord({
-                    //   no: (Math.random() * 1000000).toFixed(0),
-                    // });
-                  },
+                  record: () => ({
+                    no: (Math.random() * 1000000).toFixed(0),
+                  }),
+                  // this.actionRef.current.addEditRecord({
+                  //   no: (Math.random() * 1000000).toFixed(0),
+                  // });
                 }}
                 editable={{
                   type: 'multiple',

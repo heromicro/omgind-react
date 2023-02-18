@@ -1,19 +1,20 @@
 import React, { PureComponent } from 'react';
-import { Form } from '@ant-design/compatible';
 
-import { Input, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
-const EditableRow = ({ form, index, ...props }) => (
-  <EditableContext.Provider value={form}>
-    <tr {...props} />
-  </EditableContext.Provider>
-);
-
-export const EditableFormRow = Form.create()(EditableRow);
-
+export function EditableFormRow({ index, ...props }) {
+  const [form] = Form.useForm();
+  return (
+    <Form form={form} component={false}>
+      <EditableContext.Provider value={form}>
+        <tr {...props} />
+      </EditableContext.Provider>
+    </Form>
+  );
+}
 export class EditableCell extends PureComponent {
   save = () => {
     const { record, handleSave } = this.props;
@@ -28,14 +29,18 @@ export class EditableCell extends PureComponent {
   renderFormItem = (dataIndex, title, record) => {
     if (dataIndex === 'method') {
       return (
-        <FormItem style={{ margin: 0 }}>
+        <FormItem
+          style={{ margin: 0 }}
+          name={dataIndex}
+          rules={[
+            {
+              required: true,
+              message: `请选择${title}`,
+            },
+          ]}
+        >
           {this.form.getFieldDecorator(dataIndex, {
-            rules: [
-              {
-                required: true,
-                message: `请选择${title}`,
-              },
-            ],
+            rules: [],
             initialValue: record[dataIndex],
           })(
             <Select
@@ -85,7 +90,7 @@ export class EditableCell extends PureComponent {
       <td {...restProps}>
         {editable ? (
           <EditableContext.Consumer>
-            {form => {
+            {(form) => {
               this.form = form;
               return this.renderFormItem(dataIndex, title, record);
             }}

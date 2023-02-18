@@ -5,15 +5,17 @@ import { Typography, Card, Alert } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './Home.less';
 
-const CodePreview = ({ children }) => (
-  <pre className={styles.pre}>
-    <code>
-      <Typography.Text copyable>{children}</Typography.Text>
-    </code>
-  </pre>
-);
+function CodePreview({ children }) {
+  return (
+    <pre className={styles.pre}>
+      <code>
+        <Typography.Text copyable>{children}</Typography.Text>
+      </code>
+    </pre>
+  );
+}
 
-@connect(state => ({
+@connect((state) => ({
   global: state.global,
 }))
 class Home extends PureComponent {

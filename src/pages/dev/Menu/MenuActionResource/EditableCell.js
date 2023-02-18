@@ -1,20 +1,21 @@
 import React, { PureComponent } from 'react';
-
-import { Form, Input, Select } from 'antd';
+// TODO::udpate to form
+import { Form } from '@ant-design/compatible';
+import { Input, Select } from 'antd';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
-export const EditableFormRow = ({ index, ...props }) => {
-  const [form] = Form.useForm();
+function EditableRow({ form, index, ...props }) {
   return (
-    <Form form={form} component={false}>
-      <EditableContext.Provider value={form}>
-        <tr {...props} />
-      </EditableContext.Provider>
-    </Form>
+    <EditableContext.Provider value={form}>
+      <tr {...props} />
+    </EditableContext.Provider>
   );
-};
+}
+
+export const EditableFormRow = Form.create()(EditableRow);
+
 export class EditableCell extends PureComponent {
   save = () => {
     const { record, handleSave } = this.props;
@@ -29,22 +30,18 @@ export class EditableCell extends PureComponent {
   renderFormItem = (dataIndex, title, record) => {
     if (dataIndex === 'method') {
       return (
-        <FormItem
-          style={{ margin: 0 }}
-          name={dataIndex}
-          rules={[
-            {
-              required: true,
-              message: `请选择${title}`,
-            },
-          ]}
-        >
+        <FormItem style={{ margin: 0 }}>
           {this.form.getFieldDecorator(dataIndex, {
-            rules: [],
+            rules: [
+              {
+                required: true,
+                message: `请选择${title}`,
+              },
+            ],
             initialValue: record[dataIndex],
           })(
             <Select
-              style={{ width: '100%' }}
+              style={{ minWidth: '100px', width: '100%' }}
               onBlur={() => {
                 this.save();
               }}
@@ -90,7 +87,7 @@ export class EditableCell extends PureComponent {
       <td {...restProps}>
         {editable ? (
           <EditableContext.Consumer>
-            {form => {
+            {(form) => {
               this.form = form;
               return this.renderFormItem(dataIndex, title, record);
             }}

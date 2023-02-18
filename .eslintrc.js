@@ -1,15 +1,25 @@
 module.exports = {
-  parser: '@babel/eslint-parser',
+  // parser: '@babel/eslint-parser',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
+    ecmaVersion: 2020,
     requireConfigFile: false,
     babelOptions: {
       presets: ['@babel/preset-react'],
+      plugins: [['@babel/plugin-proposal-decorators', { legacy: true }]],
+      // "sourceType": "module"
     },
   },
+  plugins: ['@typescript-eslint', 'compat'],
   extends: [
     'airbnb',
     'prettier',
     'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:compat/recommended',
+    // https://typescript-eslint.io/rules/
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:compat/recommended',
     'plugin:react/jsx-runtime',
   ],
@@ -26,6 +36,11 @@ module.exports = {
     page: true,
   },
   rules: {
+    'compat/compat': 'warn',
+    '@typescript-eslint/no-empty-function': 'warn',
+    'class-methods-use-this': 'warn',
+    'react/function-component-definition': 'warn',
+    'react/display-name': 'warn',
     'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
     'react/jsx-wrap-multilines': 0,
     'react/prop-types': 0,
@@ -35,6 +50,7 @@ module.exports = {
     'react/state-in-constructor': 'warn',
     'react/no-unused-class-component-methods': 'warn',
     'react/sort-comp': 'warn',
+    'react/no-unstable-nested-components': 'warn',
     'import/no-unresolved': [2, { ignore: ['^@/', '^umi/'] }],
     'import/no-extraneous-dependencies': [
       2,

@@ -23,15 +23,15 @@ export default class MenuAction extends PureComponent {
     return state;
   }
 
-  handleDelete = key => {
+  handleDelete = (key) => {
     const { dataSource } = this.state;
-    const data = dataSource.filter(item => item.key !== key);
+    const data = dataSource.filter((item) => item.key !== key);
     this.setState({ dataSource: data }, () => {
       this.triggerChange(data);
     });
   };
 
-  handleEdit = item => {
+  handleEdit = (item) => {
     this.setState({
       formVisible: true,
       formData: item,
@@ -42,7 +42,7 @@ export default class MenuAction extends PureComponent {
     this.setState({ formVisible: false });
   };
 
-  handleFormSubmit = formData => {
+  handleFormSubmit = (formData) => {
     const { dataSource } = this.state;
     const data = [...dataSource];
     let exists = false;
@@ -72,7 +72,7 @@ export default class MenuAction extends PureComponent {
     this.setState({ tplVisible: false });
   };
 
-  handleTplSubmit = formData => {
+  handleTplSubmit = (formData) => {
     const { path } = formData;
     const tplData = [
       {
@@ -83,7 +83,10 @@ export default class MenuAction extends PureComponent {
       {
         code: 'edit',
         name: '编辑',
-        resources: [{ method: 'GET', path: `${path}/:id` }, { method: 'PUT', path: `${path}/:id` }],
+        resources: [
+          { method: 'GET', path: `${path}/:id` },
+          { method: 'PUT', path: `${path}/:id` },
+        ],
       },
       {
         code: 'del',
@@ -112,7 +115,7 @@ export default class MenuAction extends PureComponent {
       },
     ];
 
-    const newData = tplData.map(v => ({ key: v.code, ...v }));
+    const newData = tplData.map((v) => ({ key: v.code, ...v }));
     const { dataSource } = this.state;
     const data = [...dataSource];
     const mDataSource = data.reduce((m, cur) => {
@@ -141,10 +144,10 @@ export default class MenuAction extends PureComponent {
     this.setState({ tplVisible: true });
   };
 
-  handleSave = row => {
+  handleSave = (row) => {
     const { dataSource } = this.state;
     const data = [...dataSource];
-    const index = data.findIndex(item => row.key === item.key);
+    const index = data.findIndex((item) => row.key === item.key);
     const item = data[index];
     data.splice(index, 1, {
       ...item,
@@ -155,7 +158,7 @@ export default class MenuAction extends PureComponent {
     });
   };
 
-  triggerChange = data => {
+  triggerChange = (data) => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(data);
@@ -180,17 +183,19 @@ export default class MenuAction extends PureComponent {
         title: '操作',
         dataIndex: 'key',
         width: '30%',
-        render: (_, record) => {
-          return [
-            <a href="#" onClick={() => this.handleEdit(record)}>
-              编辑
-            </a>,
-            <Divider type="vertical" />,
-            <Popconfirm title="确定要删除该数据吗?" onConfirm={() => this.handleDelete(record.key)}>
-              <a href="#">删除</a>
-            </Popconfirm>,
-          ];
-        },
+        render: (_, record) => [
+          <a key="edit" href="#" onClick={() => this.handleEdit(record)}>
+            编辑
+          </a>,
+          <Divider key="divider0" type="vertical" />,
+          <Popconfirm
+            key="delete"
+            title="确定要删除该数据吗?"
+            onConfirm={() => this.handleDelete(record.key)}
+          >
+            <a href="#">删除</a>
+          </Popconfirm>,
+        ],
       },
     ];
 
@@ -207,7 +212,7 @@ export default class MenuAction extends PureComponent {
           </Button>
         </div>
         <Table
-          rowKey={record => record.key}
+          rowKey={(record) => record.key}
           bordered
           dataSource={dataSource}
           columns={columns}

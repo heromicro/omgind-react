@@ -3,10 +3,8 @@ const patterns = {
     name: '^[a-zA-Z_][0-9a-zA-Z_\\-]{0,}$',
     mobile: '^1[2-9]\\d{0,}$',
     email: '^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$',
-    pwd:
-      '^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[\\(\\)])+$)([^(0-9a-zA-Z)]|[\\(\\)]|[a-z]|[A-Z]|[0-9]){8,}$',
-    IP:
-      '^(?=(\\b|\\D))(((\\d{1,2})|(1\\d{1,2})|(2[0-4]\\d)|(25[0-5]))\\.){3}((\\d{1,2})|(1\\d{1,2})|(2[0-4]\\d)|(25[0-5]))(?=(\\b|\\D))$',
+    pwd: '^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)]|[\\(\\)])+$)([^(0-9a-zA-Z)]|[\\(\\)]|[a-z]|[A-Z]|[0-9]){8,}$',
+    IP: '^(?=(\\b|\\D))(((\\d{1,2})|(1\\d{1,2})|(2[0-4]\\d)|(25[0-5]))\\.){3}((\\d{1,2})|(1\\d{1,2})|(2[0-4]\\d)|(25[0-5]))(?=(\\b|\\D))$',
     IDCard: '(^\\d{15}$)|(^\\d{17}([0-9]|X)$)',
   },
   message: {
@@ -20,9 +18,7 @@ const patterns = {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const pattern = (name, para = 'g') => {
-  return {
-    pattern: new RegExp(patterns.regex[name], para),
-    message: patterns.message[name],
-  };
-};
+export const pattern = (name, para = 'g') => ({
+  pattern: new RegExp(patterns.regex[name], para),
+  message: patterns.message[name],
+});

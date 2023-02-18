@@ -6,11 +6,13 @@ import { Input } from 'antd';
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
-const EditableRow = ({ form, index, ...props }) => (
-  <EditableContext.Provider value={form}>
-    <tr {...props} />
-  </EditableContext.Provider>
-);
+function EditableRow({ form, index, ...props }) {
+  return (
+    <EditableContext.Provider value={form}>
+      <tr {...props} />
+    </EditableContext.Provider>
+  );
+}
 
 export const EditableFormRow = Form.create()(EditableRow);
 
@@ -31,7 +33,7 @@ export class EditableCell extends PureComponent {
       <td {...restProps}>
         {editable ? (
           <EditableContext.Consumer>
-            {form => {
+            {(form) => {
               this.form = form;
               return (
                 <FormItem style={{ margin: 0 }}>

@@ -109,9 +109,7 @@ export default function request(url, options = { method: methods.GET }) {
     method: opts.method,
     baseURL,
     headers: {},
-    paramsSerializer: params => {
-      return qs.stringify(params);
-    },
+    paramsSerializer: (params) => qs.stringify(params),
     timeout: 60000,
     ...opts,
   };
@@ -125,11 +123,11 @@ export default function request(url, options = { method: methods.GET }) {
 
   return instance
     .request({ url, ...config })
-    .then(res => {
+    .then((res) => {
       const { data } = res;
       return data;
     })
-    .catch(error => {
+    .catch((error) => {
       const { response } = error;
       const { status, data } = response;
       console.log(' ----- ddddd ===== ', data);
@@ -177,7 +175,7 @@ export function setToken(token) {
 
       request('/v1/pub/refresh-token', {
         method: methods.POST,
-      }).then(res => {
+      }).then((res) => {
         setToken(res);
       });
     }, timeout * 1000);
