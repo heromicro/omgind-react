@@ -11,7 +11,7 @@ class UpdatePasswordDialog extends PureComponent {
   };
 
   onOKClick = () => {
-    this.formRef.current.validateFieldsAndScroll().then(values => {
+    this.formRef.current.validateFieldsAndScroll().then((values) => {
       if (values.new_password !== values.confirm_new_password) {
         message.warning('新密码与确认新密码不一致！');
         return;
@@ -24,14 +24,14 @@ class UpdatePasswordDialog extends PureComponent {
       };
 
       updatePwd(formData)
-        .then(res => {
+        .then((res) => {
           if (res.status === 'OK') {
             message.success('密码更新成功！');
             this.handleCancel();
           }
           this.setState({ submitting: false });
         })
-        .catch(err => {});
+        .catch((err) => {});
     });
   };
 
@@ -42,7 +42,7 @@ class UpdatePasswordDialog extends PureComponent {
     }
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
