@@ -323,7 +323,7 @@ class DemoList extends PureComponent {
                 }}
                 dataSource={list}
                 columns={columns}
-                pagination={paginationProps}
+                pagination={false}
                 onChange={this.onTableChange}
                 size="small"
                 recordCreatorProps={{

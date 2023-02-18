@@ -28,7 +28,7 @@
     "lodash-decorators": "^6.0.0",
     "md5": "^2.2.1",
     "path-to-regexp": "^2.4.0",
-    "qs": "^6.5.0",
+    "qs": "^6.11.0",
     "react": "^16.14.0",
     "react-container-query": "^0.11.0",
     "react-document-title": "^2.0.3",
@@ -71,11 +71,11 @@
     "tslint-react": "^3.6.0"
   },
   "lint-staged": {
-    "**/*.{js,jsx,less}": [
+    "**/*.{js,jsx,ts,tsx,less}": [
       "prettier --write",
       "git add"
     ],
-    "**/*.{js,jsx}": "npm run lint-staged:js",
+    "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
     "**/*.less": "stylelint --syntax less"
   },
   "engines": {
