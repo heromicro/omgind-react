@@ -6,12 +6,16 @@ import TplDialog from './TplDialog';
 import styles from './index.less';
 
 export default class MenuAction extends PureComponent {
-  state = {
-    dataSource: [],
-    formVisible: false,
-    formData: {},
-    tplVisible: false,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dataSource: [],
+      formVisible: false,
+      formData: {},
+      tplVisible: false,
+    };
+  }
 
   static getDerivedStateFromProps(nextProps, state) {
     if ('value' in nextProps) {

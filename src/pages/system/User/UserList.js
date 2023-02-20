@@ -17,10 +17,14 @@ import styles from './UserList.less';
 class UserList extends PureComponent {
   formRef = React.createRef();
 
-  state = {
-    selectedRowKeys: [],
-    selectedRows: [],
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedRowKeys: [],
+      selectedRows: [],
+    };
+  }
 
   componentDidMount() {
     this.dispatch({

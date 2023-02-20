@@ -17,7 +17,11 @@ export default [
       { path: '/dashboard', component: './Dashboard/Home' },
       {
         path: '/example',
-        routes: [{ path: '/example/demo', component: './Demo/DemoList.pro1' }],
+        routes: [
+          { path: '/example/demo', component: './Demo/DemoList' },
+          { path: '/example/demo.pro1', component: './Demo/DemoList.pro1' },
+          { path: '/example/demo.pro2', component: './Demo/DemoList.pro2' },
+        ],
       },
       {
         path: '/system',

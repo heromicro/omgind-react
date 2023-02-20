@@ -46,7 +46,7 @@ const query = {
   },
 };
 
-@connect(state => ({
+@connect((state) => ({
   title: state.global.title,
   copyRight: state.global.copyRight,
   collapsed: state.global.collapsed,
@@ -59,9 +59,12 @@ const query = {
   global: state.global,
 }))
 class AdminLayout extends React.PureComponent {
-  state = {
-    updatePwdVisible: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      updatePwdVisible: false,
+    };
+  }
 
   componentDidMount() {
     const {
@@ -78,7 +81,7 @@ class AdminLayout extends React.PureComponent {
     });
   }
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
@@ -102,7 +105,7 @@ class AdminLayout extends React.PureComponent {
     }
   };
 
-  onMenuOpenChange = openKeys => {
+  onMenuOpenChange = (openKeys) => {
     const { menuMap } = this.props;
     if (openKeys.length > 1) {
       const lastKey = openKeys[openKeys.length - 1];
@@ -168,12 +171,12 @@ class AdminLayout extends React.PureComponent {
       return [];
     }
 
-    return menusData.map(item => {
+    return menusData.map((item) => {
       if (!item.name || !item.is_show) {
         return null;
       }
 
-      if (item.children && item.children.some(child => child.name && child.is_show)) {
+      if (item.children && item.children.some((child) => child.name && child.is_show)) {
         return (
           <SubMenu
             title={
@@ -233,17 +236,8 @@ class AdminLayout extends React.PureComponent {
   }
 
   render() {
-    const {
-      children,
-      user,
-      collapsed,
-      menus,
-      copyRight,
-      openKeys,
-      title,
-      selectedKeys,
-      global,
-    } = this.props;
+    const { children, user, collapsed, menus, copyRight, openKeys, title, selectedKeys, global } =
+      this.props;
 
     const { updatePwdVisible } = this.state;
 
@@ -335,7 +329,7 @@ class AdminLayout extends React.PureComponent {
     return (
       <DocumentTitle title={this.renderPageTitle()}>
         <ContainerQuery query={query}>
-          {params => <div className={classNames(params)}>{layout}</div>}
+          {(params) => <div className={classNames(params)}>{layout}</div>}
         </ContainerQuery>
       </DocumentTitle>
     );

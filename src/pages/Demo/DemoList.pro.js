@@ -31,10 +31,14 @@ class DemoList extends PureComponent {
   editorFormRef = React.createRef();
   editableFormRef = React.createRef();
 
-  state = {
-    selectedRowKeys: [],
-    selectedRows: [],
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedRowKeys: [],
+      selectedRows: [],
+    };
+  }
 
   componentDidMount() {
     this.dispatch({

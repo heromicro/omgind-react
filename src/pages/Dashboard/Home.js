@@ -19,9 +19,13 @@ function CodePreview({ children }) {
   global: state.global,
 }))
 class Home extends PureComponent {
-  state = {
-    currentTime: dayjs().format('HH:mm:ss'),
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentTime: dayjs().format('HH:mm:ss'),
+    };
+  }
 
   componentDidMount() {
     this.interval = setInterval(() => {

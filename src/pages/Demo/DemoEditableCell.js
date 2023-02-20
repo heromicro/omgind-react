@@ -2,19 +2,15 @@ import React from 'react';
 import { Form, Input, InputNumber } from 'antd';
 
 class DemoEditableCell extends React.PureComponent {
-  state = {};
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
 
   render() {
-    const {
-      editing,
-      dataIndex,
-      title,
-      inputType,
-      record,
-      index,
-      children,
-      ...restProps
-    } = this.props;
+    const { editing, dataIndex, title, inputType, record, index, children, ...restProps } =
+      this.props;
 
     const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
 

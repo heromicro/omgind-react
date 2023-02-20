@@ -14,11 +14,15 @@ import styles from './MenuList.less';
 class MenuList extends PureComponent {
   formRef = React.createRef();
 
-  state = {
-    selectedRowKeys: [],
-    selectedRows: [],
-    treeSelectedKeys: [],
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedRowKeys: [],
+      selectedRows: [],
+      treeSelectedKeys: [],
+    };
+  }
 
   componentDidMount() {
     this.dispatch({
@@ -33,14 +37,14 @@ class MenuList extends PureComponent {
     });
   }
 
-  onItemDisableClick = item => {
+  onItemDisableClick = (item) => {
     this.dispatch({
       type: 'menu/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
-  onItemEnableClick = item => {
+  onItemEnableClick = (item) => {
     this.dispatch({
       type: 'menu/changeStatus',
       payload: { id: item.id, is_active: true },
@@ -101,7 +105,7 @@ class MenuList extends PureComponent {
     });
   };
 
-  onTableChange = pagination => {
+  onTableChange = (pagination) => {
     this.dispatch({
       type: 'menu/fetch',
       pagination: {
@@ -121,7 +125,7 @@ class MenuList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = values => {
+  onSearchFormSubmit = (values) => {
     this.dispatch({
       type: 'menu/fetch',
       search: {
@@ -133,7 +137,7 @@ class MenuList extends PureComponent {
     this.clearSelectRows();
   };
 
-  handleFormSubmit = data => {
+  handleFormSubmit = (data) => {
     this.dispatch({
       type: 'menu/submit',
       payload: data,
@@ -156,7 +160,7 @@ class MenuList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
@@ -203,8 +207,8 @@ class MenuList extends PureComponent {
     return <MenuCard onCancel={this.handleFormCancel} onSubmit={this.handleFormSubmit} />;
   }
 
-  renderTreeNodes = data =>
-    data.map(item => {
+  renderTreeNodes = (data) =>
+    data.map((item) => {
       if (item.children) {
         return (
           <Tree.TreeNode
@@ -296,7 +300,7 @@ class MenuList extends PureComponent {
         title: '状态',
         dataIndex: 'is_active',
         width: 80,
-        render: val => {
+        render: (val) => {
           if (val) {
             return <Badge status="success" text="启用" />;
           }
@@ -307,7 +311,7 @@ class MenuList extends PureComponent {
         title: '创建时间',
         width: 150,
         dataIndex: 'created_at',
-        render: val => <span>{formatDate(val, 'YYYY-MM-DD')}</span>,
+        render: (val) => <span>{formatDate(val, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '备注',
@@ -318,7 +322,7 @@ class MenuList extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      showTotal: total => <span>共{total}条</span>,
+      showTotal: (total) => <span>共{total}条</span>,
       ...pagination,
     };
 
@@ -340,7 +344,7 @@ class MenuList extends PureComponent {
           >
             <Tree
               expandedKeys={expandedKeys}
-              onSelect={keys => {
+              onSelect={(keys) => {
                 this.setState({
                   treeSelectedKeys: keys,
                 });
@@ -363,7 +367,7 @@ class MenuList extends PureComponent {
                   pagination: {},
                 });
               }}
-              onExpand={keys => {
+              onExpand={(keys) => {
                 this.dispatch({
                   type: 'menu/saveExpandedKeys',
                   payload: keys,
@@ -423,7 +427,7 @@ class MenuList extends PureComponent {
                     onSelect: this.handleTableSelectRow,
                   }}
                   loading={loading}
-                  rowKey={record => record.id}
+                  rowKey={(record) => record.id}
                   dataSource={list}
                   columns={columns}
                   pagination={paginationProps}

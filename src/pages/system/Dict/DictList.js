@@ -9,17 +9,21 @@ import DictCard from './DictCard';
 
 import styles from './DictList.less';
 
-@connect(state => ({
+@connect((state) => ({
   loading: state.loading.models.dict,
   dict: state.dict,
 }))
 class DictList extends PureComponent {
   formRef = React.createRef();
 
-  state = {
-    selectedRowKeys: [],
-    selectedRows: [],
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedRowKeys: [],
+      selectedRows: [],
+    };
+  }
 
   componentDidMount() {
     this.dispatch({
@@ -29,21 +33,21 @@ class DictList extends PureComponent {
     });
   }
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     console.log(' ----- +++ === dict ', action);
 
     dispatch(action);
   };
 
-  onItemDisableClick = item => {
+  onItemDisableClick = (item) => {
     this.dispatch({
       type: 'dict/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
-  onItemEnableClick = item => {
+  onItemEnableClick = (item) => {
     this.dispatch({
       type: 'dict/changeStatus',
       payload: { id: item.id, is_active: true },
@@ -80,7 +84,7 @@ class DictList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = e => {
+  onSearchFormSubmit = (e) => {
     if (e) {
       e.preventDefault();
     }
@@ -99,7 +103,7 @@ class DictList extends PureComponent {
     });
   };
 
-  handleEditClick = item => {
+  handleEditClick = (item) => {
     console.log(' - ====== editing ', item);
 
     this.dispatch({
@@ -111,7 +115,7 @@ class DictList extends PureComponent {
     });
   };
 
-  handleDelClick = item => {
+  handleDelClick = (item) => {
     Modal.confirm({
       title: `确定删除【字典数据：${item.name_cn}-${item.name_en}】？`,
       okText: '确认',
@@ -121,7 +125,7 @@ class DictList extends PureComponent {
     });
   };
 
-  handleDataFormSubmit = data => {
+  handleDataFormSubmit = (data) => {
     console.log(' ==== submit ---------  ');
 
     this.dispatch({
@@ -207,7 +211,7 @@ class DictList extends PureComponent {
       {
         title: '状态',
         dataIndex: 'is_active',
-        render: val => {
+        render: (val) => {
           if (val) {
             return <Badge status="success" text="启用" />;
           }
@@ -225,14 +229,14 @@ class DictList extends PureComponent {
       {
         title: '创建时间',
         dataIndex: 'created_at',
-        render: val => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+        render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
     ];
 
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      showTotal: total => <span>共{total}条</span>,
+      showTotal: (total) => <span>共{total}条</span>,
       ...pagination,
     };
 
@@ -291,7 +295,7 @@ class DictList extends PureComponent {
                   onSelect: this.handleTableSelectRow,
                 }}
                 loading={loading}
-                rowKey={record => record.id}
+                rowKey={(record) => record.id}
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}

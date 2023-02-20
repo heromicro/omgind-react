@@ -9,11 +9,15 @@ import FormDialog from './FormDialog';
 import styles from './index.less';
 
 class DictItem extends PureComponent {
-  state = {
-    dataSource: [],
-    formVisible: false,
-    formData: {},
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dataSource: [],
+      formVisible: false,
+      formData: {},
+    };
+  }
 
   static getDerivedStateFromProps(nextProps, state) {
     // console.log(' ---- ssss === nextProps ', nextProps);

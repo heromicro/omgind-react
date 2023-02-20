@@ -8,17 +8,21 @@ import RoleCard from './RoleCard';
 
 import styles from './RoleList.less';
 
-@connect(state => ({
+@connect((state) => ({
   role: state.role,
   loading: state.loading.models.role,
 }))
 class RoleList extends PureComponent {
   formRef = React.createRef();
 
-  state = {
-    selectedRowKeys: [],
-    selectedRows: [],
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedRowKeys: [],
+      selectedRows: [],
+    };
+  }
 
   componentDidMount() {
     this.dispatch({
@@ -28,14 +32,14 @@ class RoleList extends PureComponent {
     });
   }
 
-  onItemDisableClick = item => {
+  onItemDisableClick = (item) => {
     this.dispatch({
       type: 'role/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
-  onItemEnableClick = item => {
+  onItemEnableClick = (item) => {
     this.dispatch({
       type: 'role/changeStatus',
       payload: { id: item.id, is_active: true },
@@ -50,7 +54,7 @@ class RoleList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
@@ -64,7 +68,7 @@ class RoleList extends PureComponent {
     });
   };
 
-  handleEditClick = item => {
+  handleEditClick = (item) => {
     this.dispatch({
       type: 'role/loadForm',
       payload: {
@@ -74,7 +78,7 @@ class RoleList extends PureComponent {
     });
   };
 
-  handleDelClick = item => {
+  handleDelClick = (item) => {
     Modal.confirm({
       title: `确定删除【角色数据：${item.name}】？`,
       okText: '确认',
@@ -97,7 +101,7 @@ class RoleList extends PureComponent {
     });
   };
 
-  handleTableChange = pagination => {
+  handleTableChange = (pagination) => {
     this.dispatch({
       type: 'role/fetch',
       pagination: {
@@ -118,10 +122,10 @@ class RoleList extends PureComponent {
     });
   };
 
-  handleSearchFormSubmit = val => {
+  handleSearchFormSubmit = (val) => {
     this.formRef
       .validateFields()
-      .then(values => {
+      .then((values) => {
         this.dispatch({
           type: 'role/fetch',
           search: values,
@@ -129,10 +133,10 @@ class RoleList extends PureComponent {
         });
         this.clearSelectRows();
       })
-      .catch(err => {});
+      .catch((err) => {});
   };
 
-  handleDataFormSubmit = data => {
+  handleDataFormSubmit = (data) => {
     this.dispatch({
       type: 'role/submit',
       payload: data,
@@ -205,7 +209,7 @@ class RoleList extends PureComponent {
       {
         title: '状态',
         dataIndex: 'is_active',
-        render: val => {
+        render: (val) => {
           if (val) {
             return <Badge status="success" text="启用" />;
           }
@@ -215,7 +219,7 @@ class RoleList extends PureComponent {
       {
         title: '创建时间',
         dataIndex: 'created_at',
-        render: val => <span>{formatDate(val, 'YYYY-MM-DD')}</span>,
+        render: (val) => <span>{formatDate(val, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '备注',
@@ -226,7 +230,7 @@ class RoleList extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      showTotal: total => <span>共{total}条</span>,
+      showTotal: (total) => <span>共{total}条</span>,
       ...pagination,
     };
 
@@ -285,7 +289,7 @@ class RoleList extends PureComponent {
                   onSelect: this.handleTableSelectRow,
                 }}
                 loading={loading}
-                rowKey={record => record.id}
+                rowKey={(record) => record.id}
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}

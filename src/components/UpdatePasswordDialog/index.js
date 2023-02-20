@@ -6,9 +6,13 @@ import { md5Hash } from '../../utils/utils';
 class UpdatePasswordDialog extends PureComponent {
   formRef = React.createRef();
 
-  state = {
-    submitting: false,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      submitting: false,
+    };
+  }
 
   onOKClick = () => {
     this.formRef.current.validateFieldsAndScroll().then((values) => {

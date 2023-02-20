@@ -11,7 +11,7 @@ import DemoCard from './DemoCard';
 
 import styles from './DemoList.less';
 
-@connect(state => ({
+@connect((state) => ({
   loading: state.loading.models.demo,
   demo: state.demo,
 }))
@@ -20,11 +20,15 @@ class DemoList extends PureComponent {
 
   tableFormRef = React.createRef();
 
-  state = {
-    selectedRowKeys: [],
-    selectedRows: [],
-    editingKey: '',
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedRowKeys: [],
+      selectedRows: [],
+      editingKey: '',
+    };
+  }
 
   componentDidMount() {
     this.dispatch({
@@ -34,21 +38,21 @@ class DemoList extends PureComponent {
     });
   }
 
-  onItemDisableClick = item => {
+  onItemDisableClick = (item) => {
     this.dispatch({
       type: 'demo/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
-  onItemEnableClick = item => {
+  onItemEnableClick = (item) => {
     this.dispatch({
       type: 'demo/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
-  onItemEditClick = item => {
+  onItemEditClick = (item) => {
     this.dispatch({
       type: 'demo/loadForm',
       payload: {
@@ -83,7 +87,7 @@ class DemoList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  onItemDelClick = item => {
+  onItemDelClick = (item) => {
     Modal.confirm({
       title: `确定删除【基础示例数据：${item.name}】？`,
       okText: '确认',
@@ -106,7 +110,7 @@ class DemoList extends PureComponent {
     });
   };
 
-  onTableChange = pagination => {
+  onTableChange = (pagination) => {
     this.dispatch({
       type: 'demo/fetch',
       pagination: {
@@ -127,7 +131,7 @@ class DemoList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = values => {
+  onSearchFormSubmit = (values) => {
     if (!values.queryValue) {
       return;
     }
@@ -139,7 +143,7 @@ class DemoList extends PureComponent {
     this.clearSelectRows();
   };
 
-  onDataFormSubmit = data => {
+  onDataFormSubmit = (data) => {
     this.dispatch({
       type: 'demo/submit',
       payload: data,
@@ -154,7 +158,7 @@ class DemoList extends PureComponent {
     });
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
@@ -168,11 +172,11 @@ class DemoList extends PureComponent {
     });
   };
 
-  toggleEdit = record => {
+  toggleEdit = (record) => {
     console.log(' ----- ======== ====== handleSave record: ', record);
   };
 
-  handleSave = record => {
+  handleSave = (record) => {
     console.log(' ----- ======== ====== handleSave record: ', record);
   };
 
@@ -215,8 +219,8 @@ class DemoList extends PureComponent {
 
     console.log(' ----- ===== --- ', list);
 
-    const isEditing = record => record.key === editingKey;
-    const edit = record => {
+    const isEditing = (record) => record.key === editingKey;
+    const edit = (record) => {
       console.log(' ---- ===== ');
       this.tableFormRef.current.setFieldsValue({
         code: '',
@@ -231,7 +235,7 @@ class DemoList extends PureComponent {
       });
     };
 
-    const save = async key => {
+    const save = async (key) => {
       console.log(' ---- ===== key : ', key);
     };
 
@@ -262,7 +266,7 @@ class DemoList extends PureComponent {
       {
         title: '状态',
         dataIndex: 'is_active',
-        render: val => {
+        render: (val) => {
           if (val) {
             return <Badge status="success" text="启用" />;
           }
@@ -273,7 +277,7 @@ class DemoList extends PureComponent {
       {
         title: '创建时间',
         dataIndex: 'created_at',
-        render: val => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+        render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
       {
         title: '操作',
@@ -306,14 +310,14 @@ class DemoList extends PureComponent {
       },
     ];
 
-    const mergedColumns = columns.map(col => {
+    const mergedColumns = columns.map((col) => {
       if (!col.editable) {
         return col;
       }
 
       return {
         ...col,
-        onCell: record => ({
+        onCell: (record) => ({
           record,
           editable: col.editable,
           dataIndex: col.dataIndex,
@@ -328,7 +332,7 @@ class DemoList extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      showTotal: total => <span>共{total}条</span>,
+      showTotal: (total) => <span>共{total}条</span>,
       ...pagination,
     };
 
@@ -395,7 +399,7 @@ class DemoList extends PureComponent {
                   onSelect: this.handleTableSelectRow,
                 }}
                 loading={loading}
-                rowKey={record => {
+                rowKey={(record) => {
                   if (record.id) {
                     return record.id;
                   }
