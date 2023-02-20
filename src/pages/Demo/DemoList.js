@@ -6,6 +6,7 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import { formatDate } from '@/utils/datetime';
 import DemoCard from './DemoCard';
+// import DemoCard from './DemoCard.origin';
 
 import styles from './DemoList.less';
 
@@ -202,7 +203,7 @@ class DemoList extends PureComponent {
       },
     } = this.props;
 
-    console.log(' -- --- == === --- ', list);
+    // console.log(' -- --- == == = --- list: ', list);
 
     const { selectedRows, selectedRowKeys } = this.state;
 

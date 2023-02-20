@@ -1,0 +1,52 @@
+export const DemoFormSchema = {
+  type: 'object',
+  labelWidth: 120,
+  displayType: 'row',
+  properties: {
+    code: {
+      title: '编号',
+      type: 'string',
+      required: true,
+      placeholder: '请输入编号',
+      bind: 'code',
+      props: {
+        allowClear: true,
+      },
+      minLength: 2,
+      maxLength: 128,
+      description: '助记码',
+    },
+    name: {
+      title: '名称',
+      type: 'string',
+      required: true,
+      placeholder: '请输入名称',
+      bind: 'name',
+      props: {
+        allowClear: true,
+        addonBefore: '',
+        prefix: '',
+      },
+      minLength: 2,
+      maxLength: 128,
+      description: '',
+    },
+    memo: {
+      title: '备注',
+      type: 'string',
+      format: 'textarea',
+      placeholder: '请输入备注',
+      bind: 'memo',
+      props: {},
+    },
+    is_active: {
+      title: '状态',
+      type: 'boolean',
+      widget: 'switch',
+      description: '',
+      bind: 'is_active',
+      default: true,
+      required: true,
+    },
+  },
+};
