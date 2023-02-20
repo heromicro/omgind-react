@@ -203,7 +203,7 @@ class DemoList extends PureComponent {
       },
     } = this.props;
 
-    console.log(' -- --- == == = --- list: ', list);
+    // console.log(' -- --- == == = --- list: ', list);
 
     const { selectedRows, selectedRowKeys } = this.state;
 

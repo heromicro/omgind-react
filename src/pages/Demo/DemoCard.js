@@ -11,6 +11,10 @@ import { DemoFormSchema } from './formMetaData';
   demo: state.demo,
 }))
 class DemoCard extends PureComponent {
+  constructor(props) {
+    super(props);
+  }
+
   onOKClick = () => {
     const { onSubmit, form } = this.props;
 
@@ -28,12 +32,7 @@ class DemoCard extends PureComponent {
       });
   };
 
-  onMount() {
-    console.log(' ======== === onMount:');
-  }
-
   beforeFinish(params) {
-    // this.formRef.current.scrollToField(errorFields[0].name);
     console.log(' ======== === params:', params);
   }
 
@@ -53,16 +52,13 @@ class DemoCard extends PureComponent {
       form,
     } = this.props;
 
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
+    const onMount = () => {};
+
+    const watch = {
+      '#': (val) => {},
     };
+
+    // console.log(" ---------- ===== ------- formData: ", formData)
 
     return (
       <Modal
@@ -80,11 +76,15 @@ class DemoCard extends PureComponent {
         {formVisible && (
           <>
             <FormRender
+              debug
+              initialValues={formData}
               form={form}
               schema={DemoFormSchema}
               beforeFinish={this.beforeFinish}
               onFinish={this.onFinish}
-              onMount={this.onMount}
+              // onMount={this.onMount}
+              onMount={onMount}
+              // watch={this.watch}
             />
           </>
         )}

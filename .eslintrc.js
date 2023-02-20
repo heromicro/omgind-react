@@ -40,6 +40,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'warn',
     'class-methods-use-this': 'warn',
     'import/prefer-default-export': 'warn',
+    'no-useless-constructor': 'warn',
     'react/function-component-definition': 'warn',
     'react/display-name': 'warn',
     'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
