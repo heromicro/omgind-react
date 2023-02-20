@@ -2,34 +2,46 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Modal, Switch } from 'antd';
 
-@connect(state => ({
+import FormRender, { connectForm } from 'form-render';
+
+import { DemoFormSchema } from './formMetaData';
+
+@connect((state) => ({
+  loading: state.loading.models.setting,
   demo: state.demo,
 }))
 class DemoCard extends PureComponent {
-  formRef = React.createRef();
-
   onOKClick = () => {
-    const { onSubmit } = this.props;
+    const { onSubmit, form } = this.props;
 
-    this.formRef.current
+    form
       .validateFields()
-      .then(values => {
+      .then((values) => {
         console.log(' ----- === values :', values);
         const formData = { ...values };
         onSubmit(formData);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(' ----- === err :', err.values);
         console.log(' ----- === err :', err.errorFields);
         console.log(' ----- === err :', err.outOfDate);
       });
   };
 
-  onFinishFailed({ values, errorFields, outOfDate }) {
-    this.formRef.current.scrollToField(errorFields[0].name);
+  onMount() {
+    console.log(' ======== === onMount:');
   }
 
-  dispatch = action => {
+  beforeFinish(params) {
+    // this.formRef.current.scrollToField(errorFields[0].name);
+    console.log(' ======== === params:', params);
+  }
+
+  onFinish(formData) {
+    console.log(' ======== === formData:', formData);
+  }
+
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
@@ -38,6 +50,7 @@ class DemoCard extends PureComponent {
     const {
       onCancel,
       demo: { formTitle, formVisible, formModalVisible, formData, submitting },
+      form,
     } = this.props;
 
     const formItemLayout = {
@@ -65,43 +78,19 @@ class DemoCard extends PureComponent {
         bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
       >
         {formVisible && (
-          <Form
-            ref={this.formRef}
-            onFinishFailed={this.onFinishFailed}
-            initialValues={{
-              code: formData.code,
-              name: formData.name,
-              memo: formData.memo,
-              is_active: formData.statuis_actives === undefined ? true : formData.is_active,
-            }}
-          >
-            <Form.Item
-              {...formItemLayout}
-              label="编号"
-              name="code"
-              rules={[{ required: true, message: '请输入编号' }]}
-            >
-              <Input placeholder="请输入编号" />
-            </Form.Item>
-            <Form.Item
-              {...formItemLayout}
-              label="名称"
-              name="name"
-              rules={[{ required: true, message: '请输入名称' }]}
-            >
-              <Input placeholder="请输入名称" />
-            </Form.Item>
-            <Form.Item {...formItemLayout} label="备注" name="memo">
-              <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
-            </Form.Item>
-            <Form.Item {...formItemLayout} label="状态" name="is_active">
-              <Switch defaultChecked />
-            </Form.Item>
-          </Form>
+          <>
+            <FormRender
+              form={form}
+              schema={DemoFormSchema}
+              beforeFinish={this.beforeFinish}
+              onFinish={this.onFinish}
+              onMount={this.onMount}
+            />
+          </>
         )}
       </Modal>
     );
   }
 }
 
-export default DemoCard;
+export default connectForm(DemoCard);
