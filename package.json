@@ -89,7 +89,7 @@
       "git add"
     ],
     "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
-    "**/*.less": "stylelint --syntax less"
+    "**/*.less": "stylelint --custom-syntax postcss-less"
   },
   "engines": {
     "node": ">=16.0.0"
