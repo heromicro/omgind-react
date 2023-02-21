@@ -31,14 +31,20 @@
       "maxLength": 128,
       "description": ""
     },
+    "sort": {
+      "title": "排序",
+      "type": "number",
+      "required": true,
+      "bind": "sort",
+      "default": 9999
+    },
     "memo": {
       "title": "备注",
       "type": "string",
       "format": "textarea",
       "placeholder": "请输入备注",
       "bind": "memo",
-      "props": {
-      }
+      "props": {}
     },
     "is_active": {
       "title": "状态",

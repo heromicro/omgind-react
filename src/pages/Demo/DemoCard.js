@@ -11,6 +11,7 @@ import { DemoFormSchema } from './formMetaData';
   demo: state.demo,
 }))
 class DemoCard extends PureComponent {
+  /* eslint-disable */
   constructor(props) {
     super(props);
   }
@@ -63,7 +64,7 @@ class DemoCard extends PureComponent {
     return (
       <Modal
         title={formTitle}
-        width={600}
+        width={800}
         open={formModalVisible}
         maskClosable={false}
         confirmLoading={submitting}
@@ -71,7 +72,7 @@ class DemoCard extends PureComponent {
         onOk={this.onOKClick}
         onCancel={onCancel}
         style={{ top: 20 }}
-        bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
+        bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto', overflowX: 'hidden' }}
       >
         {formVisible && (
           <>

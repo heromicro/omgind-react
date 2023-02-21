@@ -231,6 +231,10 @@ class DemoList extends PureComponent {
         },
       },
       {
+        title: '排序',
+        dataIndex: 'sort',
+      },
+      {
         title: '创建时间',
         dataIndex: 'created_at',
         render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,

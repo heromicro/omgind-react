@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const DemoFormSchema = {
   type: 'object',
   labelWidth: 120,
@@ -14,7 +15,7 @@ export const DemoFormSchema = {
       },
       minLength: 2,
       maxLength: 128,
-      description: '助记码',
+      description: '',
     },
     name: {
       title: '名称',
@@ -30,6 +31,13 @@ export const DemoFormSchema = {
       minLength: 2,
       maxLength: 128,
       description: '',
+    },
+    sort: {
+      title: '排序',
+      type: 'number',
+      required: true,
+      bind: 'sort',
+      default: 9999,
     },
     memo: {
       title: '备注',
