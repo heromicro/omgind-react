@@ -18,7 +18,7 @@ class TplDialog extends PureComponent {
 
   handleOKClick = () => {
     const { onSubmit } = this.props;
-    this.formRef
+    this.formRef.current
       .validateFields()
       .then(values => {
         onSubmit({ ...values });

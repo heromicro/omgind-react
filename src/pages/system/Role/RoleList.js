@@ -123,7 +123,8 @@ class RoleList extends PureComponent {
   };
 
   handleSearchFormSubmit = (val) => {
-    this.formRef
+
+    this.formRef.current
       .validateFields()
       .then((values) => {
         this.dispatch({

@@ -89,7 +89,7 @@ class DictList extends PureComponent {
       e.preventDefault();
     }
 
-    this.formRef.validateFields({ force: true }, (err, values) => {
+    this.formRef.current.validateFields({ force: true }, (err, values) => {
       if (err) {
         return;
       }

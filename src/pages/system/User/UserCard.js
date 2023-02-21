@@ -80,7 +80,7 @@ class UserCard extends PureComponent {
             sort: formData.sort ? formData.sort : 10000,
             user_roles: formData.user_roles,
             email: formData.email,
-            phone: formData.phone,
+            mobile: formData.mobile,
           }}
         >
           <Row>
@@ -161,7 +161,7 @@ class UserCard extends PureComponent {
           <Form.Item {...formItemLayout} label="邮箱" name="email">
             <Input placeholder="请输入邮箱" />
           </Form.Item>
-          <Form.Item {...formItemLayout} label="手机号" name="phone">
+          <Form.Item {...formItemLayout} label="手机号" name="mobile">
             <Input placeholder="请输入手机号" />
           </Form.Item>
         </Form>

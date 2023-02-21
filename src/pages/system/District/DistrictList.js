@@ -1,20 +1,19 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
-import PButton from '@/components/PermButton';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
+
+import PButton from '@/components/PermButton';
 import { formatDate } from '@/utils/datetime';
+import DistrictCard from './DistrictCard';
 
-import UserCard from './UserCard';
-import RoleSelect from './RoleSelect';
-
-import styles from './UserList.less';
+import styles from './DistrictList.less';
 
 @connect((state) => ({
-  loading: state.loading.models.user,
-  user: state.user,
+  loading: state.loading.models.district,
+  district: state.district,
 }))
-class UserList extends PureComponent {
+class DictList extends PureComponent {
   formRef = React.createRef();
 
   constructor(props) {
@@ -28,52 +27,32 @@ class UserList extends PureComponent {
 
   componentDidMount() {
     this.dispatch({
-      type: 'user/fetch',
+      type: 'dict/fetch',
       search: {},
       pagination: {},
     });
   }
 
+  dispatch = (action) => {
+    const { dispatch } = this.props;
+    console.log(' ----- +++ === dict ', action);
+
+    dispatch(action);
+  };
+
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'user/changeStatus',
+      type: 'dict/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'user/changeStatus',
+      type: 'dict/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
-
-  onItemEditClick = (item) => {
-    this.dispatch({
-      type: 'user/loadForm',
-      payload: {
-        type: 'E',
-        id: item.id,
-      },
-    });
-  };
-
-  onAddClick = () => {
-    this.dispatch({
-      type: 'user/loadForm',
-      payload: {
-        type: 'A',
-      },
-    });
-  };
-
-  onDelOKClick(id) {
-    this.dispatch({
-      type: 'user/del',
-      payload: { id },
-    });
-    this.clearSelectRows();
-  }
 
   clearSelectRows = () => {
     const { selectedRowKeys } = this.state;
@@ -83,22 +62,12 @@ class UserList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  onItemDelClick = (item) => {
-    Modal.confirm({
-      title: `确定删除【用户数据：${item.user_name}】？`,
-      okText: '确认',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: this.onDelOKClick.bind(this, item.id),
-    });
-  };
-
-  refetch = ({ search = {}, pagination = {} } = {}) => {
-    console.log(' --------- ===== 9999 == ');
+  handleAddClick = () => {
     this.dispatch({
-      type: 'user/fetch',
-      search,
-      pagination,
+      type: 'dict/loadForm',
+      payload: {
+        type: 'A',
+      },
     });
   };
 
@@ -115,57 +84,76 @@ class UserList extends PureComponent {
     });
   };
 
-  onTableChange = (pagination) => {
+  onSearchFormSubmit = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.formRef.current.validateFields({ force: true }, (err, values) => {
+      if (err) {
+        return;
+      }
+
+      this.dispatch({
+        type: 'dict/fetch',
+        search: values,
+        pagination: {},
+      });
+      this.clearSelectRows();
+    });
+  };
+
+  handleEditClick = (item) => {
+    console.log(' - ====== editing ', item);
+
     this.dispatch({
-      type: 'user/fetch',
-      pagination: {
-        current: pagination.current,
-        pageSize: pagination.pageSize,
+      type: 'dict/loadForm',
+      payload: {
+        type: 'E',
+        id: item.id,
       },
     });
-    this.clearSelectRows();
   };
 
-  onResetFormClick = () => {
-    this.formRef.current.resetFields();   
-    this.refetch();
+  handleDelClick = (item) => {
+    Modal.confirm({
+      title: `确定删除【字典数据：${item.name_cn}-${item.name_en}】？`,
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: this.handleDelOKClick.bind(this, item.id),
+    });
   };
 
-  onSearchFormSubmit = (values) => {
-    if (!values.queryValue && !values.roleIDs) {
-      return;
-    }
+  handleDataFormSubmit = (data) => {
+    console.log(' ==== submit ---------  ');
 
-    const formData = { ...values };
-    if (formData.roleIDs) {
-      formData.roleIDs = formData.roleIDs.map((v) => v.role_id).join(',');
-    }
-    this.refetch({ search: formData });
-    this.clearSelectRows();
-  };
-
-  onDataFormSubmit = (data) => {
     this.dispatch({
-      type: 'user/submit',
+      type: 'dict/submit',
       payload: data,
     });
     this.clearSelectRows();
   };
 
-  onDataFormCancel = () => {
+  handleDataFormCancel = () => {
     this.dispatch({
-      type: 'user/changeModalFormVisible',
+      type: 'dict/changeFormVisible',
       payload: false,
     });
   };
 
-  dispatch = (action) => {
-    const { dispatch } = this.props;
-    dispatch(action);
-  };
+  handleDelOKClick(id) {
+    console.log(' - ====== deleting ', id);
+
+    this.dispatch({
+      type: 'dict/del',
+      payload: { id },
+    });
+    this.clearSelectRows();
+  }
 
   renderDataForm() {
-    return <UserCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
+    return <DistrictCard onCancel={this.handleDataFormCancel} onSubmit={this.handleDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -177,11 +165,13 @@ class UserList extends PureComponent {
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
-          <Col span={8}>
-            <Form.Item label="所属角色" name="roleIDs" style={{ width: '100%' }}>
-              <RoleSelect style={{ width: '100%' }} />
+
+          {/* <Col span={8}>
+            <Form.Item label="所属角色" name="roleIDs">
+              <RoleSelect />
             </Form.Item>
-          </Col>
+          </Col> */}
+
           <Col span={8}>
             <div style={{ overflow: 'hidden', paddingTop: 4 }}>
               <Button type="primary" htmlType="submit">
@@ -200,38 +190,26 @@ class UserList extends PureComponent {
   render() {
     const {
       loading,
-      user: {
+      dict: {
         data: { list, pagination },
       },
     } = this.props;
 
-    const { selectedRows, selectedRowKeys } = this.state;
+    console.log(' -++__+++++ ', list);
+
+    const { selectedRowKeys, selectedRows } = this.state;
+
     const columns = [
       {
-        title: '用户名',
-        dataIndex: 'user_name',
+        title: '名称(中)',
+        dataIndex: 'name_cn',
       },
       {
-        title: '真实姓名',
-        dataIndex: 'real_name',
-        render: (val, record, index) => `${record.last_name} ${record.first_name}`,
+        title: '名称(英)',
+        dataIndex: 'name_en',
       },
       {
-        title: '角色名称',
-        dataIndex: 'roles',
-        render: (val, record, index) => {
-          if (!val || val.length === 0) {
-            return <span>-</span>;
-          }
-          const names = [];
-          for (let i = 0; i < val.length; i += 1) {
-            names.push(val[i].name);
-          }
-          return <span>{names.join(' | ')}</span>;
-        },
-      },
-      {
-        title: '用户状态',
+        title: '状态',
         dataIndex: 'is_active',
         render: (val) => {
           if (val) {
@@ -241,12 +219,12 @@ class UserList extends PureComponent {
         },
       },
       {
-        title: '邮箱',
-        dataIndex: 'email',
+        title: '序号',
+        dataIndex: 'sort',
       },
       {
-        title: '手机号',
-        dataIndex: 'mobile',
+        title: '备注',
+        dataIndex: 'memo',
       },
       {
         title: '创建时间',
@@ -262,22 +240,22 @@ class UserList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '系统管理' }, { title: '用户管理', href: '/system/user' }];
+    const breadcrumbList = [{ title: '系统管理' }, { title: '数据字典', href: '/system/dict' }];
 
     return (
-      <PageHeaderLayout title="用户管理" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="数据字典" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <PButton code="add" type="primary" onClick={() => this.onAddClick()}>
+              <PButton code="add" type="primary" onClick={() => this.handleAddClick()}>
                 新建
               </PButton>
               {selectedRows.length === 1 && [
                 <PButton
                   key="edit"
                   code="edit"
-                  onClick={() => this.onItemEditClick(selectedRows[0])}
+                  onClick={() => this.handleEditClick(selectedRows[0])}
                 >
                   编辑
                 </PButton>,
@@ -285,7 +263,7 @@ class UserList extends PureComponent {
                   key="del"
                   code="del"
                   type="danger"
-                  onClick={() => this.onItemDelClick(selectedRows[0])}
+                  onClick={() => this.handleDelClick(selectedRows[0])}
                 >
                   删除
                 </PButton>,
@@ -321,7 +299,7 @@ class UserList extends PureComponent {
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}
-                onChange={this.onTableChange}
+                onChange={this.handleTableChange}
                 size="small"
               />
             </div>
@@ -333,4 +311,4 @@ class UserList extends PureComponent {
   }
 }
 
-export default UserList;
+export default DictList;

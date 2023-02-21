@@ -3,7 +3,49 @@ import { Table } from 'antd';
 import * as menuService from '@/services/menu';
 import EditableCell from './EditableCell';
 
+const checkAndAdd = (data, addData) => {
+  const list = [...data];
+
+  for (let i = 0; i < addData.length; i += 1) {
+    let exists = false;
+    for (let j = 0; j < list.length; j += 1) {
+      if (list[j].menu_id === addData[i].id) {
+        exists = true;
+        break;
+      }
+    }
+
+    if (!exists) {
+      const item = {
+        menu_id: addData[i].id,
+        actions: addData[i].actions ? addData[i].actions.map((v) => v.id) : [],
+      };
+      list.push(item);
+    }
+  }
+
+  return list;
+};
+
+const cancelSelected = (data, selectedRows) => {
+  const list = [];
+  for (let i = 0; i < data.length; i += 1) {
+    let exists = false;
+    for (let j = 0; j < selectedRows.length; j += 1) {
+      if (data[i].menu_id === selectedRows[j].id) {
+        exists = true;
+        break;
+      }
+    }
+    if (!exists) {
+      list.push(data[i]);
+    }
+  }
+  return list;
+};
+
 export default class RoleMenu extends PureComponent {
+  
   constructor(props) {
     super(props);
 
@@ -95,46 +137,6 @@ export default class RoleMenu extends PureComponent {
     return child;
   };
 
-  static checkAndAdd = (data, addData) => {
-    const list = [...data];
-
-    for (let i = 0; i < addData.length; i += 1) {
-      let exists = false;
-      for (let j = 0; j < list.length; j += 1) {
-        if (list[j].menu_id === addData[i].id) {
-          exists = true;
-          break;
-        }
-      }
-
-      if (!exists) {
-        const item = {
-          menu_id: addData[i].id,
-          actions: addData[i].actions ? addData[i].actions.map((v) => v.id) : [],
-        };
-        list.push(item);
-      }
-    }
-
-    return list;
-  };
-
-  static cancelSelected = (data, selectedRows) => {
-    const list = [];
-    for (let i = 0; i < data.length; i += 1) {
-      let exists = false;
-      for (let j = 0; j < selectedRows.length; j += 1) {
-        if (data[i].menu_id === selectedRows[j].id) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        list.push(data[i]);
-      }
-    }
-    return list;
-  };
 
   handleSelectedRow = (record, selected) => {
     let selectedRows = [record];
@@ -145,9 +147,9 @@ export default class RoleMenu extends PureComponent {
     const { dataSource } = this.state;
     let list = [];
     if (selected) {
-      list = this.checkAndAdd(dataSource, selectedRows);
+      list = checkAndAdd(dataSource, selectedRows);
     } else {
-      list = this.cancelSelected(dataSource, selectedRows);
+      list = cancelSelected(dataSource, selectedRows);
     }
 
     this.setState({ dataSource: list }, () => {

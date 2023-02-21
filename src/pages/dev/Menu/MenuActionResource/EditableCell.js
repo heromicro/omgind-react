@@ -17,6 +17,7 @@ function EditableRow({ form, index, ...props }) {
 export const EditableFormRow = Form.create()(EditableRow);
 
 export class EditableCell extends PureComponent {
+  
   save = () => {
     const { record, handleSave } = this.props;
     this.form.validateFields((error, values) => {

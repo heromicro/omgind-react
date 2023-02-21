@@ -1,13 +1,12 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Modal, message, Card, Row, Col, InputNumber, Switch } from 'antd';
+import { Form, Input, Modal, message, Card, Switch, Radio, Row, Col, InputNumber } from 'antd';
 
-import RoleMenu from './RoleMenu';
 
-@connect((state) => ({
-  role: state.role,
+@connect(state => ({
+  district: state.district,
 }))
-class RoleCard extends PureComponent {
+class DistrictCard extends PureComponent {
   formRef = React.createRef();
 
   onFinishFailed({ values, errorFields, outOfDate }) {
@@ -17,27 +16,12 @@ class RoleCard extends PureComponent {
   onOKClick = () => {
     const { onSubmit } = this.props;
 
+    console.log(' _ qqqqqqqqqqqq ++++ ');
     this.formRef.current
       .validateFields()
       .then(values => {
         const formData = { ...values };
-        if (!formData.role_menus || formData.role_menus.length === 0) {
-          message.warning('请选择菜单权限！');
-          return;
-        }
-
-        const roleMenus = [];
-        formData.role_menus.forEach(item => {
-          if (item.actions && item.actions.length > 0) {
-            item.actions.forEach(v => {
-              roleMenus.push({ menu_id: item.menu_id, action_id: v });
-            });
-          } else {
-            roleMenus.push({ menu_id: item.menu_id });
-          }
-        });
-        formData.role_menus = roleMenus;
-
+        console.log(' _ qqqqqqqqqqqq ++++ ', formData);
         onSubmit(formData);
       })
       .catch(err => {});
@@ -50,7 +34,7 @@ class RoleCard extends PureComponent {
 
   render() {
     const {
-      role: { formTitle, formVisible, formData, submitting },
+      dict: { formTitle, formVisible, formData, submitting },
       onCancel,
     } = this.props;
 
@@ -72,10 +56,13 @@ class RoleCard extends PureComponent {
       },
     };
 
+    // console.log(" -------- 00000 === ", formData);
+    // console.log(" -------- 00000 === ", formData.items);
+
     return (
       <Modal
         title={formTitle}
-        width={800}
+        width={1000}
         open={formVisible}
         maskClosable={false}
         confirmLoading={submitting}
@@ -89,22 +76,40 @@ class RoleCard extends PureComponent {
           ref={this.formRef}
           onFinishFailed={this.onFinishFailed}
           initialValues={{
-            name: formData.name,
-            sort: formData.sort === undefined? 100000: formData.sort,
-            memo: formData.memo,
+            name_cn: formData.name_cn,
+            name_en: formData.name_en,
             is_active: formData.is_active === undefined ? true : formData.is_active,
-            role_menus: formData.role_menus,
+            sort: formData.sort ? formData.sort : 9999,
+            memo: formData.memo,
+            items: formData.items,
           }}
         >
           <Row>
             <Col span={12}>
               <Form.Item
                 {...formItemLayout}
-                label="角色名称"
-                name="name"
-                rules={[{ required: true, message: '请输入角色名称' }]}
+                label="名称(中)"
+                name="name_cn"
+                rules={[{ required: true, message: '请输入名称(中)' }]}
               >
-                <Input placeholder="请输入角色名称" />
+                <Input placeholder="请输入名称(中)" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                {...formItemLayout}
+                label="名称(英)"
+                name="name_en"
+                rules={[{ required: true, message: '请输入名称(英)' }]}
+              >
+                <Input placeholder="请输入名称(英)" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <Form.Item {...formItemLayout} label="状态" name="is_active">
+                <Switch defaultChecked />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -118,30 +123,14 @@ class RoleCard extends PureComponent {
               </Form.Item>
             </Col>
           </Row>
-          <Row>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="状态"
-                name="is_active"
-              >
-                <Switch defaultChecked />
-              </Form.Item>
-            </Col>
-          </Row>
 
           <Form.Item {...formItemLayout2} label="备注" name="memo">
             <Input.TextArea rows={2} placeholder="请输入备注" />
           </Form.Item>
-          <Card title="选择菜单权限" bordered={false}>
-            <Form.Item name="role_menus">
-              <RoleMenu />
-            </Form.Item>
-          </Card>
         </Form>
       </Modal>
     );
   }
 }
 
-export default RoleCard;
+export default DistrictCard;
