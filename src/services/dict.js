@@ -1,6 +1,6 @@
 import request, { methods } from '@/utils/request';
 
-const router = 'dicts';
+const router = 'sys-dicts';
 const version = 'v2';
 
 export async function query(params) {

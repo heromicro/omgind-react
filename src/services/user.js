@@ -1,6 +1,6 @@
 import request, { methods } from '@/utils/request';
 
-const router = 'users';
+const router = 'sys-users';
 const version = 'v2';
 
 export async function query(params) {

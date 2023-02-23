@@ -1,6 +1,6 @@
 import request, { methods } from '@/utils/request';
 
-const router = 'menus';
+const router = 'sys-menus';
 const version = 'v2';
 
 export async function query(params = {}) {
