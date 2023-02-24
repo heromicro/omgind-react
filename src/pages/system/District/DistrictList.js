@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
+import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Tag } from 'antd';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
@@ -187,22 +187,48 @@ class DistrictList extends PureComponent {
       },
     } = this.props;
 
-    // console.log(' -- --- == == = --- list: ', list);
+    console.log(' -- --- == == = --- list: ', list);
 
     const { selectedRows, selectedRowKeys } = this.state;
 
     const columns = [
       {
-        title: '编号',
-        dataIndex: 'code',
-      },
-      {
         title: '名称',
         dataIndex: 'name',
       },
       {
-        title: '备注',
-        dataIndex: 'memo',
+        title: '简码',
+        dataIndex: 'initials',
+      },
+      {
+        title: '短称',
+        dataIndex: 'sname',
+      },
+      {
+        title: '拼音',
+        dataIndex: 'pinyin',
+      },
+      {
+        title: '行政名称',
+        dataIndex: 'merge_name',
+      },
+      {
+        title: '行政短称',
+        dataIndex: 'merge_sname',
+      },
+      {
+        title: '层级',
+        dataIndex: 'tree_level',
+      },
+      {
+        title: '是否真实区',
+        dataIndex: 'is_real',
+        render: (val) => {
+          if (val) {
+            return <Tag color="green">真实区</Tag>;
+          }
+          return <Tag color="volcano">虚拟区</Tag>;
+        },
       },
       {
         title: '状态',
@@ -219,9 +245,8 @@ class DistrictList extends PureComponent {
         dataIndex: 'sort',
       },
       {
-        title: '创建时间',
-        dataIndex: 'created_at',
-        render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+        title: '备注',
+        dataIndex: 'extra',
       },
     ];
 
