@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as demoService from '@/services/demo';
+import * as sysaddressService from '@/services/sysaddress';
 
 export default {
   namespace: 'sysaddress',
@@ -28,7 +28,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.demo.search);
+        const s = yield select((state) => state.sysaddress.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -41,13 +41,13 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.demo.pagination);
+        const p = yield select((state) => state.sysaddress.pagination);
         if (p) {
           params = { ...params, ...p };
         }
       }
 
-      const response = yield call(demoService.query, params);
+      const response = yield call(sysaddressService.query, params);
       yield put({
         type: 'saveData',
         payload: response,
@@ -103,7 +103,7 @@ export default {
       }
     },
     *fetchForm({ payload }, { call, put }) {
-      const response = yield call(demoService.get, payload.id);
+      const response = yield call(sysaddressService.get, payload.id);
       yield [
         put({
           type: 'saveFormData',
@@ -122,16 +122,16 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select((state) => state.demo.formType);
+      const formType = yield select((state) => state.sysaddress.formType);
       let success = false;
       if (formType === 'E') {
-        const id = yield select((state) => state.demo.formID);
-        const response = yield call(demoService.update, id, params);
+        const id = yield select((state) => state.sysaddress.formID);
+        const response = yield call(sysaddressService.update, id, params);
         if (response.status === 'OK') {
           success = true;
         }
       } else {
-        const response = yield call(demoService.create, params);
+        const response = yield call(sysaddressService.create, params);
         if (response.id && response.id !== '') {
           success = true;
         }
@@ -154,7 +154,7 @@ export default {
       }
     },
     *del({ payload }, { call, put }) {
-      const response = yield call(demoService.del, payload.id);
+      const response = yield call(sysaddressService.del, payload.id);
       if (response.status === 'OK') {
         message.success('删除成功');
         yield put({ type: 'fetch' });
@@ -163,9 +163,9 @@ export default {
     *changeStatus({ payload }, { call, put, select }) {
       let response;
       if (payload.is_active === true) {
-        response = yield call(demoService.enable, payload.id);
+        response = yield call(sysaddressService.enable, payload.id);
       } else {
-        response = yield call(demoService.disable, payload.id);
+        response = yield call(sysaddressService.disable, payload.id);
       }
 
       if (response.status === 'OK') {
@@ -174,7 +174,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.demo.data);
+        const data = yield select((state) => state.sysaddress.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {
