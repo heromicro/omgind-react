@@ -26,19 +26,8 @@ class DictList extends PureComponent {
   }
 
   componentDidMount() {
-    this.dispatch({
-      type: 'dict/fetch',
-      search: {},
-      pagination: {},
-    });
+    this.refetch();
   }
-
-  dispatch = (action) => {
-    const { dispatch } = this.props;
-    console.log(' ----- +++ === dict ', action);
-
-    dispatch(action);
-  };
 
   onItemDisableClick = (item) => {
     this.dispatch({
@@ -54,15 +43,17 @@ class DictList extends PureComponent {
     });
   };
 
-  clearSelectRows = () => {
-    const { selectedRowKeys } = this.state;
-    if (selectedRowKeys.length === 0) {
-      return;
-    }
-    this.setState({ selectedRowKeys: [], selectedRows: [] });
+  onItemEditClick = (item) => {
+    this.dispatch({
+      type: 'dict/loadForm',
+      payload: {
+        type: 'E',
+        id: item.id,
+      },
+    });
   };
 
-  handleAddClick = () => {
+  onAddClick = () => {
     this.dispatch({
       type: 'dict/loadForm',
       payload: {
@@ -71,7 +62,35 @@ class DictList extends PureComponent {
     });
   };
 
-  handleTableSelectRow = (record, selected) => {
+  onItemDelClick = (item) => {
+    Modal.confirm({
+      title: `确定删除【字典数据：${item.name_cn}-${item.name_en}】？`,
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: this.onDelOKClick.bind(this, item.id),
+    });
+  };
+
+  onDelOKClick(id) {
+    console.log(' - ====== deleting ', id);
+
+    this.dispatch({
+      type: 'dict/del',
+      payload: { id },
+    });
+    this.clearSelectRows();
+  }
+
+  clearSelectRows = () => {
+    const { selectedRowKeys } = this.state;
+    if (selectedRowKeys.length === 0) {
+      return;
+    }
+    this.setState({ selectedRowKeys: [], selectedRows: [] });
+  };
+
+  onMainTableSelectRow = (record, selected) => {
     const keys = [];
     const rows = [];
     if (selected) {
@@ -84,48 +103,30 @@ class DictList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-
-    this.formRef.current.validateFields({ force: true }, (err, values) => {
-      if (err) {
-        return;
-      }
-
-      this.dispatch({
-        type: 'dict/fetch',
-        search: values,
-        pagination: {},
-      });
-      this.clearSelectRows();
-    });
+  onMainTableChange = (pagination) => {
+    this.refetch({ pagination });
+    this.clearSelectRows();
   };
 
-  handleEditClick = (item) => {
-    console.log(' - ====== editing ', item);
+  onResetFormClick = () => {
+    this.formRef.current.resetFields();
 
     this.dispatch({
-      type: 'dict/loadForm',
-      payload: {
-        type: 'E',
-        id: item.id,
-      },
+      type: 'demo/fetch',
+      search: {},
+      pagination: {},
     });
   };
 
-  handleDelClick = (item) => {
-    Modal.confirm({
-      title: `确定删除【字典数据：${item.name_cn}-${item.name_en}】？`,
-      okText: '确认',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: this.handleDelOKClick.bind(this, item.id),
+  onSearchFormSubmit = (values) => {
+    this.refetch({
+      search: values,
+      pagination: {},
     });
+    this.clearSelectRows();
   };
 
-  handleDataFormSubmit = (data) => {
+  onDataFormSubmit = (data) => {
     console.log(' ==== submit ---------  ');
 
     this.dispatch({
@@ -137,23 +138,27 @@ class DictList extends PureComponent {
 
   handleDataFormCancel = () => {
     this.dispatch({
-      type: 'dict/changeFormVisible',
+      type: 'dict/changeModalFormVisible',
       payload: false,
     });
   };
 
-  handleDelOKClick(id) {
-    console.log(' - ====== deleting ', id);
+  dispatch = (action) => {
+    const { dispatch } = this.props;
+    dispatch(action);
+  };
 
+  refetch = ({ search = {}, pagination = {} } = {}) => {
+    console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'dict/del',
-      payload: { id },
+      type: 'dict/fetch',
+      search,
+      pagination,
     });
-    this.clearSelectRows();
-  }
+  };
 
   renderDataForm() {
-    return <DictCard onCancel={this.handleDataFormCancel} onSubmit={this.handleDataFormSubmit} />;
+    return <DictCard onCancel={this.handleDataFormCancel} onSubmit={this.onDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -248,14 +253,14 @@ class DictList extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <PButton code="add" type="primary" onClick={() => this.handleAddClick()}>
+              <PButton code="add" type="primary" onClick={() => this.onAddClick()}>
                 新建
               </PButton>
               {selectedRows.length === 1 && [
                 <PButton
                   key="edit"
                   code="edit"
-                  onClick={() => this.handleEditClick(selectedRows[0])}
+                  onClick={() => this.onItemEditClick(selectedRows[0])}
                 >
                   编辑
                 </PButton>,
@@ -263,7 +268,7 @@ class DictList extends PureComponent {
                   key="del"
                   code="del"
                   type="danger"
-                  onClick={() => this.handleDelClick(selectedRows[0])}
+                  onClick={() => this.onItemDelClick(selectedRows[0])}
                 >
                   删除
                 </PButton>,
@@ -290,16 +295,17 @@ class DictList extends PureComponent {
             </div>
             <div>
               <Table
+                // bordered
                 rowSelection={{
                   selectedRowKeys,
-                  onSelect: this.handleTableSelectRow,
+                  onSelect: this.onMainTableSelectRow,
                 }}
                 loading={loading}
                 rowKey={(record) => record.id}
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}
-                onChange={this.handleTableChange}
+                onChange={this.onMainTableChange}
                 size="small"
               />
             </div>
