@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Layout, Tree, Badge } from 'antd';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import PButton from '@/components/PermButton';
+
+import { calculatePButtons } from '@/utils/uiutil';
+
 import { formatDate } from '@/utils/datetime';
 import MenuCard from './MenuCard';
 import styles from './MenuList.less';
@@ -51,7 +53,7 @@ class MenuList extends PureComponent {
     });
   };
 
-  handleEditClick = () => {
+  onItemEditClick = () => {
     const { selectedRows } = this.state;
     if (selectedRows.length === 0) {
       return;
@@ -68,7 +70,7 @@ class MenuList extends PureComponent {
     });
   };
 
-  handleAddClick = () => {
+  onAddClick = () => {
     this.dispatch({
       type: 'menu/loadForm',
       payload: {
@@ -77,7 +79,7 @@ class MenuList extends PureComponent {
     });
   };
 
-  handleDelClick = () => {
+  onItemDelClick = () => {
     const { selectedRows } = this.state;
     if (selectedRows.length === 0) {
       return;
@@ -92,7 +94,7 @@ class MenuList extends PureComponent {
     });
   };
 
-  handleTableSelectRow = (record, selected) => {
+  onMainTableSelectRow = (record, selected) => {
     const keys = [];
     const rows = [];
     if (selected) {
@@ -105,7 +107,7 @@ class MenuList extends PureComponent {
     });
   };
 
-  onTableChange = (pagination) => {
+  onMainTableChange = (pagination) => {
     this.dispatch({
       type: 'menu/fetch',
       pagination: {
@@ -385,54 +387,26 @@ class MenuList extends PureComponent {
               <div className={styles.tableList}>
                 <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
                 <div className={styles.tableListOperator}>
-                  <PButton code="add" type="primary" onClick={() => this.handleAddClick()}>
-                    新建
-                  </PButton>
-                  {selectedRowKeys.length === 1 && [
-                    <PButton key="edit" code="edit" onClick={() => this.handleEditClick()}>
-                      编辑
-                    </PButton>,
-                    <PButton
-                      key="del"
-                      code="del"
-                      danger
-                      type="primary"
-                      onClick={() => this.handleDelClick()}
-                    >
-                      删除
-                    </PButton>,
-                    !selectedRows[0].is_active && (
-                      <PButton
-                        key="enable"
-                        code="enable"
-                        onClick={() => this.onItemEnableClick(selectedRows[0])}
-                      >
-                        启用
-                      </PButton>
-                    ),
-                    selectedRows[0].is_active === true && (
-                      <PButton
-                        key="disable"
-                        code="disable"
-                        danger
-                        onClick={() => this.onItemDisableClick(selectedRows[0])}
-                      >
-                        禁用
-                      </PButton>
-                    ),
-                  ]}
+                  {calculatePButtons(
+                    selectedRows,
+                    this.onAddClick,
+                    this.onItemEditClick,
+                    this.onItemDelClick,
+                    this.onItemEnableClick,
+                    this.onItemDisableClick
+                  )}
                 </div>
                 <Table
                   rowSelection={{
                     selectedRowKeys,
-                    onSelect: this.handleTableSelectRow,
+                    onSelect: this.onMainTableSelectRow,
                   }}
                   loading={loading}
                   rowKey={(record) => record.id}
                   dataSource={list}
                   columns={columns}
                   pagination={paginationProps}
-                  onChange={this.onTableChange}
+                  onChange={this.onMainTableChange}
                   size="small"
                 />
               </div>
