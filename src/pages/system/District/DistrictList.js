@@ -225,9 +225,9 @@ class DistrictList extends PureComponent {
         dataIndex: 'is_real',
         render: (val) => {
           if (val) {
-            return <Tag color="green">真实区</Tag>;
+            return <Tag color="#87d068">真</Tag>;
           }
-          return <Tag color="volcano">虚拟区</Tag>;
+          return <Tag color="#f50">虚</Tag>;
         },
       },
       {
@@ -235,9 +235,9 @@ class DistrictList extends PureComponent {
         dataIndex: 'is_active',
         render: (val) => {
           if (val) {
-            return <Badge status="success" text="启用" />;
+            return <Tag color="#87d068">启用</Tag>;
           }
-          return <Badge status="error" text="停用" />;
+          return <Tag color="#f50">停用</Tag>;
         },
       },
       {
