@@ -123,7 +123,6 @@ class RoleList extends PureComponent {
   };
 
   handleSearchFormSubmit = (val) => {
-
     this.formRef.current
       .validateFields()
       .then((values) => {
@@ -257,7 +256,7 @@ class RoleList extends PureComponent {
                 <PButton
                   key="del"
                   code="del"
-                  type="danger"
+                  danger
                   onClick={() => this.handleDelClick(selectedRows[0])}
                 >
                   删除
@@ -275,7 +274,7 @@ class RoleList extends PureComponent {
                   <PButton
                     key="disable"
                     code="disable"
-                    type="danger"
+                    danger
                     onClick={() => this.onItemDisableClick(selectedRows[0])}
                   >
                     禁用

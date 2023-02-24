@@ -127,7 +127,7 @@ class UserList extends PureComponent {
   };
 
   onResetFormClick = () => {
-    this.formRef.current.resetFields();   
+    this.formRef.current.resetFields();
     this.refetch();
   };
 
@@ -284,7 +284,7 @@ class UserList extends PureComponent {
                 <PButton
                   key="del"
                   code="del"
-                  type="danger"
+                  danger
                   onClick={() => this.onItemDelClick(selectedRows[0])}
                 >
                   删除
@@ -302,7 +302,7 @@ class UserList extends PureComponent {
                   <PButton
                     key="disable"
                     code="disable"
-                    type="danger"
+                    danger
                     onClick={() => this.onItemDisableClick(selectedRows[0])}
                   >
                     禁用

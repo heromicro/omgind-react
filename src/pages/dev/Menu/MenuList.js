@@ -392,12 +392,7 @@ class MenuList extends PureComponent {
                     <PButton key="edit" code="edit" onClick={() => this.handleEditClick()}>
                       编辑
                     </PButton>,
-                    <PButton
-                      key="del"
-                      code="del"
-                      type="danger"
-                      onClick={() => this.handleDelClick()}
-                    >
+                    <PButton key="del" code="del" danger onClick={() => this.handleDelClick()}>
                       删除
                     </PButton>,
                     !selectedRows[0].is_active && (
@@ -413,7 +408,7 @@ class MenuList extends PureComponent {
                       <PButton
                         key="disable"
                         code="disable"
-                        type="danger"
+                        danger
                         onClick={() => this.onItemDisableClick(selectedRows[0])}
                       >
                         禁用
