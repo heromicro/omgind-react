@@ -13,6 +13,7 @@ export default {
     submitting: false,
     formTitle: '',
     formID: '',
+    formModalVisible: false,
     formVisible: false,
     formData: {},
     selectData: [],
@@ -28,7 +29,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select(state => state.dict.search);
+        const s = yield select((state) => state.dict.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -41,7 +42,7 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select(state => state.dict.pagination);
+        const p = yield select((state) => state.dict.pagination);
         if (p) {
           params = { ...params, ...p };
         }
@@ -58,7 +59,7 @@ export default {
       console.log(' ++__+++ ', payload);
 
       yield put({
-        type: 'changeFormVisible',
+        type: 'changeModalFormVisible',
         payload: true,
       });
 
@@ -96,14 +97,27 @@ export default {
             payload: { id: payload.id },
           }),
         ];
+      } else {
+        yield [
+          put({
+            type: 'changeFormVisible',
+            payload: true,
+          }),
+        ];
       }
     },
     *fetchForm({ payload }, { call, put }) {
       const response = yield call(dictService.get, payload.id);
-      yield put({
-        type: 'saveFormData',
-        payload: response,
-      });
+      yield [
+        put({
+          type: 'saveFormData',
+          payload: response,
+        }),
+        put({
+          type: 'changeFormVisible',
+          payload: true,
+        }),
+      ];
     },
 
     *submit({ payload }, { call, put, select }) {
@@ -116,13 +130,13 @@ export default {
       console.log(` = +++++++ vvvvvvvv ===== 111 ${payload}`);
 
       const params = { ...payload };
-      const formType = yield select(state => state.dict.formType);
+      const formType = yield select((state) => state.dict.formType);
       let success = false;
 
       console.log(` = +++++++ vvvvvvvv ===== 111 ${formType}`);
 
       if (formType === 'E') {
-        const id = yield select(state => state.dict.formID);
+        const id = yield select((state) => state.dict.formID);
         const response = yield call(dictService.update, id, params);
         if (response.status === 'OK') {
           success = true;
@@ -144,7 +158,7 @@ export default {
       if (success) {
         message.success('保存成功');
         yield put({
-          type: 'changeFormVisible',
+          type: 'changeModalFormVisible',
           payload: false,
         });
         yield put({ type: 'fetch' });
@@ -171,7 +185,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select(state => state.dict.data);
+        const data = yield select((state) => state.dict.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {
@@ -200,7 +214,16 @@ export default {
       return { ...state, pagination: payload };
     },
     changeFormVisible(state, { payload }) {
+      if (payload) {
+        return { ...state, formModalVisible: payload, formVisible: payload };
+      }
       return { ...state, formVisible: payload };
+    },
+    changeModalFormVisible(state, { payload }) {
+      if (!payload) {
+        return { ...state, formModalVisible: payload, formVisible: payload };
+      }
+      return { ...state, formModalVisible: payload };
     },
     saveFormTitle(state, { payload }) {
       return { ...state, formTitle: payload };

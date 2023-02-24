@@ -5,6 +5,7 @@ export default {
   namespace: 'user',
   state: {
     search: {},
+    pagination: {},
     data: {
       list: [],
       pagination: {},
@@ -27,7 +28,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select(state => state.user.search);
+        const s = yield select((state) => state.user.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -40,7 +41,7 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select(state => state.user.pagination);
+        const p = yield select((state) => state.user.pagination);
         if (p) {
           params = { ...params, ...p };
         }
@@ -102,7 +103,7 @@ export default {
         ];
       }
     },
-    
+
     *fetchForm({ payload }, { call, put }) {
       const response = yield call(userService.get, payload.id);
       yield [
@@ -124,10 +125,10 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select(state => state.user.formType);
+      const formType = yield select((state) => state.user.formType);
       let success = false;
       if (formType === 'E') {
-        const id = yield select(state => state.user.formID);
+        const id = yield select((state) => state.user.formID);
         const response = yield call(userService.update, id, params);
         if (response.status === 'OK') {
           success = true;
@@ -176,7 +177,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select(state => state.user.data);
+        const data = yield select((state) => state.user.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {
