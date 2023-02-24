@@ -2,12 +2,16 @@ import React, { PureComponent } from 'react';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+
 import { connect } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import PButton from '@/components/PermButton';
+
 import { formatDate } from '@/utils/datetime';
+import { DemoItem } from '@/scheme/demo';
+
+import { calculatePButtons } from '@/utils/uiutil';
+
 import DemoCard from './DemoCard';
 
 import styles from './DemoList.less';
@@ -18,6 +22,8 @@ import styles from './DemoList.less';
 }))
 class DemoList extends PureComponent {
   formRef = React.createRef();
+  actionRef = React.createRef();
+
   constructor(props) {
     super(props);
 
@@ -194,7 +200,7 @@ class DemoList extends PureComponent {
 
     const { selectedRows, selectedRowKeys } = this.state;
 
-    const columns = [
+    const columns: ProColumns<DemoItem>[] = [
       {
         title: '编号',
         dataIndex: 'code',
@@ -238,54 +244,24 @@ class DemoList extends PureComponent {
     const breadcrumbList = [{ title: '演示用例' }, { title: '基础示例', href: '/example/demo' }];
 
     return (
-      <PageHeaderLayout title="基础示例" breadcrumbList={breadcrumbList}>
+      // <PageHeaderLayout title="基础示例" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <PButton code="add" type="primary" onClick={() => this.onAddClick()}>
-                新建
-              </PButton>
-              {selectedRows.length === 1 && [
-                <PButton
-                  key="edit"
-                  code="edit"
-                  onClick={() => this.onItemEditClick(selectedRows[0])}
-                >
-                  编辑
-                </PButton>,
-                <PButton
-                  key="del"
-                  code="del"
-                  danger
-                  type="primary"
-                  onClick={() => this.onItemDelClick(selectedRows[0])}
-                >
-                  删除
-                </PButton>,
-                !selectedRows[0].is_active && (
-                  <PButton
-                    key="enable"
-                    code="enable"
-                    onClick={() => this.onItemEnableClick(selectedRows[0])}
-                  >
-                    启用
-                  </PButton>
-                ),
-                selectedRows[0].is_active === true && (
-                  <PButton
-                    key="disable"
-                    code="disable"
-                    danger
-                    onClick={() => this.onItemDisableClick(selectedRows[0])}
-                  >
-                    禁用
-                  </PButton>
-                ),
-              ]}
+              {calculatePButtons(
+                selectedRows,
+                this.onAddClick,
+                this.onItemEditClick,
+                this.onItemDelClick,
+                this.onItemEnableClick,
+                this.onItemDisableClick
+              )}
             </div>
             <div>
-              <Table
+              <ProTable<DemoItem>
+                actionRef={this.actionRef}
+                bordered
                 rowSelection={{
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
@@ -297,6 +273,17 @@ class DemoList extends PureComponent {
                 pagination={paginationProps}
                 onChange={this.onMainTableChange}
                 size="small"
+                headerTitle="基础示例"
+                toolBarRender={() =>
+                  calculatePButtons(
+                    selectedRows,
+                    this.onAddClick,
+                    this.onItemEditClick,
+                    this.onItemDelClick,
+                    this.onItemEnableClick,
+                    this.onItemDisableClick
+                  )
+                }
               />
             </div>
           </div>
@@ -308,3 +295,13 @@ class DemoList extends PureComponent {
 }
 
 export default DemoList;
+
+// strain 拉紧；紧张；血统；笔调；（动植物或疾病的）品种
+// kidney 肾；腰子；类型
+// genre 类型；流派
+// breed   品种；血统 繁殖；养育；引起，产生；教养
+// cartoon 卡通；漫画；草图
+// ikon 像；图标；插画
+// idol  菩萨 偶像
+// statue  雕像；塑像
+// statuette  小雕像

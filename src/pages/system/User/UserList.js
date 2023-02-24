@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import PButton from '@/components/PermButton';
+import { calculatePButtons } from '@/utils/uiutil';
+
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { formatDate } from '@/utils/datetime';
 
@@ -102,7 +104,7 @@ class UserList extends PureComponent {
     });
   };
 
-  handleTableSelectRow = (record, selected) => {
+  onMainTableSelectRow = (record, selected) => {
     const keys = [];
     const rows = [];
     if (selected) {
@@ -115,7 +117,7 @@ class UserList extends PureComponent {
     });
   };
 
-  onTableChange = (pagination) => {
+  onMainTableChange = (pagination) => {
     this.dispatch({
       type: 'user/fetch',
       pagination: {
@@ -315,14 +317,14 @@ class UserList extends PureComponent {
               <Table
                 rowSelection={{
                   selectedRowKeys,
-                  onSelect: this.handleTableSelectRow,
+                  onSelect: this.onMainTableSelectRow,
                 }}
                 loading={loading}
                 rowKey={(record) => record.id}
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}
-                onChange={this.onTableChange}
+                onChange={this.onMainTableChange}
                 size="small"
               />
             </div>

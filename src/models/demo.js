@@ -126,6 +126,7 @@ export default {
       let success = false;
       if (formType === 'E') {
         const id = yield select((state) => state.demo.formID);
+
         const response = yield call(demoService.update, id, params);
         if (response.status === 'OK') {
           success = true;

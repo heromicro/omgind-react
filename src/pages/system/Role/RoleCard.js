@@ -19,7 +19,7 @@ class RoleCard extends PureComponent {
 
     this.formRef.current
       .validateFields()
-      .then(values => {
+      .then((values) => {
         const formData = { ...values };
         if (!formData.role_menus || formData.role_menus.length === 0) {
           message.warning('请选择菜单权限！');
@@ -27,9 +27,9 @@ class RoleCard extends PureComponent {
         }
 
         const roleMenus = [];
-        formData.role_menus.forEach(item => {
+        formData.role_menus.forEach((item) => {
           if (item.actions && item.actions.length > 0) {
-            item.actions.forEach(v => {
+            item.actions.forEach((v) => {
               roleMenus.push({ menu_id: item.menu_id, action_id: v });
             });
           } else {
@@ -40,17 +40,17 @@ class RoleCard extends PureComponent {
 
         onSubmit(formData);
       })
-      .catch(err => {});
+      .catch((err) => {});
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
 
   render() {
     const {
-      role: { formTitle, formVisible, formData, submitting },
+      role: { formTitle, formVisible, formModalVisible, formData, submitting },
       onCancel,
     } = this.props;
 
@@ -76,7 +76,7 @@ class RoleCard extends PureComponent {
       <Modal
         title={formTitle}
         width={800}
-        open={formVisible}
+        open={formModalVisible}
         maskClosable={false}
         confirmLoading={submitting}
         destroyOnClose
@@ -85,60 +85,58 @@ class RoleCard extends PureComponent {
         style={{ top: 20 }}
         bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
       >
-        <Form
-          ref={this.formRef}
-          onFinishFailed={this.onFinishFailed}
-          initialValues={{
-            name: formData.name,
-            sort: formData.sort === undefined? 100000: formData.sort,
-            memo: formData.memo,
-            is_active: formData.is_active === undefined ? true : formData.is_active,
-            role_menus: formData.role_menus,
-          }}
-        >
-          <Row>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="角色名称"
-                name="name"
-                rules={[{ required: true, message: '请输入角色名称' }]}
-              >
-                <Input placeholder="请输入角色名称" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="排序值"
-                name="sort"
-                rules={[{ type: 'number', required: true, message: '请输入排序' }]}
-              >
-                <InputNumber min={1} style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="状态"
-                name="is_active"
-              >
-                <Switch defaultChecked />
-              </Form.Item>
-            </Col>
-          </Row>
+        {formVisible && (
+          <Form
+            ref={this.formRef}
+            onFinishFailed={this.onFinishFailed}
+            initialValues={{
+              name: formData.name,
+              sort: formData.sort === undefined ? 100000 : formData.sort,
+              memo: formData.memo,
+              is_active: formData.is_active === undefined ? true : formData.is_active,
+              role_menus: formData.role_menus,
+            }}
+          >
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  {...formItemLayout}
+                  label="角色名称"
+                  name="name"
+                  rules={[{ required: true, message: '请输入角色名称' }]}
+                >
+                  <Input placeholder="请输入角色名称" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  {...formItemLayout}
+                  label="排序值"
+                  name="sort"
+                  rules={[{ type: 'number', required: true, message: '请输入排序' }]}
+                >
+                  <InputNumber min={1} style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <Form.Item {...formItemLayout} label="状态" name="is_active">
+                  <Switch defaultChecked />
+                </Form.Item>
+              </Col>
+            </Row>
 
-          <Form.Item {...formItemLayout2} label="备注" name="memo">
-            <Input.TextArea rows={2} placeholder="请输入备注" />
-          </Form.Item>
-          <Card title="选择菜单权限" bordered={false}>
-            <Form.Item name="role_menus">
-              <RoleMenu />
+            <Form.Item {...formItemLayout2} label="备注" name="memo">
+              <Input.TextArea rows={2} placeholder="请输入备注" />
             </Form.Item>
-          </Card>
-        </Form>
+            <Card title="选择菜单权限" bordered={false}>
+              <Form.Item name="role_menus">
+                <RoleMenu />
+              </Form.Item>
+            </Card>
+          </Form>
+        )}
       </Modal>
     );
   }

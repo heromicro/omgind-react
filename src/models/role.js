@@ -144,10 +144,19 @@ export default {
       const params = { ...payload };
       const formType = yield select((state) => state.role.formType);
 
+      console.log(' ----- ====== ==== payload == ', payload);
+      console.log(' ----- ====== ==== formType == ', formType);
+      console.log(' ----- ====== ==== formType == ', formType === 'E');
+
       let success = false;
       if (formType === 'E') {
         const id = yield select((state) => state.role.formID);
+        console.log(' ----- ====== ==== id == ', id);
+
         const response = yield call(roleService.update, id, params);
+
+        console.log(' ----- ====== ==== response == ', response);
+
         if (response.status === 'OK') {
           success = true;
         }

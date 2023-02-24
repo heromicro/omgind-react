@@ -13,20 +13,20 @@ export const calculatePButtons = (
     新建
   </PButton>,
   selectedRows.length === 1 && (
-    <>
-      <PButton key="edit" code="edit" onClick={() => onItemEditClick(selectedRows[0])}>
-        编辑
-      </PButton>
-      <PButton
-        key="del"
-        code="del"
-        danger
-        type="primary"
-        onClick={() => onItemDelClick(selectedRows[0])}
-      >
-        删除
-      </PButton>
-    </>
+    <PButton key="edit" code="edit" onClick={() => onItemEditClick(selectedRows[0])}>
+      编辑
+    </PButton>
+  ),
+  selectedRows.length === 1 && (
+    <PButton
+      key="del"
+      code="del"
+      danger
+      type="primary"
+      onClick={() => onItemDelClick(selectedRows[0])}
+    >
+      删除
+    </PButton>
   ),
   selectedRows.length === 1 && !selectedRows[0].is_active && (
     <PButton key="enable" code="enable" onClick={() => onItemEnableClick(selectedRows[0])}>

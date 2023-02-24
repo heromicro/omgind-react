@@ -36,6 +36,7 @@ module.exports = {
     page: true,
   },
   rules: {
+    'import/prefer-default-export': 'warn',
     'compat/compat': 'warn',
     '@typescript-eslint/no-empty-function': 'warn',
     'class-methods-use-this': 'warn',

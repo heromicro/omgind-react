@@ -15,6 +15,8 @@ import {
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
+import { calculatePButtons } from '@/utils/uiutil';
+
 import { formatDate } from '@/utils/datetime';
 import DemoCard from './DemoCard';
 
@@ -107,7 +109,7 @@ class DemoList extends PureComponent {
     });
   };
 
-  handleTableSelectRow = (record, selected) => {
+  onMainTableSelectRow = (record, selected) => {
     const keys = [];
     const rows = [];
     if (selected) {
@@ -120,7 +122,7 @@ class DemoList extends PureComponent {
     });
   };
 
-  onTableChange = (pagination) => {
+  onMainTableChange = (pagination) => {
     this.dispatch({
       type: 'demo/fetch',
       pagination: {
@@ -317,7 +319,7 @@ class DemoList extends PureComponent {
               <EditableProTable
                 rowSelection={{
                   selectedRowKeys,
-                  onSelect: this.handleTableSelectRow,
+                  onSelect: this.onMainTableSelectRow,
                 }}
                 loading={loading}
                 rowKey={(record) => {
@@ -329,7 +331,7 @@ class DemoList extends PureComponent {
                 dataSource={list}
                 columns={columns}
                 pagination={false}
-                onChange={this.onTableChange}
+                onChange={this.onMainTableChange}
                 size="small"
                 recordCreatorProps={{
                   newRecordType: 'dataSource',
