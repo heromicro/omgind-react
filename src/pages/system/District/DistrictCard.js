@@ -1,69 +1,61 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Modal, message, Card, Switch, Radio, Row, Col, InputNumber } from 'antd';
+import { Form, Input, Modal, Switch } from 'antd';
 
-
-@connect(state => ({
+@connect((state) => ({
   district: state.district,
 }))
-class DistrictCard extends PureComponent {
+class DistrctCard extends PureComponent {
   formRef = React.createRef();
+
+  onOKClick = () => {
+    const { onSubmit } = this.props;
+
+    this.formRef.current
+      .validateFields()
+      .then((values) => {
+        console.log(' ----- === values :', values);
+        const formData = { ...values };
+        onSubmit(formData);
+      })
+      .catch((err) => {
+        console.log(' ----- === err :', err.values);
+        console.log(' ----- === err :', err.errorFields);
+        console.log(' ----- === err :', err.outOfDate);
+      });
+  };
 
   onFinishFailed({ values, errorFields, outOfDate }) {
     this.formRef.current.scrollToField(errorFields[0].name);
   }
 
-  onOKClick = () => {
-    const { onSubmit } = this.props;
-
-    console.log(' _ qqqqqqqqqqqq ++++ ');
-    this.formRef.current
-      .validateFields()
-      .then(values => {
-        const formData = { ...values };
-        console.log(' _ qqqqqqqqqqqq ++++ ', formData);
-        onSubmit(formData);
-      })
-      .catch(err => {});
-  };
-
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
 
   render() {
     const {
-      dict: { formTitle, formVisible, formData, submitting },
       onCancel,
+      district: { formTitle, formVisible, formModalVisible, formData, submitting },
     } = this.props;
 
     const formItemLayout = {
       labelCol: {
-        span: 6,
+        xs: { span: 24 },
+        sm: { span: 6 },
       },
       wrapperCol: {
-        span: 18,
+        xs: { span: 24 },
+        sm: { span: 16 },
       },
     };
-
-    const formItemLayout2 = {
-      labelCol: {
-        span: 3,
-      },
-      wrapperCol: {
-        span: 21,
-      },
-    };
-
-    // console.log(" -------- 00000 === ", formData);
-    // console.log(" -------- 00000 === ", formData.items);
 
     return (
       <Modal
         title={formTitle}
-        width={1000}
-        open={formVisible}
+        width={600}
+        open={formModalVisible}
         maskClosable={false}
         confirmLoading={submitting}
         destroyOnClose
@@ -72,65 +64,44 @@ class DistrictCard extends PureComponent {
         style={{ top: 20 }}
         bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
       >
-        <Form
-          ref={this.formRef}
-          onFinishFailed={this.onFinishFailed}
-          initialValues={{
-            name_cn: formData.name_cn,
-            name_en: formData.name_en,
-            is_active: formData.is_active === undefined ? true : formData.is_active,
-            sort: formData.sort ? formData.sort : 9999,
-            memo: formData.memo,
-            items: formData.items,
-          }}
-        >
-          <Row>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="名称(中)"
-                name="name_cn"
-                rules={[{ required: true, message: '请输入名称(中)' }]}
-              >
-                <Input placeholder="请输入名称(中)" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="名称(英)"
-                name="name_en"
-                rules={[{ required: true, message: '请输入名称(英)' }]}
-              >
-                <Input placeholder="请输入名称(英)" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <Form.Item {...formItemLayout} label="状态" name="is_active">
-                <Switch defaultChecked />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="排序值"
-                name="sort"
-                rules={[{ type: 'number', required: true, message: '请输入排序' }]}
-              >
-                <InputNumber min={1} style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Form.Item {...formItemLayout2} label="备注" name="memo">
-            <Input.TextArea rows={2} placeholder="请输入备注" />
-          </Form.Item>
-        </Form>
+        {formVisible && (
+          <Form
+            ref={this.formRef}
+            onFinishFailed={this.onFinishFailed}
+            initialValues={{
+              code: formData.code,
+              name: formData.name,
+              memo: formData.memo,
+              is_active: formData.statuis_actives === undefined ? true : formData.is_active,
+            }}
+          >
+            <Form.Item
+              {...formItemLayout}
+              label="编号"
+              name="code"
+              rules={[{ required: true, message: '请输入编号' }]}
+            >
+              <Input placeholder="请输入编号" />
+            </Form.Item>
+            <Form.Item
+              {...formItemLayout}
+              label="名称"
+              name="name"
+              rules={[{ required: true, message: '请输入名称' }]}
+            >
+              <Input placeholder="请输入名称" />
+            </Form.Item>
+            <Form.Item {...formItemLayout} label="备注" name="memo">
+              <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
+            </Form.Item>
+            <Form.Item {...formItemLayout} label="状态" name="is_active">
+              <Switch defaultChecked />
+            </Form.Item>
+          </Form>
+        )}
       </Modal>
     );
   }
 }
 
-export default DistrictCard;
+export default DistrctCard;

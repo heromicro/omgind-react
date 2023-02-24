@@ -257,6 +257,7 @@ class RoleList extends PureComponent {
                   key="del"
                   code="del"
                   danger
+                  type="primary"
                   onClick={() => this.handleDelClick(selectedRows[0])}
                 >
                   删除

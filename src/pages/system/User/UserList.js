@@ -285,6 +285,7 @@ class UserList extends PureComponent {
                   key="del"
                   code="del"
                   danger
+                  type="primary"
                   onClick={() => this.onItemDelClick(selectedRows[0])}
                 >
                   删除

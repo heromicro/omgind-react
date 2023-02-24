@@ -29,6 +29,7 @@ export default [
           { path: '/system/role', component: './system/Role/RoleList' },
           { path: '/system/user', component: './system/User/UserList' },
           { path: '/system/dict', component: './system/Dict/DictList' },
+          { path: '/system/district', component: './system/District/DistrictList' },
         ],
       },
       {

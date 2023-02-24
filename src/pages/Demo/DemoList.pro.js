@@ -286,7 +286,8 @@ class DemoList extends PureComponent {
                 <PButton
                   key="del"
                   code="del"
-                  type="danger"
+                  type="primary"
+                  danger
                   onClick={() => this.onItemDelClick(selectedRows[0])}
                 >
                   删除
@@ -304,7 +305,7 @@ class DemoList extends PureComponent {
                   <PButton
                     key="disable"
                     code="disable"
-                    type="danger"
+                    danger
                     onClick={() => this.onItemDisableClick(selectedRows[0])}
                   >
                     禁用

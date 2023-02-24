@@ -6,7 +6,6 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import { formatDate } from '@/utils/datetime';
 
-import { EditableRow, EditableCell } from '@/components/EditableRow';
 import DemoCard from './DemoCard';
 
 import styles from './DemoList.less';
@@ -31,11 +30,7 @@ class DemoList extends PureComponent {
   }
 
   componentDidMount() {
-    this.dispatch({
-      type: 'demo/fetch',
-      search: {},
-      pagination: {},
-    });
+    this.refetch();
   }
 
   onItemDisableClick = (item) => {
@@ -71,6 +66,16 @@ class DemoList extends PureComponent {
     });
   };
 
+  onItemDelClick = (item) => {
+    Modal.confirm({
+      title: `确定删除【基础示例数据：${item.name}】？`,
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: this.onDelOKClick.bind(this, item.id),
+    });
+  };
+
   onDelOKClick(id) {
     this.dispatch({
       type: 'demo/del',
@@ -87,17 +92,7 @@ class DemoList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  onItemDelClick = (item) => {
-    Modal.confirm({
-      title: `确定删除【基础示例数据：${item.name}】？`,
-      okText: '确认',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: this.onDelOKClick.bind(this, item.id),
-    });
-  };
-
-  handleTableSelectRow = (record, selected) => {
+  onMainTableSelectRow = (record, selected) => {
     const keys = [];
     const rows = [];
     if (selected) {
@@ -110,25 +105,14 @@ class DemoList extends PureComponent {
     });
   };
 
-  onTableChange = (pagination) => {
-    this.dispatch({
-      type: 'demo/fetch',
-      pagination: {
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-      },
-    });
+  onMainTableChange = (pagination) => {
+    this.refetch({ pagination });
     this.clearSelectRows();
   };
 
   onResetFormClick = () => {
     this.formRef.current.resetFields();
-
-    this.dispatch({
-      type: 'demo/fetch',
-      search: {},
-      pagination: {},
-    });
+    this.refetch();
   };
 
   onSearchFormSubmit = (values) => {
@@ -170,14 +154,6 @@ class DemoList extends PureComponent {
       search,
       pagination,
     });
-  };
-
-  toggleEdit = (record) => {
-    console.log(' ----- ======== ====== handleSave record: ', record);
-  };
-
-  handleSave = (record) => {
-    console.log(' ----- ======== ====== handleSave record: ', record);
   };
 
   renderSearchForm() {
@@ -310,25 +286,6 @@ class DemoList extends PureComponent {
       },
     ];
 
-    const mergedColumns = columns.map((col) => {
-      if (!col.editable) {
-        return col;
-      }
-
-      return {
-        ...col,
-        onCell: (record) => ({
-          record,
-          editable: col.editable,
-          dataIndex: col.dataIndex,
-          title: col.title,
-          handleSave: this.handleSave,
-          toggleEdit: this.toggleEdit,
-          editing: true, // isEditing(record),
-        }),
-      };
-    });
-
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -358,7 +315,8 @@ class DemoList extends PureComponent {
                 <PButton
                   key="del"
                   code="del"
-                  type="danger"
+                  danger
+                  type="primary"
                   onClick={() => this.onItemDelClick(selectedRows[0])}
                 >
                   删除
@@ -376,7 +334,7 @@ class DemoList extends PureComponent {
                   <PButton
                     key="disable"
                     code="disable"
-                    type="danger"
+                    danger
                     onClick={() => this.onItemDisableClick(selectedRows[0])}
                   >
                     禁用
@@ -385,34 +343,21 @@ class DemoList extends PureComponent {
               ]}
             </div>
             <div>
-              {/* <Form ref={this.tableFormRef} component={false}> */}
               <Table
-                components={{
-                  body: {
-                    row: EditableRow,
-                    cell: EditableCell,
-                  },
-                }}
-                bordered
+                // bordered
                 rowSelection={{
                   selectedRowKeys,
-                  onSelect: this.handleTableSelectRow,
+                  onSelect: this.onMainTableSelectRow,
                 }}
                 loading={loading}
-                rowKey={(record) => {
-                  if (record.id) {
-                    return record.id;
-                  }
-                  return record.no;
-                }}
+                rowKey={(record) => record.id}
                 dataSource={list}
-                columns={mergedColumns}
-                rowClassName="editable-row"
+                columns={columns}
+                // rowClassName="editable-row"
                 pagination={paginationProps}
-                onChange={this.onTableChange}
+                onChange={this.onMainTableChange}
                 size="small"
               />
-              {/* </Form> */}
             </div>
           </div>
         </Card>

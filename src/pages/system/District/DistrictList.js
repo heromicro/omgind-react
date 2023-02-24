@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
-import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
+import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import { formatDate } from '@/utils/datetime';
 import DistrictCard from './DistrictCard';
@@ -13,9 +13,8 @@ import styles from './DistrictList.less';
   loading: state.loading.models.district,
   district: state.district,
 }))
-class DictList extends PureComponent {
+class DistrictList extends PureComponent {
   formRef = React.createRef();
-
   constructor(props) {
     super(props);
 
@@ -26,33 +25,59 @@ class DictList extends PureComponent {
   }
 
   componentDidMount() {
-    this.dispatch({
-      type: 'dict/fetch',
-      search: {},
-      pagination: {},
-    });
+    this.refetch();
   }
-
-  dispatch = (action) => {
-    const { dispatch } = this.props;
-    console.log(' ----- +++ === dict ', action);
-
-    dispatch(action);
-  };
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'dict/changeStatus',
+      type: 'district/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'dict/changeStatus',
+      type: 'district/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
+
+  onItemEditClick = (item) => {
+    this.dispatch({
+      type: 'district/loadForm',
+      payload: {
+        type: 'E',
+        id: item.id,
+      },
+    });
+  };
+
+  onAddClick = () => {
+    this.dispatch({
+      type: 'district/loadForm',
+      payload: {
+        type: 'A',
+      },
+    });
+  };
+
+  onItemDelClick = (item) => {
+    Modal.confirm({
+      title: `确定删除【基础示例数据：${item.name}】？`,
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: this.onDelOKClick.bind(this, item.id),
+    });
+  };
+
+  onDelOKClick(id) {
+    this.dispatch({
+      type: 'district/del',
+      payload: { id },
+    });
+    this.clearSelectRows();
+  }
 
   clearSelectRows = () => {
     const { selectedRowKeys } = this.state;
@@ -62,16 +87,7 @@ class DictList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  handleAddClick = () => {
-    this.dispatch({
-      type: 'dict/loadForm',
-      payload: {
-        type: 'A',
-      },
-    });
-  };
-
-  handleTableSelectRow = (record, selected) => {
+  onMainTableSelectRow = (record, selected) => {
     const keys = [];
     const rows = [];
     if (selected) {
@@ -84,76 +100,59 @@ class DictList extends PureComponent {
     });
   };
 
-  onSearchFormSubmit = (e) => {
-    if (e) {
-      e.preventDefault();
+  onMainTableChange = (pagination) => {
+    this.refetch({ pagination });
+    this.clearSelectRows();
+  };
+
+  onResetFormClick = () => {
+    this.formRef.current.resetFields();
+    this.refetch();
+  };
+
+  onSearchFormSubmit = (values) => {
+    if (!values.queryValue) {
+      return;
     }
 
-    this.formRef.current.validateFields({ force: true }, (err, values) => {
-      if (err) {
-        return;
-      }
-
-      this.dispatch({
-        type: 'dict/fetch',
-        search: values,
-        pagination: {},
-      });
-      this.clearSelectRows();
+    this.refetch({
+      search: values,
+      pagination: {},
     });
+    this.clearSelectRows();
   };
 
-  handleEditClick = (item) => {
-    console.log(' - ====== editing ', item);
-
+  onDataFormSubmit = (data) => {
     this.dispatch({
-      type: 'dict/loadForm',
-      payload: {
-        type: 'E',
-        id: item.id,
-      },
-    });
-  };
-
-  handleDelClick = (item) => {
-    Modal.confirm({
-      title: `确定删除【字典数据：${item.name_cn}-${item.name_en}】？`,
-      okText: '确认',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: this.handleDelOKClick.bind(this, item.id),
-    });
-  };
-
-  handleDataFormSubmit = (data) => {
-    console.log(' ==== submit ---------  ');
-
-    this.dispatch({
-      type: 'dict/submit',
+      type: 'district/submit',
       payload: data,
     });
     this.clearSelectRows();
   };
 
-  handleDataFormCancel = () => {
+  onDataFormCancel = () => {
     this.dispatch({
-      type: 'dict/changeFormVisible',
+      type: 'district/changeModalFormVisible',
       payload: false,
     });
   };
 
-  handleDelOKClick(id) {
-    console.log(' - ====== deleting ', id);
+  dispatch = (action) => {
+    const { dispatch } = this.props;
+    dispatch(action);
+  };
 
+  refetch = ({ search = {}, pagination = {} } = {}) => {
+    console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'dict/del',
-      payload: { id },
+      type: 'district/fetch',
+      search,
+      pagination,
     });
-    this.clearSelectRows();
-  }
+  };
 
   renderDataForm() {
-    return <DistrictCard onCancel={this.handleDataFormCancel} onSubmit={this.handleDataFormSubmit} />;
+    return <DistrictCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -161,17 +160,10 @@ class DictList extends PureComponent {
       <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item label="模糊查询" name="queryValue">
+            <Form.Item name="queryValue">
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
-
-          {/* <Col span={8}>
-            <Form.Item label="所属角色" name="roleIDs">
-              <RoleSelect />
-            </Form.Item>
-          </Col> */}
-
           <Col span={8}>
             <div style={{ overflow: 'hidden', paddingTop: 4 }}>
               <Button type="primary" htmlType="submit">
@@ -190,23 +182,27 @@ class DictList extends PureComponent {
   render() {
     const {
       loading,
-      dict: {
+      district: {
         data: { list, pagination },
       },
     } = this.props;
 
-    console.log(' -++__+++++ ', list);
+    // console.log(' -- --- == == = --- list: ', list);
 
-    const { selectedRowKeys, selectedRows } = this.state;
+    const { selectedRows, selectedRowKeys } = this.state;
 
     const columns = [
       {
-        title: '名称(中)',
-        dataIndex: 'name_cn',
+        title: '编号',
+        dataIndex: 'code',
       },
       {
-        title: '名称(英)',
-        dataIndex: 'name_en',
+        title: '名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '备注',
+        dataIndex: 'memo',
       },
       {
         title: '状态',
@@ -219,12 +215,8 @@ class DictList extends PureComponent {
         },
       },
       {
-        title: '序号',
+        title: '排序',
         dataIndex: 'sort',
-      },
-      {
-        title: '备注',
-        dataIndex: 'memo',
       },
       {
         title: '创建时间',
@@ -240,30 +232,31 @@ class DictList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '系统管理' }, { title: '数据字典', href: '/system/dict' }];
+    const breadcrumbList = [{ title: '系统管理' }, { title: '行政区域', href: '/system/district' }];
 
     return (
-      <PageHeaderLayout title="数据字典" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="行政区域" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <PButton code="add" type="primary" onClick={() => this.handleAddClick()}>
+              <PButton code="add" type="primary" onClick={() => this.onAddClick()}>
                 新建
               </PButton>
               {selectedRows.length === 1 && [
                 <PButton
                   key="edit"
                   code="edit"
-                  onClick={() => this.handleEditClick(selectedRows[0])}
+                  onClick={() => this.onItemEditClick(selectedRows[0])}
                 >
                   编辑
                 </PButton>,
                 <PButton
                   key="del"
                   code="del"
-                  type="danger"
-                  onClick={() => this.handleDelClick(selectedRows[0])}
+                  danger
+                  type="primary"
+                  onClick={() => this.onItemDelClick(selectedRows[0])}
                 >
                   删除
                 </PButton>,
@@ -280,7 +273,7 @@ class DictList extends PureComponent {
                   <PButton
                     key="disable"
                     code="disable"
-                    type="danger"
+                    danger
                     onClick={() => this.onItemDisableClick(selectedRows[0])}
                   >
                     禁用
@@ -299,7 +292,7 @@ class DictList extends PureComponent {
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}
-                onChange={this.handleTableChange}
+                onChange={this.onTableChange}
                 size="small"
               />
             </div>
@@ -311,4 +304,4 @@ class DictList extends PureComponent {
   }
 }
 
-export default DictList;
+export default DistrictList;

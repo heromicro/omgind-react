@@ -6,7 +6,6 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import PButton from '@/components/PermButton';
 import { formatDate } from '@/utils/datetime';
 import DemoCard from './DemoCard';
-// import DemoCard from './DemoCard.origin';
 
 import styles from './DemoList.less';
 
@@ -26,11 +25,7 @@ class DemoList extends PureComponent {
   }
 
   componentDidMount() {
-    this.dispatch({
-      type: 'demo/fetch',
-      search: {},
-      pagination: {},
-    });
+    this.refetch();
   }
 
   onItemDisableClick = (item) => {
@@ -66,6 +61,16 @@ class DemoList extends PureComponent {
     });
   };
 
+  onItemDelClick = (item) => {
+    Modal.confirm({
+      title: `确定删除【基础示例数据：${item.name}】？`,
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: this.onDelOKClick.bind(this, item.id),
+    });
+  };
+
   onDelOKClick(id) {
     this.dispatch({
       type: 'demo/del',
@@ -82,17 +87,7 @@ class DemoList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
-  onItemDelClick = (item) => {
-    Modal.confirm({
-      title: `确定删除【基础示例数据：${item.name}】？`,
-      okText: '确认',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: this.onDelOKClick.bind(this, item.id),
-    });
-  };
-
-  handleTableSelectRow = (record, selected) => {
+  onMainTableSelectRow = (record, selected) => {
     const keys = [];
     const rows = [];
     if (selected) {
@@ -105,25 +100,14 @@ class DemoList extends PureComponent {
     });
   };
 
-  onTableChange = (pagination) => {
-    this.dispatch({
-      type: 'demo/fetch',
-      pagination: {
-        current: pagination.current,
-        pageSize: pagination.pageSize,
-      },
-    });
+  onMainTableChange = (pagination) => {
+    this.refetch({ pagination });
     this.clearSelectRows();
   };
 
   onResetFormClick = () => {
     this.formRef.current.resetFields();
-
-    this.dispatch({
-      type: 'demo/fetch',
-      search: {},
-      pagination: {},
-    });
+    this.refetch();
   };
 
   onSearchFormSubmit = (values) => {
@@ -270,7 +254,8 @@ class DemoList extends PureComponent {
                 <PButton
                   key="del"
                   code="del"
-                  type="danger"
+                  danger
+                  type="primary"
                   onClick={() => this.onItemDelClick(selectedRows[0])}
                 >
                   删除
@@ -288,7 +273,7 @@ class DemoList extends PureComponent {
                   <PButton
                     key="disable"
                     code="disable"
-                    type="danger"
+                    danger
                     onClick={() => this.onItemDisableClick(selectedRows[0])}
                   >
                     禁用
@@ -300,14 +285,14 @@ class DemoList extends PureComponent {
               <Table
                 rowSelection={{
                   selectedRowKeys,
-                  onSelect: this.handleTableSelectRow,
+                  onSelect: this.onMainTableSelectRow,
                 }}
                 loading={loading}
                 rowKey={(record) => record.id}
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}
-                onChange={this.onTableChange}
+                onChange={this.onMainTableChange}
                 size="small"
               />
             </div>

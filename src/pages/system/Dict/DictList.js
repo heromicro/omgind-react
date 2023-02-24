@@ -136,7 +136,7 @@ class DictList extends PureComponent {
     this.clearSelectRows();
   };
 
-  handleDataFormCancel = () => {
+  onDataFormCancel = () => {
     this.dispatch({
       type: 'dict/changeModalFormVisible',
       payload: false,
@@ -158,7 +158,7 @@ class DictList extends PureComponent {
   };
 
   renderDataForm() {
-    return <DictCard onCancel={this.handleDataFormCancel} onSubmit={this.onDataFormSubmit} />;
+    return <DictCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -267,7 +267,8 @@ class DictList extends PureComponent {
                 <PButton
                   key="del"
                   code="del"
-                  type="danger"
+                  danger
+                  type="primary"
                   onClick={() => this.onItemDelClick(selectedRows[0])}
                 >
                   删除
@@ -285,7 +286,7 @@ class DictList extends PureComponent {
                   <PButton
                     key="disable"
                     code="disable"
-                    type="danger"
+                    danger
                     onClick={() => this.onItemDisableClick(selectedRows[0])}
                   >
                     禁用
