@@ -4,7 +4,7 @@ import { Form, Input, Modal, message, Card, Switch, Radio, Row, Col, InputNumber
 
 import DictItem from './DictItem';
 
-@connect(state => ({
+@connect((state) => ({
   dict: state.dict,
 }))
 class DictCard extends PureComponent {
@@ -20,22 +20,22 @@ class DictCard extends PureComponent {
     console.log(' _ qqqqqqqqqqqq ++++ ');
     this.formRef.current
       .validateFields()
-      .then(values => {
+      .then((values) => {
         const formData = { ...values };
         console.log(' _ qqqqqqqqqqqq ++++ ', formData);
         onSubmit(formData);
       })
-      .catch(err => {});
+      .catch((err) => {});
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
 
   render() {
     const {
-      dict: { formTitle, formVisible, formData, submitting },
+      dict: { formTitle, formVisible, formModalVisible, formData, submitting },
       onCancel,
     } = this.props;
 
@@ -64,7 +64,7 @@ class DictCard extends PureComponent {
       <Modal
         title={formTitle}
         width={1000}
-        open={formVisible}
+        open={formModalVisible}
         maskClosable={false}
         confirmLoading={submitting}
         destroyOnClose
@@ -73,67 +73,70 @@ class DictCard extends PureComponent {
         style={{ top: 20 }}
         bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
       >
-        <Form
-          ref={this.formRef}
-          onFinishFailed={this.onFinishFailed}
-          initialValues={{
-            name_cn: formData.name_cn,
-            name_en: formData.name_en,
-            is_active: formData.is_active === undefined ? true : formData.is_active,
-            sort: formData.sort ? formData.sort : 9999,
-            memo: formData.memo,
-            items: formData.items,
-          }}
-        >
-          <Row>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="名称(中)"
-                name="name_cn"
-                rules={[{ required: true, message: '请输入名称(中)' }]}
-              >
-                <Input placeholder="请输入名称(中)" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="名称(英)"
-                name="name_en"
-                rules={[{ required: true, message: '请输入名称(英)' }]}
-              >
-                <Input placeholder="请输入名称(英)" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <Form.Item {...formItemLayout} label="状态" name="is_active">
-                <Switch defaultChecked />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                {...formItemLayout}
-                label="排序值"
-                name="sort"
-                rules={[{ type: 'number', required: true, message: '请输入排序' }]}
-              >
-                <InputNumber min={1} style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-          </Row>
+        {' '}
+        {formVisible && (
+          <Form
+            ref={this.formRef}
+            onFinishFailed={this.onFinishFailed}
+            initialValues={{
+              name_cn: formData.name_cn,
+              name_en: formData.name_en,
+              is_active: formData.is_active === undefined ? true : formData.is_active,
+              sort: formData.sort ? formData.sort : 9999,
+              memo: formData.memo,
+              items: formData.items,
+            }}
+          >
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  {...formItemLayout}
+                  label="名称(中)"
+                  name="name_cn"
+                  rules={[{ required: true, message: '请输入名称(中)' }]}
+                >
+                  <Input placeholder="请输入名称(中)" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  {...formItemLayout}
+                  label="名称(英)"
+                  name="name_en"
+                  rules={[{ required: true, message: '请输入名称(英)' }]}
+                >
+                  <Input placeholder="请输入名称(英)" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <Form.Item {...formItemLayout} label="状态" name="is_active">
+                  <Switch defaultChecked />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  {...formItemLayout}
+                  label="排序值"
+                  name="sort"
+                  rules={[{ type: 'number', required: true, message: '请输入排序' }]}
+                >
+                  <InputNumber min={1} style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+            </Row>
 
-          <Form.Item {...formItemLayout2} label="备注" name="memo">
-            <Input.TextArea rows={2} placeholder="请输入备注" />
-          </Form.Item>
-          <Card title="选择数据项" bordered={false}>
-            <Form.Item name="items">
-              <DictItem />
+            <Form.Item {...formItemLayout2} label="备注" name="memo">
+              <Input.TextArea rows={2} placeholder="请输入备注" />
             </Form.Item>
-          </Card>
-        </Form>
+            <Card title="选择数据项" bordered={false}>
+              <Form.Item name="items">
+                <DictItem />
+              </Form.Item>
+            </Card>
+          </Form>
+        )}
       </Modal>
     );
   }
