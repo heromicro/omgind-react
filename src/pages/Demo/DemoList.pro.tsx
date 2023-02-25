@@ -248,7 +248,7 @@ class DemoList extends PureComponent {
       <PageHeaderLayout breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListOperator}>
+            {/* <div className={styles.tableListOperator}>
               {calculatePButtons(
                 selectedRows,
                 this.onAddClick,
@@ -257,7 +257,7 @@ class DemoList extends PureComponent {
                 this.onItemEnableClick,
                 this.onItemDisableClick
               )}
-            </div>
+            </div> */}
             <div>
               <ProTable<DemoItem>
                 actionRef={this.actionRef}

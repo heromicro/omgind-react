@@ -14,7 +14,7 @@ import {
 } from '@ant-design/pro-components';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import PButton from '@/components/PermButton';
+
 import { calculatePButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
@@ -274,46 +274,14 @@ class DemoList extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              <PButton code="add" type="primary" onClick={() => this.onAddClick()}>
-                新建
-              </PButton>
-              {selectedRows.length === 1 && [
-                <PButton
-                  key="edit"
-                  code="edit"
-                  onClick={() => this.onItemEditClick(selectedRows[0])}
-                >
-                  编辑
-                </PButton>,
-                <PButton
-                  key="del"
-                  code="del"
-                  type="primary"
-                  danger
-                  onClick={() => this.onItemDelClick(selectedRows[0])}
-                >
-                  删除
-                </PButton>,
-                !selectedRows[0].is_active && (
-                  <PButton
-                    key="enable"
-                    code="enable"
-                    onClick={() => this.onItemEnableClick(selectedRows[0])}
-                  >
-                    启用
-                  </PButton>
-                ),
-                selectedRows[0].is_active === true && (
-                  <PButton
-                    key="disable"
-                    code="disable"
-                    danger
-                    onClick={() => this.onItemDisableClick(selectedRows[0])}
-                  >
-                    禁用
-                  </PButton>
-                ),
-              ]}
+              {calculatePButtons(
+                selectedRows,
+                this.onAddClick,
+                this.onItemEditClick,
+                this.onItemDelClick,
+                this.onItemEnableClick,
+                this.onItemDisableClick
+              )}
             </div>
             <div>
               <EditableProTable
