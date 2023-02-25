@@ -28,11 +28,13 @@ export const calculatePButtons = (
       删除
     </PButton>
   ),
+  // (selectedRows && ( selectedRows.length >= 1 || ( selectedRows.length === 1 && !selectedRows[0].is_active )) ) && (
   selectedRows.length === 1 && !selectedRows[0].is_active && (
     <PButton key="enable" code="enable" onClick={() => onItemEnableClick(selectedRows[0])}>
       启用
     </PButton>
   ),
+  // ( selectedRows && (selectedRows.length >= 1 || ( selectedRows.length === 1 && selectedRows[0].is_active === true )) ) && (
   selectedRows.length === 1 && selectedRows[0].is_active === true && (
     <PButton
       key="disable"
