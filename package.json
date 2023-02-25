@@ -26,7 +26,7 @@
     "dva": "^2.4.1",
     "form-render": "^2.0.2",
     "history": "^4.7.2",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.21",
     "lodash-decorators": "^6.0.0",
     "md5": "^2.2.1",
     "path-to-regexp": "^2.4.0",

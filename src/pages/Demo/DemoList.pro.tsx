@@ -3,7 +3,7 @@ import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
-import { connect } from 'umi';
+import { connect } from 'dva';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
@@ -11,10 +11,12 @@ import { formatDate } from '@/utils/datetime';
 import { DemoItem } from '@/scheme/demo';
 
 import { calculatePButtons } from '@/utils/uiutil';
+import { makeupSortKey } from '@/utils/urlutil';
 
 import DemoCard from './DemoCard';
 
 import styles from './DemoList.less';
+
 
 @connect((state) => ({
   loading: state.loading.models.demo,
@@ -109,6 +111,16 @@ class DemoList extends PureComponent {
     });
   };
 
+  onMainTableSelectChange = (newSelectedRowKeys: React.Key[], newSelectedRows:DemoItem[], info) => {  
+    console.log(" ======== ======== === newSelectedRowKeys ", newSelectedRowKeys)
+    console.log(" ======== ======== === newSelectedRows ", newSelectedRows)
+    console.log(" ======== ======== === info ", info)
+    console.log(" ======== ======== === info.type ", info.type)
+
+    this.setState({ selectedRowKeys: newSelectedRowKeys, selectedRows:newSelectedRows})
+
+  }
+
   onMainTableChange = (pagination) => {
     this.refetch({ pagination });
     this.clearSelectRows();
@@ -151,7 +163,7 @@ class DemoList extends PureComponent {
     dispatch(action);
   };
 
-  refetch = ({ search = {}, pagination = {} } = {}) => {
+  refetch = ({ search = {}, pagination = {}, sort = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
       type: 'demo/fetch',
@@ -196,7 +208,7 @@ class DemoList extends PureComponent {
       },
     } = this.props;
 
-    // console.log(' -- --- == == = --- list: ', list);
+    console.log(' -- --- == == = --- list: ', list);
 
     const { selectedRows, selectedRowKeys } = this.state;
 
@@ -212,6 +224,7 @@ class DemoList extends PureComponent {
       {
         title: '备注',
         dataIndex: 'memo',
+        search: false,
       },
       {
         title: '状态',
@@ -226,10 +239,14 @@ class DemoList extends PureComponent {
       {
         title: '排序',
         dataIndex: 'sort',
+        search: false,
+        sorter: (a, b) => a.sort - b.sort,
       },
       {
         title: '创建时间',
         dataIndex: 'created_at',
+        search: false,
+        sorter: (a, b) => a.created_at - b.created_at,
         render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
     ];
@@ -263,6 +280,8 @@ class DemoList extends PureComponent {
                 actionRef={this.actionRef}
                 bordered
                 rowSelection={{
+                  selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
+                  onChange: this.onMainTableSelectChange,
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
                 }}
@@ -271,6 +290,18 @@ class DemoList extends PureComponent {
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}
+                request={(params, sort, filter) => {
+
+                  console.log(" --- ===== ----- == params ", params)
+                  console.log(" --- ===== ----- == sort ", sort)
+                  console.log(" --- ===== ----- == filter ", filter)
+                  
+                  let nsort = makeupSortKey(sort)
+                  
+                  this.refetch({
+                    search:{...params, ...nsort},
+                    pagination:{current: params.current, pageSize: params.pageSize}});
+                }}
                 onChange={this.onMainTableChange}
                 size="small"
                 headerTitle="基础示例"
