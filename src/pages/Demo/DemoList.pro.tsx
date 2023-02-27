@@ -292,7 +292,7 @@ class DemoList extends PureComponent {
           transform: (value:any, namePath, allValues:any) => {
             let startd = dayjs(value[0]).startOf("day").valueOf(); 
             let entd = dayjs(value[1]).endOf('day').valueOf();   
-            return {created_at__st:startd, created_at__et:entd}
+            return {created_at__st:startd, created_at__ed:entd}
           }
         },
       },
