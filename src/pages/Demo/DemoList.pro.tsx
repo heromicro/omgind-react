@@ -266,10 +266,19 @@ class DemoList extends PureComponent {
       //   dataIndex: 'sort',
       //   hideInTable: true,
       //   // valueType: 'intrange',
-      //   search: {
-      //     transform: (value:any) =>{
-      //       return {sort__st: value[0], sort__ed:value[1]}
+      //   // search: {
+      //   //   transform: (value:any) =>{
+      //   //     return {sort__st: value[0], sort__ed:value[1]}
+      //   //   }
+      //   // },
+      //   renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
+      //     console.log(' ===== ---- ==== item:', _);
+      //     console.log(' ===== ---- ==== config:', { type, defaultRender, ...rest });
+      //     console.log(' ===== ---- ==== form:', form);
+      //     if (type === 'form') {
+      //       return null;
       //     }
+      //     return defaultRender(_);
       //   },
       //   sorter: {compare:(a, b) => a.sort - b.sort, multiple: 1},
       // },

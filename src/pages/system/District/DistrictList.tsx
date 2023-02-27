@@ -243,20 +243,33 @@ class DistrictList extends PureComponent {
         
       },
       {
+        title: '树ID',
+        dataIndex: 'tree_id',
+        valueType: 'digit',
+      },
+      {
         title: '树层级',
         dataIndex: 'tree_level',
+        valueType: 'digit',
       },
       {
         title: '树左值',
         dataIndex: 'tree_left',
+        valueType: 'digit',
       },
       {
         title: '树右值',
         dataIndex: 'tree_right',
+        valueType: 'digit',
       },
       {
         title: '是否真实区',
         dataIndex: 'is_real',
+        valueType: 'select',
+        valueEnum: {
+          true: {text: '是', status: 'Default'},
+          false: {text: '否', status: 'Default'},
+        },
         render: (val) => {
           if (val) {
             return <Tag color="#87d068">真</Tag>;
@@ -265,8 +278,58 @@ class DistrictList extends PureComponent {
         },
       },
       {
+        title: '是否热门',
+        dataIndex: 'is_hot',
+        valueType: 'select',
+        valueEnum: {
+          true: {text: '是', status: 'Default'},
+          false: {text: '否', status: 'Default'},
+        },
+        render: (val) => {
+          if (val) {
+            return <Tag color="#87d068">是</Tag>;
+          }
+          return <Tag color="#f50">否</Tag>;
+        },
+      },
+      {
+        title: '是否直辖',
+        dataIndex: 'is_direct',
+        valueType: 'select',
+        valueEnum: {
+          true: {text: '是', status: 'Default'},
+          false: {text: '否', status: 'Default'},
+        },
+        render: (val) => {
+          if (val) {
+            return <Tag color="#87d068">是</Tag>;
+          }
+          return <Tag color="#f50">否</Tag>;
+        },
+      },
+      {
+        title: '是否叶子',
+        dataIndex: 'is_leaf',
+        valueType: 'select',
+        valueEnum: {
+          true: {text: '是', status: 'Default'},
+          false: {text: '否', status: 'Default'},
+        },
+        render: (val) => {
+          if (val) {
+            return <Tag color="#87d068">是</Tag>;
+          }
+          return <Tag color="#f50">否</Tag>;
+        },
+      },
+      {
         title: '状态',
         dataIndex: 'is_active',
+        valueType: 'select',
+        valueEnum: {
+          true: {text: '有效', status: 'Default'},
+          false: {text: '失效', status: 'Error'},
+        },
         render: (val) => {
           if (val) {
             return <Tag color="#87d068">启用</Tag>;
