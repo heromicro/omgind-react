@@ -8,10 +8,12 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { calculatePButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
+
+import { makeupSortKey } from '@/utils/urlutil';
+
 import DistrictCard from './DistrictCard';
 
 import styles from './DistrictList.less';
-import { makeupSortKey } from '@/utils/urlutil';
 
 @connect((state) => ({
   loading: state.loading.models.district,

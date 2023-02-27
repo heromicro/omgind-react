@@ -4,6 +4,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
 import { connect } from 'dva';
+import dayjs from 'dayjs';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
@@ -260,10 +261,26 @@ class DemoList extends PureComponent {
       },
       {
         title: '创建时间',
+        key: "show_create_at",
         dataIndex: 'created_at',
-        search: false,
+        hideInSearch: true,
         sorter: {compare: (a, b) => a.created_at - b.created_at, multiple: 2},
         render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'created_at',
+        hideInTable: true,
+        valueType: 'dateRange',
+        // renderFormItem:{
+        // },
+        search: {
+          transform: (value:any, namePath, allValues:any) => {
+            let startd = dayjs(value[0]).startOf("day").valueOf(); 
+            let entd = dayjs(value[1]).endOf('day').valueOf();   
+            return {created_at__st:startd, created_at__et:entd}
+          }
+        },
       },
     ];
 

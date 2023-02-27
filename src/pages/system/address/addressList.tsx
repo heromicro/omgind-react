@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
 import { calculatePButtons } from '@/utils/uiutil';
+import { makeupSortKey } from '@/utils/urlutil';
 
 import { formatDate } from '@/utils/datetime';
 import AddressCard from './addressCard';
@@ -189,40 +192,45 @@ class AddressList extends PureComponent {
       },
     } = this.props;
 
-    // console.log(' -- --- == == = --- list: ', list);
+    console.log(' -- --- == == = --- list: ', list);
 
     const { selectedRows, selectedRowKeys } = this.state;
 
     const columns = [
       {
-        title: '编号',
-        dataIndex: 'code',
+        title: '省/市',
+        dataIndex: 'provice',
       },
       {
-        title: '名称',
+        title: '市/区',
+        dataIndex: 'city',
+      },
+      {
+        title: '县/区',
+        dataIndex: 'county',
+      },
+      {
+        title: '详细地址',
+        dataIndex: 'daddr',
+        search: false,
+      },
+      {
+        title: '姓名',
         dataIndex: 'name',
       },
       {
-        title: '备注',
-        dataIndex: 'memo',
-      },
-      {
-        title: '状态',
-        dataIndex: 'is_active',
-        render: (val) => {
-          if (val) {
-            return <Badge status="success" text="启用" />;
-          }
-          return <Badge status="error" text="停用" />;
-        },
+        title: '电话',
+        dataIndex: 'mobile',
       },
       {
         title: '排序',
         dataIndex: 'sort',
+        search: false,
       },
       {
         title: '创建时间',
         dataIndex: 'created_at',
+        search: false,
         render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
     ];
@@ -240,19 +248,8 @@ class AddressList extends PureComponent {
       <PageHeaderLayout title="地址管理" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
-            <div className={styles.tableListOperator}>
-              {calculatePButtons(
-                selectedRows,
-                this.onAddClick,
-                this.onItemEditClick,
-                this.onItemDelClick,
-                this.onItemEnableClick,
-                this.onItemDisableClick
-              )}
-            </div>
             <div>
-              <Table
+              <ProTable
                 rowSelection={{
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
@@ -262,8 +259,29 @@ class AddressList extends PureComponent {
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}
+                request={(params, sort, filter) => {
+
+                  let nsort = makeupSortKey(sort)
+                  
+                  this.refetch({
+                    search:{...params, ...nsort},
+                    pagination:{current: params.current, pageSize: params.pageSize}});
+
+                }}
                 onChange={this.onMainTableChange}
                 size="small"
+
+                toolBarRender={() =>
+                  calculatePButtons(
+                    selectedRows,
+                    this.onAddClick,
+                    this.onItemEditClick,
+                    this.onItemDelClick,
+                    this.onItemEnableClick,
+                    this.onItemDisableClick
+                  )
+                }
+
               />
             </div>
           </div>
