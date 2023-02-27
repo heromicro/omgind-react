@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Tag } from 'antd';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import type { ColumnsState, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { calculatePButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
+import { DistrctItem } from '@/scheme/district';
 
 import { makeupSortKey } from '@/utils/urlutil';
 
@@ -21,12 +22,15 @@ import styles from './DistrictList.less';
 }))
 class DistrictList extends PureComponent {
   formRef = React.createRef();
+  actionRef = React.createRef();
+
   constructor(props) {
     super(props);
 
     this.state = {
       selectedRowKeys: [],
       selectedRows: [],
+      columnsStateMap:{},
     };
   }
 
@@ -191,13 +195,17 @@ class DistrictList extends PureComponent {
       district: {
         data: { list, pagination },
       },
+      location,
     } = this.props;
 
     console.log(' -- --- == == = --- list: ', list);
+    console.log(' -- --- == == = --- location: ', location);
 
-    const { selectedRows, selectedRowKeys } = this.state;
+    const { selectedRows, selectedRowKeys, columnsStateMap } = this.state;
 
-    const columns = [
+// {"id": "01GSWGT66YKJTK652JWVJHYWSE","pid": "01GSWGT66SN259NQ5DEVENTFDZ","name": "北京","sname": "北京","abbr": null,"suffix": "市","st_code": "110000","initials": "bj","pinyin": "beijing","longitude": 116.405281,"latitude": 39.904987,"area_code": "","zip_code": "","merge_name": "北京市","merge_sname": "北京","extra": "","is_active": true,"sort": 2,"is_del": false,"is_main": false,"is_hot": true,"is_real": true,"is_direct": true,"is_leaf": false,"tree_id": 1,"tree_level": 2,"tree_left": 2,"tree_right": 39,"tree_path": "01GSWGT66SN259NQ5DEVENTFDZ","creator": "","created_at": "2023-02-23T14:47:41.634339+08:00","updated_at": "2023-02-23T14:47:41.911614+08:00" }
+
+    const columns:ProColumns<DistrctItem>[] = [
       {
         title: '名称',
         dataIndex: 'name',
@@ -223,8 +231,28 @@ class DistrictList extends PureComponent {
         dataIndex: 'merge_sname',
       },
       {
-        title: '层级',
+        title: '邮编',
+        dataIndex: 'zip_code',
+        hideInSearch: true,
+
+      },
+      {
+        title: '区号',
+        dataIndex: 'area_code',
+        hideInSearch: true,
+        
+      },
+      {
+        title: '树层级',
         dataIndex: 'tree_level',
+      },
+      {
+        title: '树左值',
+        dataIndex: 'tree_left',
+      },
+      {
+        title: '树右值',
+        dataIndex: 'tree_right',
       },
       {
         title: '是否真实区',
@@ -249,10 +277,12 @@ class DistrictList extends PureComponent {
       {
         title: '排序',
         dataIndex: 'sort',
+        hideInSearch: true,
       },
       {
         title: '备注',
         dataIndex: 'extra',
+        hideInSearch: true,
       },
     ];
 
@@ -270,7 +300,8 @@ class DistrictList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>
-              <ProTable
+              <ProTable<ProColumns>
+                actionRef={this.actionRef}
                 rowSelection={{
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
@@ -279,8 +310,21 @@ class DistrictList extends PureComponent {
                 rowKey={(record) => record.id}
                 dataSource={list}
                 columns={columns}
+                columnsState={{
+                  persistenceType: 'localStorage',
+                  // persistenceKey: `columns-state-${location.pathname}`,
+                  value: columnsStateMap,
+                  onChange:(map: Record<string, ColumnsState>) => {
+                    console.log(" ------ ====== map ",  map);
+                    this.setState({
+                      columnsStateMap: map
+                    })
+
+                  }
+                }}
                 pagination={paginationProps}
                 request={(params, sort, filter) => {
+
                   let nsort = makeupSortKey(sort)
                   this.refetch({
                     search: {...params, ...nsort},
