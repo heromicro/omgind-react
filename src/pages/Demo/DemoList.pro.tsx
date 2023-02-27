@@ -256,12 +256,26 @@ class DemoList extends PureComponent {
       {
         title: '排序',
         dataIndex: 'sort',
+        key: 'sort__show',
+        hideInSearch: true,
         search: false,
         sorter: {compare:(a, b) => a.sort - b.sort, multiple: 1},
       },
+      // {
+      //   title: '排序',
+      //   dataIndex: 'sort',
+      //   hideInTable: true,
+      //   // valueType: 'intrange',
+      //   search: {
+      //     transform: (value:any) =>{
+      //       return {sort__st: value[0], sort__ed:value[1]}
+      //     }
+      //   },
+      //   sorter: {compare:(a, b) => a.sort - b.sort, multiple: 1},
+      // },
       {
         title: '创建时间',
-        key: "show_create_at",
+        key: "create_at__show",
         dataIndex: 'created_at',
         hideInSearch: true,
         sorter: {compare: (a, b) => a.created_at - b.created_at, multiple: 2},
