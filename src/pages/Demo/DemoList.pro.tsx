@@ -229,12 +229,20 @@ class DemoList extends PureComponent {
       },
       {
         title: '状态',
+        disable: true,
         dataIndex: 'is_active',
-        onFilter: true,
-        filters: [
-          {text: '有效', value: true},
-          {text: '失效', value: false}
-        ],
+        valueType: 'select',
+        valueEnum: {
+          // all: {text: '全部'},
+          true: {text: '有效', status: 'Default'},
+          false: {text: '失效', status: 'Error'},
+        },
+        // filters: true,
+        // onFilter: true,
+        // filters: [
+        //   {text: '有效', value: true},
+        //   {text: '失效', value: false}
+        // ],
         // onFilter:  
         render: (val) => {
           if (val) {

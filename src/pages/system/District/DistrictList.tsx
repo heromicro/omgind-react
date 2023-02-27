@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Tag } from 'antd';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { calculatePButtons } from '@/utils/uiutil';
@@ -9,6 +11,7 @@ import { formatDate } from '@/utils/datetime';
 import DistrictCard from './DistrictCard';
 
 import styles from './DistrictList.less';
+import { makeupSortKey } from '@/utils/urlutil';
 
 @connect((state) => ({
   loading: state.loading.models.district,
@@ -264,19 +267,8 @@ class DistrictList extends PureComponent {
       <PageHeaderLayout title="行政区域" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
-            <div className={styles.tableListOperator}>
-              {calculatePButtons(
-                selectedRows,
-                this.onAddClick,
-                this.onItemEditClick,
-                this.onItemDelClick,
-                this.onItemEnableClick,
-                this.onItemDisableClick
-              )}
-            </div>
             <div>
-              <Table
+              <ProTable
                 rowSelection={{
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
@@ -286,8 +278,27 @@ class DistrictList extends PureComponent {
                 dataSource={list}
                 columns={columns}
                 pagination={paginationProps}
+                request={(params, sort, filter) => {
+                  let nsort = makeupSortKey(sort)
+                  this.refetch({
+                    search: {...params, ...nsort},
+                    pagination:{current: params.current, pageSize: params.pageSize}
+                  });
+                  
+                }}
                 onChange={this.onMainTableChange}
                 size="small"
+
+                toolBarRender={() =>
+                  calculatePButtons(
+                    selectedRows,
+                    this.onAddClick,
+                    this.onItemEditClick,
+                    this.onItemDelClick,
+                    this.onItemEnableClick,
+                    this.onItemDisableClick
+                  )
+                }
               />
             </div>
           </div>
