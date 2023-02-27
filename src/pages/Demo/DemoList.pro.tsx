@@ -216,6 +216,7 @@ class DemoList extends PureComponent {
       {
         title: '编号',
         dataIndex: 'code',
+        sorter: {compare:(a, b) => a.code - b.code, multiple: 1}
       },
       {
         title: '名称',
@@ -229,24 +230,31 @@ class DemoList extends PureComponent {
       {
         title: '状态',
         dataIndex: 'is_active',
+        onFilter: true,
+        filters: [
+          {text: '有效', value: true},
+          {text: '失效', value: false}
+        ],
+        // onFilter:  
         render: (val) => {
           if (val) {
             return <Badge status="success" text="启用" />;
           }
           return <Badge status="error" text="停用" />;
         },
+        
       },
       {
         title: '排序',
         dataIndex: 'sort',
         search: false,
-        sorter: (a, b) => a.sort - b.sort,
+        sorter: {compare:(a, b) => a.sort - b.sort, multiple: 1},
       },
       {
         title: '创建时间',
         dataIndex: 'created_at',
         search: false,
-        sorter: (a, b) => a.created_at - b.created_at,
+        sorter: {compare: (a, b) => a.created_at - b.created_at, multiple: 2},
         render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
     ];
@@ -262,7 +270,7 @@ class DemoList extends PureComponent {
 
     return (
       // <PageHeaderLayout title="基础示例" breadcrumbList={breadcrumbList}>
-      <PageHeaderLayout breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout  title="基础示例"  breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             {/* <div className={styles.tableListOperator}>
@@ -279,6 +287,7 @@ class DemoList extends PureComponent {
               <ProTable<DemoItem>
                 actionRef={this.actionRef}
                 bordered
+                // cardProps={{title:"基础示例", bordered: true, }}
                 rowSelection={{
                   selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
                   onChange: this.onMainTableSelectChange,
@@ -304,7 +313,14 @@ class DemoList extends PureComponent {
                 }}
                 onChange={this.onMainTableChange}
                 size="small"
-                headerTitle="基础示例"
+                // headerTitle={calculatePButtons(
+                //   selectedRows,
+                //   this.onAddClick,
+                //   this.onItemEditClick,
+                //   this.onItemDelClick,
+                //   this.onItemEnableClick,
+                //   this.onItemDisableClick
+                // )}
                 toolBarRender={() =>
                   calculatePButtons(
                     selectedRows,
