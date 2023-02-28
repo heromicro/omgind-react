@@ -15,7 +15,7 @@ import {
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
-import { calculatePButtons } from '@/utils/uiutil';
+import { showPButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
 import DemoCard from './DemoCard';
@@ -274,7 +274,7 @@ class DemoList extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              {calculatePButtons(
+              {showPButtons(
                 selectedRows,
                 this.onAddClick,
                 this.onItemEditClick,

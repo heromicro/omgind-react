@@ -1,7 +1,7 @@
 import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import PButton from '@/components/PermButton';
 
-export const calculatePButtons = (
+export const showPButtons = (
   selectedRows,
   onAddClick,
   onItemEditClick,

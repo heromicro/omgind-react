@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
-import { calculatePButtons } from '@/utils/uiutil';
+import { showPButtons } from '@/utils/uiutil';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { formatDate } from '@/utils/datetime';
@@ -271,7 +271,7 @@ class UserList extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              {calculatePButtons(
+              {showPButtons(
                 selectedRows,
                 this.onAddClick,
                 this.onItemEditClick,

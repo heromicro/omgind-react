@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { calculatePButtons } from '@/utils/uiutil';
+import { showPButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
 import RoleCard from './RoleCard';
@@ -243,7 +243,7 @@ class RoleList extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              {calculatePButtons(
+              {showPButtons(
                 selectedRows,
                 this.onAddClick,
                 this.onItemEditClick,

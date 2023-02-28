@@ -6,7 +6,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
-import { calculatePButtons } from '@/utils/uiutil';
+import { showPButtons } from '@/utils/uiutil';
 import { makeupSortKey } from '@/utils/urlutil';
 
 import { formatDate } from '@/utils/datetime';
@@ -272,7 +272,7 @@ class AddressList extends PureComponent {
                 size="small"
 
                 toolBarRender={() =>
-                  calculatePButtons(
+                  showPButtons(
                     selectedRows,
                     this.onAddClick,
                     this.onItemEditClick,

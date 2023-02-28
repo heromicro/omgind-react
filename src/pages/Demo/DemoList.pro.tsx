@@ -11,7 +11,7 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { formatDate } from '@/utils/datetime';
 import { DemoItem } from '@/scheme/demo';
 
-import { calculatePButtons } from '@/utils/uiutil';
+import { showPButtons } from '@/utils/uiutil';
 import { makeupSortKey } from '@/utils/urlutil';
 
 import DemoCard from './DemoCard';
@@ -322,7 +322,7 @@ class DemoList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             {/* <div className={styles.tableListOperator}>
-              {calculatePButtons(
+              {showPButtons(
                 selectedRows,
                 this.onAddClick,
                 this.onItemEditClick,
@@ -361,7 +361,7 @@ class DemoList extends PureComponent {
                 }}
                 onChange={this.onMainTableChange}
                 size="small"
-                // headerTitle={calculatePButtons(
+                // headerTitle={showPButtons(
                 //   selectedRows,
                 //   this.onAddClick,
                 //   this.onItemEditClick,
@@ -370,7 +370,7 @@ class DemoList extends PureComponent {
                 //   this.onItemDisableClick
                 // )}
                 toolBarRender={() =>
-                  calculatePButtons(
+                  showPButtons(
                     selectedRows,
                     this.onAddClick,
                     this.onItemEditClick,

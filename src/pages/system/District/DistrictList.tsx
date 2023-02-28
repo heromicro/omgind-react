@@ -5,7 +5,7 @@ import type { ColumnsState, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { calculatePButtons } from '@/utils/uiutil';
+import { showPButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
 import { DistrctItem } from '@/scheme/district';
@@ -399,7 +399,7 @@ class DistrictList extends PureComponent {
                 size="small"
 
                 toolBarRender={() =>
-                  calculatePButtons(
+                  showPButtons(
                     selectedRows,
                     this.onAddClick,
                     this.onItemEditClick,
