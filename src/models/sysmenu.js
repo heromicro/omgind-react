@@ -1,8 +1,9 @@
 import { message } from 'antd';
-import * as districtService from '@/services/district';
+import * as menuService from '@/services/sysmenu';
+import store from '@/utils/store';
 
 export default {
-  namespace: 'district',
+  namespace: 'menu',
   state: {
     search: {},
     pagination: {},
@@ -11,15 +12,20 @@ export default {
       pagination: {},
     },
     submitting: false,
+    formType: '',
     formTitle: '',
     formID: '',
     formModalVisible: false,
     formVisible: false,
     formData: {},
+    treeData: [],
+    expandedKeys: [],
   },
   effects: {
     *fetch({ search, pagination }, { call, put, select }) {
-      let params = {};
+      let params = {
+        parentID: '',
+      };
 
       if (search) {
         params = { ...params, ...search };
@@ -28,7 +34,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.district.search);
+        const s = yield select(state => state.menu.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -41,19 +47,19 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.district.pagination);
+        const p = yield select(state => state.menu.pagination);
         if (p) {
           params = { ...params, ...p };
         }
       }
 
-      const response = yield call(districtService.query, params);
+      const response = yield call(menuService.query, params);
       yield put({
         type: 'saveData',
         payload: response,
       });
     },
-    *loadForm({ payload }, { put }) {
+    *loadForm({ payload }, { put, select }) {
       yield put({
         type: 'changeModalFormVisible',
         payload: true,
@@ -66,7 +72,7 @@ export default {
         }),
         put({
           type: 'saveFormTitle',
-          payload: '新建基础示例',
+          payload: '新建菜单',
         }),
         put({
           type: 'saveFormID',
@@ -76,13 +82,14 @@ export default {
           type: 'saveFormData',
           payload: {},
         }),
+        put({ type: 'fetchTree' }),
       ];
 
       if (payload.type === 'E') {
         yield [
           put({
             type: 'saveFormTitle',
-            payload: '编辑基础示例',
+            payload: '编辑菜单',
           }),
           put({
             type: 'saveFormID',
@@ -94,6 +101,11 @@ export default {
           }),
         ];
       } else {
+        const search = yield select(state => state.menu.search);
+        yield put({
+          type: 'saveFormData',
+          payload: { parent_id: search.parentID ? search.parentID : '' },
+        });
         yield [
           put({
             type: 'changeFormVisible',
@@ -103,7 +115,7 @@ export default {
       }
     },
     *fetchForm({ payload }, { call, put }) {
-      const response = yield call(districtService.get, payload.id);
+      const response = yield call(menuService.get, payload.id);
       yield [
         put({
           type: 'saveFormData',
@@ -122,16 +134,16 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select((state) => state.district.formType);
+      const formType = yield select(state => state.menu.formType);
       let success = false;
       if (formType === 'E') {
-        const id = yield select((state) => state.district.formID);
-        const response = yield call(districtService.update, id, params);
+        const id = yield select(state => state.menu.formID);
+        const response = yield call(menuService.update, id, params);
         if (response.status === 'OK') {
           success = true;
         }
       } else {
-        const response = yield call(districtService.create, params);
+        const response = yield call(menuService.create, params);
         if (response.id && response.id !== '') {
           success = true;
         }
@@ -148,24 +160,40 @@ export default {
           type: 'changeModalFormVisible',
           payload: false,
         });
-        yield put({
-          type: 'fetch',
-        });
-      }
-    },
-    *del({ payload }, { call, put }) {
-      const response = yield call(districtService.del, payload.id);
-      if (response.status === 'OK') {
-        message.success('删除成功');
+
+        yield put({ type: 'fetchTree' });
         yield put({ type: 'fetch' });
       }
     },
+    *del({ payload }, { call, put }) {
+      const response = yield call(menuService.del, payload.id);
+      if (response.status === 'OK') {
+        message.success('删除成功');
+        yield put({ type: 'fetchTree' });
+        yield put({ type: 'fetch' });
+      }
+    },
+
+    *fetchTree({ payload }, { call, put }) {
+      let params = {};
+      if (payload) {
+        params = { ...params, ...payload };
+      }
+      
+      const response = yield call(menuService.queryTree, params);
+        
+      yield put({
+        type: 'saveTreeData',
+        payload: response.list || [],
+      });
+    },
+
     *changeStatus({ payload }, { call, put, select }) {
       let response;
       if (payload.is_active === true) {
-        response = yield call(districtService.enable, payload.id);
+        response = yield call(menuService.enable, payload.id);
       } else {
-        response = yield call(districtService.disable, payload.id);
+        response = yield call(menuService.disable, payload.id);
       }
 
       if (response.status === 'OK') {
@@ -174,7 +202,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.district.data);
+        const data = yield select(state => state.menu.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {
@@ -214,11 +242,11 @@ export default {
       }
       return { ...state, formModalVisible: payload };
     },
-    saveFormTitle(state, { payload }) {
-      return { ...state, formTitle: payload };
-    },
     saveFormType(state, { payload }) {
       return { ...state, formType: payload };
+    },
+    saveFormTitle(state, { payload }) {
+      return { ...state, formTitle: payload };
     },
     saveFormID(state, { payload }) {
       return { ...state, formID: payload };
@@ -228,6 +256,12 @@ export default {
     },
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };
+    },
+    saveTreeData(state, { payload }) {
+      return { ...state, treeData: payload };
+    },
+    saveExpandedKeys(state, { payload }) {
+      return { ...state, expandedKeys: payload };
     },
   },
 };

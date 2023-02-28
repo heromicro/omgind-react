@@ -11,8 +11,9 @@ export async function get(id, params = {}) {
   return request(`/${version}/${router}/${id}`, { params });
 }
 
-export async function getSubstricts(pid, params = {}) {
-  return request(`/${version}/${router}/${pid}/substricts`, { params });
+export async function getSubstricts(params = {}) {
+  return request(`/${version}/${router}`, { params });
+  // return request(`/${version}/${router}/${pid}/substricts`, { params });
 }
 
 export async function create(data) {

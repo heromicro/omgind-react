@@ -1,4 +1,5 @@
 import * as signinService from '@/services/signin';
+import store from '@/utils/store';
 
 export default {
   namespace: 'global',
@@ -53,9 +54,18 @@ export default {
       });
     },
     *fetchMenuTree({ pathname }, { call, put }) {
-      const response = yield call(signinService.queryMenuTree);
 
-      const menuData = response.list || [];
+      let skey = "admin-current-user-menu"
+      let list = store.getExpirableItem(skey)
+      if (!list) {
+        const response = yield call(signinService.queryMenuTree);
+        list = response.list;
+        if (list) {
+          store.setExpirableItem(skey, list, 10)
+        }
+      }
+
+      const menuData = list || [];
       yield put({
         type: 'saveMenus',
         payload: menuData,

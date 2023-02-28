@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Select } from 'antd';
-import { query } from '@/services/role';
+import { query } from '@/services/sysrole';
 
 function parseValue(value) {
   if (!value) {

@@ -17,6 +17,7 @@ import styles from './addressList.less';
 @connect((state) => ({
   loading: state.loading.models.sysaddress,
   sysaddress: state.sysaddress,
+  sysdistrict: state.sysdistrict,
 }))
 class AddressList extends PureComponent {
   formRef = React.createRef();
@@ -31,6 +32,12 @@ class AddressList extends PureComponent {
 
   componentDidMount() {
     this.refetch();
+
+    this.dispatch({
+      type:'sysdistrict/fetchSubDistricts',
+      istop: true,
+      params: {tree_level: 2}
+    })
   }
 
   onItemDisableClick = (item) => {

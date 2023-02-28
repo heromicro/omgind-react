@@ -4,7 +4,7 @@ import { history } from 'umi';
 import qs from 'qs';
 
 import { notification } from 'antd';
-import store, { storeKeys } from './store';
+import store, { storeKeys } from '@/utils/store';
 
 let refreshTimeout;
 let lastAccessTime;

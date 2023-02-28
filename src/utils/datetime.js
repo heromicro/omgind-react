@@ -27,3 +27,8 @@ export function formatDate(val, format) {
   }
   return dayjs(val).format(f);
 }
+
+export const minutesToMilliseconds = (minutes = 10) => {
+	const parseMinutes = minutes < 1 ? 5 : minutes;
+	return parseMinutes * 60000;
+};

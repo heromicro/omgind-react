@@ -1,8 +1,12 @@
 import { message } from 'antd';
-import * as dictService from '@/services/dict';
+import qs from 'qs';
+
+import * as districtService from '@/services/sysdistrict';
+import store from '@/utils/store';
+
 
 export default {
-  namespace: 'dict',
+  namespace: 'sysdistrict',
   state: {
     search: {},
     pagination: {},
@@ -10,13 +14,14 @@ export default {
       list: [],
       pagination: {},
     },
+    subdistrict: { // pid:[districts]
+    },
     submitting: false,
     formTitle: '',
     formID: '',
     formModalVisible: false,
     formVisible: false,
     formData: {},
-    selectData: [],
   },
   effects: {
     *fetch({ search, pagination }, { call, put, select }) {
@@ -29,7 +34,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.dict.search);
+        const s = yield select((state) => state.district.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -42,22 +47,19 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.dict.pagination);
+        const p = yield select((state) => state.district.pagination);
         if (p) {
           params = { ...params, ...p };
         }
       }
 
-      const response = yield call(dictService.query, params);
+      const response = yield call(districtService.query, params);
       yield put({
         type: 'saveData',
         payload: response,
       });
     },
-
     *loadForm({ payload }, { put }) {
-      console.log(' ++__+++ ', payload);
-
       yield put({
         type: 'changeModalFormVisible',
         payload: true,
@@ -70,7 +72,7 @@ export default {
         }),
         put({
           type: 'saveFormTitle',
-          payload: '新建字典',
+          payload: '新建基础示例',
         }),
         put({
           type: 'saveFormID',
@@ -86,7 +88,7 @@ export default {
         yield [
           put({
             type: 'saveFormTitle',
-            payload: '编辑字典',
+            payload: '编辑基础示例',
           }),
           put({
             type: 'saveFormID',
@@ -107,7 +109,7 @@ export default {
       }
     },
     *fetchForm({ payload }, { call, put }) {
-      const response = yield call(dictService.get, payload.id);
+      const response = yield call(districtService.get, payload.id);
       yield [
         put({
           type: 'saveFormData',
@@ -119,30 +121,23 @@ export default {
         }),
       ];
     },
-
     *submit({ payload }, { call, put, select }) {
-      console.log(` = +++++++ vvvvvvvv ===== ${payload}`);
-
       yield put({
         type: 'changeSubmitting',
         payload: true,
       });
-      console.log(` = +++++++ vvvvvvvv ===== 111 ${payload}`);
 
       const params = { ...payload };
-      const formType = yield select((state) => state.dict.formType);
+      const formType = yield select((state) => state.district.formType);
       let success = false;
-
-      console.log(` = +++++++ vvvvvvvv ===== 111 ${formType}`);
-
       if (formType === 'E') {
-        const id = yield select((state) => state.dict.formID);
-        const response = yield call(dictService.update, id, params);
+        const id = yield select((state) => state.district.formID);
+        const response = yield call(districtService.update, id, params);
         if (response.status === 'OK') {
           success = true;
         }
       } else {
-        const response = yield call(dictService.create, params);
+        const response = yield call(districtService.create, params);
         if (response.id && response.id !== '') {
           success = true;
         }
@@ -153,19 +148,19 @@ export default {
         payload: false,
       });
 
-      console.log(` +++++ ++++++++ ====== ${success} `);
-
       if (success) {
         message.success('保存成功');
         yield put({
           type: 'changeModalFormVisible',
           payload: false,
         });
-        yield put({ type: 'fetch' });
+        yield put({
+          type: 'fetch',
+        });
       }
     },
     *del({ payload }, { call, put }) {
-      const response = yield call(dictService.del, payload.id);
+      const response = yield call(districtService.del, payload.id);
       if (response.status === 'OK') {
         message.success('删除成功');
         yield put({ type: 'fetch' });
@@ -174,9 +169,9 @@ export default {
     *changeStatus({ payload }, { call, put, select }) {
       let response;
       if (payload.is_active === true) {
-        response = yield call(dictService.enable, payload.id);
+        response = yield call(districtService.enable, payload.id);
       } else {
-        response = yield call(dictService.disable, payload.id);
+        response = yield call(districtService.disable, payload.id);
       }
 
       if (response.status === 'OK') {
@@ -185,7 +180,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.dict.data);
+        const data = yield select((state) => state.district.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {
@@ -201,6 +196,34 @@ export default {
           payload: newData,
         });
       }
+    },
+
+    *fetchSubDistricts({istop=false, params}, {call, put, select}) {
+      const nparams = params
+
+      if (nparams && !nparams.pid) {
+        nparams.p_area_code = "086"
+      } 
+      // current=1&pageSize=10
+      if (nparams && !nparams.current) {
+        nparams.current = 100
+      }
+
+      if (nparams && !nparams.pageSize) {
+        nparams.pageSize = 100
+      }
+
+      let skey = qs.stringify(nparams)
+
+      console.log(" ----- === ----- == skey == ", skey);
+
+      let response = yield call(districtService.getSubstricts, nparams)
+      const {list, pagination} = response;
+
+      console.log(" ----- === ----- == response == ", response);
+      console.log(" ----- === ----- == list == ", list);
+      console.log(" ----- === ----- == pagination == ", pagination);
+      
     },
   },
   reducers: {
@@ -239,9 +262,6 @@ export default {
     },
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };
-    },
-    saveSelectData(state, { payload }) {
-      return { ...state, selectData: payload };
     },
   },
 };

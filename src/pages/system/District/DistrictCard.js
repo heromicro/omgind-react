@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Form, Input, Modal, Switch } from 'antd';
 
 @connect((state) => ({
-  district: state.district,
+  sysdistrict: state.sysdistrict,
 }))
 class DistrctCard extends PureComponent {
   formRef = React.createRef();
@@ -37,7 +37,7 @@ class DistrctCard extends PureComponent {
   render() {
     const {
       onCancel,
-      district: { formTitle, formVisible, formModalVisible, formData, submitting },
+      sysdistrict: { formTitle, formVisible, formModalVisible, formData, submitting },
     } = this.props;
 
     const formItemLayout = {

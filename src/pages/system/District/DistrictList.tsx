@@ -8,7 +8,7 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { showPButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
-import { DistrctItem } from '@/scheme/district';
+import { DistrctItem } from '@/scheme/sysdistrict';
 
 import { makeupSortKey } from '@/utils/urlutil';
 
@@ -17,8 +17,8 @@ import DistrictCard from './DistrictCard';
 import styles from './DistrictList.less';
 
 @connect((state) => ({
-  loading: state.loading.models.district,
-  district: state.district,
+  loading: state.loading.models.sysdistrict,
+  sysdistrict: state.sysdistrict,
 }))
 class DistrictList extends PureComponent {
   formRef = React.createRef();
@@ -40,21 +40,21 @@ class DistrictList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'district/changeStatus',
+      type: 'sysdistrict/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'district/changeStatus',
+      type: 'sysdistrict/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
   onItemEditClick = (item) => {
     this.dispatch({
-      type: 'district/loadForm',
+      type: 'sysdistrict/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -64,7 +64,7 @@ class DistrictList extends PureComponent {
 
   onAddClick = () => {
     this.dispatch({
-      type: 'district/loadForm',
+      type: 'sysdistrict/loadForm',
       payload: {
         type: 'A',
       },
@@ -83,7 +83,7 @@ class DistrictList extends PureComponent {
 
   onDelOKClick(id) {
     this.dispatch({
-      type: 'district/del',
+      type: 'sysdistrict/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -134,7 +134,7 @@ class DistrictList extends PureComponent {
 
   onDataFormSubmit = (data) => {
     this.dispatch({
-      type: 'district/submit',
+      type: 'sysdistrict/submit',
       payload: data,
     });
     this.clearSelectRows();
@@ -142,7 +142,7 @@ class DistrictList extends PureComponent {
 
   onDataFormCancel = () => {
     this.dispatch({
-      type: 'district/changeModalFormVisible',
+      type: 'sysdistrict/changeModalFormVisible',
       payload: false,
     });
   };
@@ -155,7 +155,7 @@ class DistrictList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'district/fetch',
+      type: 'sysdistrict/fetch',
       search,
       pagination,
     });
@@ -192,7 +192,7 @@ class DistrictList extends PureComponent {
   render() {
     const {
       loading,
-      district: {
+      sysdistrict: {
         data: { list, pagination },
       },
       location,

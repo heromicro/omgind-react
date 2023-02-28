@@ -1,8 +1,8 @@
 import { message } from 'antd';
-import * as menuService from '@/services/menu';
+import * as roleService from '@/services/sysrole';
 
 export default {
-  namespace: 'menu',
+  namespace: 'role',
   state: {
     search: {},
     pagination: {},
@@ -11,20 +11,16 @@ export default {
       pagination: {},
     },
     submitting: false,
-    formType: '',
     formTitle: '',
     formID: '',
     formModalVisible: false,
     formVisible: false,
     formData: {},
-    treeData: [],
-    expandedKeys: [],
+    selectData: [],
   },
   effects: {
     *fetch({ search, pagination }, { call, put, select }) {
-      let params = {
-        parentID: '',
-      };
+      let params = {};
 
       if (search) {
         params = { ...params, ...search };
@@ -33,7 +29,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select(state => state.menu.search);
+        const s = yield select((state) => state.role.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -46,19 +42,20 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select(state => state.menu.pagination);
+        const p = yield select((state) => state.role.pagination);
         if (p) {
           params = { ...params, ...p };
         }
       }
 
-      const response = yield call(menuService.query, params);
+      const response = yield call(roleService.query, params);
       yield put({
         type: 'saveData',
         payload: response,
       });
     },
-    *loadForm({ payload }, { put, select }) {
+
+    *loadForm({ payload }, { put }) {
       yield put({
         type: 'changeModalFormVisible',
         payload: true,
@@ -71,7 +68,7 @@ export default {
         }),
         put({
           type: 'saveFormTitle',
-          payload: '新建菜单',
+          payload: '新建角色',
         }),
         put({
           type: 'saveFormID',
@@ -81,14 +78,13 @@ export default {
           type: 'saveFormData',
           payload: {},
         }),
-        put({ type: 'fetchTree' }),
       ];
 
       if (payload.type === 'E') {
         yield [
           put({
             type: 'saveFormTitle',
-            payload: '编辑菜单',
+            payload: '编辑角色',
           }),
           put({
             type: 'saveFormID',
@@ -100,11 +96,6 @@ export default {
           }),
         ];
       } else {
-        const search = yield select(state => state.menu.search);
-        yield put({
-          type: 'saveFormData',
-          payload: { parent_id: search.parentID ? search.parentID : '' },
-        });
         yield [
           put({
             type: 'changeFormVisible',
@@ -114,7 +105,25 @@ export default {
       }
     },
     *fetchForm({ payload }, { call, put }) {
-      const response = yield call(menuService.get, payload.id);
+      const response = yield call(roleService.get, payload.id);
+
+      const { role_menus: roleMenus } = response;
+      if (roleMenus) {
+        const mRoleMenus = {};
+        const nRoleMenus = [];
+        roleMenus.forEach((item) => {
+          if (mRoleMenus[item.menu_id]) {
+            mRoleMenus[item.menu_id] = [...mRoleMenus[item.menu_id], item.action_id];
+          } else {
+            mRoleMenus[item.menu_id] = [item.action_id];
+          }
+        });
+        Object.keys(mRoleMenus).forEach((key) => {
+          nRoleMenus.push({ menu_id: key, actions: mRoleMenus[key] });
+        });
+        response.role_menus = nRoleMenus;
+      }
+
       yield [
         put({
           type: 'saveFormData',
@@ -133,16 +142,26 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select(state => state.menu.formType);
+      const formType = yield select((state) => state.role.formType);
+
+      console.log(' ----- ====== ==== payload == ', payload);
+      console.log(' ----- ====== ==== formType == ', formType);
+      console.log(' ----- ====== ==== formType == ', formType === 'E');
+
       let success = false;
       if (formType === 'E') {
-        const id = yield select(state => state.menu.formID);
-        const response = yield call(menuService.update, id, params);
+        const id = yield select((state) => state.role.formID);
+        console.log(' ----- ====== ==== id == ', id);
+
+        const response = yield call(roleService.update, id, params);
+
+        console.log(' ----- ====== ==== response == ', response);
+
         if (response.status === 'OK') {
           success = true;
         }
       } else {
-        const response = yield call(menuService.create, params);
+        const response = yield call(roleService.create, params);
         if (response.id && response.id !== '') {
           success = true;
         }
@@ -159,38 +178,31 @@ export default {
           type: 'changeModalFormVisible',
           payload: false,
         });
-
-        yield put({ type: 'fetchTree' });
-        yield put({ type: 'fetch' });
+        yield put({
+          type: 'fetch',
+        });
       }
     },
     *del({ payload }, { call, put }) {
-      const response = yield call(menuService.del, payload.id);
+      const response = yield call(roleService.del, payload.id);
       if (response.status === 'OK') {
         message.success('删除成功');
-        yield put({ type: 'fetchTree' });
         yield put({ type: 'fetch' });
       }
     },
-
-    *fetchTree({ payload }, { call, put }) {
-      let params = {};
-      if (payload) {
-        params = { ...params, ...payload };
-      }
-      const response = yield call(menuService.queryTree, params);
+    *fetchSelect(_, { call, put }) {
+      const response = yield call(roleService.querySelect);
       yield put({
-        type: 'saveTreeData',
+        type: 'saveSelectData',
         payload: response.list || [],
       });
     },
-
     *changeStatus({ payload }, { call, put, select }) {
       let response;
       if (payload.is_active === true) {
-        response = yield call(menuService.enable, payload.id);
+        response = yield call(roleService.enable, payload.id);
       } else {
-        response = yield call(menuService.disable, payload.id);
+        response = yield call(roleService.disable, payload.id);
       }
 
       if (response.status === 'OK') {
@@ -199,7 +211,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select(state => state.menu.data);
+        const data = yield select((state) => state.role.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {
@@ -217,6 +229,7 @@ export default {
       }
     },
   },
+
   reducers: {
     saveData(state, { payload }) {
       return { ...state, data: payload };
@@ -239,11 +252,11 @@ export default {
       }
       return { ...state, formModalVisible: payload };
     },
-    saveFormType(state, { payload }) {
-      return { ...state, formType: payload };
-    },
     saveFormTitle(state, { payload }) {
       return { ...state, formTitle: payload };
+    },
+    saveFormType(state, { payload }) {
+      return { ...state, formType: payload };
     },
     saveFormID(state, { payload }) {
       return { ...state, formID: payload };
@@ -254,11 +267,8 @@ export default {
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };
     },
-    saveTreeData(state, { payload }) {
-      return { ...state, treeData: payload };
-    },
-    saveExpandedKeys(state, { payload }) {
-      return { ...state, expandedKeys: payload };
+    saveSelectData(state, { payload }) {
+      return { ...state, selectData: payload };
     },
   },
 };

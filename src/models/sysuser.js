@@ -1,8 +1,8 @@
 import { message } from 'antd';
-import * as roleService from '@/services/role';
+import * as userService from '@/services/sysuser';
 
 export default {
-  namespace: 'role',
+  namespace: 'user',
   state: {
     search: {},
     pagination: {},
@@ -16,7 +16,6 @@ export default {
     formModalVisible: false,
     formVisible: false,
     formData: {},
-    selectData: [],
   },
   effects: {
     *fetch({ search, pagination }, { call, put, select }) {
@@ -29,7 +28,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.role.search);
+        const s = yield select((state) => state.user.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -42,13 +41,13 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.role.pagination);
+        const p = yield select((state) => state.user.pagination);
         if (p) {
           params = { ...params, ...p };
         }
       }
 
-      const response = yield call(roleService.query, params);
+      const response = yield call(userService.query, params);
       yield put({
         type: 'saveData',
         payload: response,
@@ -68,7 +67,7 @@ export default {
         }),
         put({
           type: 'saveFormTitle',
-          payload: '新建角色',
+          payload: '新建用户',
         }),
         put({
           type: 'saveFormID',
@@ -84,7 +83,7 @@ export default {
         yield [
           put({
             type: 'saveFormTitle',
-            payload: '编辑角色',
+            payload: '编辑用户',
           }),
           put({
             type: 'saveFormID',
@@ -104,26 +103,9 @@ export default {
         ];
       }
     },
+
     *fetchForm({ payload }, { call, put }) {
-      const response = yield call(roleService.get, payload.id);
-
-      const { role_menus: roleMenus } = response;
-      if (roleMenus) {
-        const mRoleMenus = {};
-        const nRoleMenus = [];
-        roleMenus.forEach((item) => {
-          if (mRoleMenus[item.menu_id]) {
-            mRoleMenus[item.menu_id] = [...mRoleMenus[item.menu_id], item.action_id];
-          } else {
-            mRoleMenus[item.menu_id] = [item.action_id];
-          }
-        });
-        Object.keys(mRoleMenus).forEach((key) => {
-          nRoleMenus.push({ menu_id: key, actions: mRoleMenus[key] });
-        });
-        response.role_menus = nRoleMenus;
-      }
-
+      const response = yield call(userService.get, payload.id);
       yield [
         put({
           type: 'saveFormData',
@@ -135,6 +117,7 @@ export default {
         }),
       ];
     },
+
     *submit({ payload }, { call, put, select }) {
       yield put({
         type: 'changeSubmitting',
@@ -142,26 +125,16 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select((state) => state.role.formType);
-
-      console.log(' ----- ====== ==== payload == ', payload);
-      console.log(' ----- ====== ==== formType == ', formType);
-      console.log(' ----- ====== ==== formType == ', formType === 'E');
-
+      const formType = yield select((state) => state.user.formType);
       let success = false;
       if (formType === 'E') {
-        const id = yield select((state) => state.role.formID);
-        console.log(' ----- ====== ==== id == ', id);
-
-        const response = yield call(roleService.update, id, params);
-
-        console.log(' ----- ====== ==== response == ', response);
-
+        const id = yield select((state) => state.user.formID);
+        const response = yield call(userService.update, id, params);
         if (response.status === 'OK') {
           success = true;
         }
       } else {
-        const response = yield call(roleService.create, params);
+        const response = yield call(userService.create, params);
         if (response.id && response.id !== '') {
           success = true;
         }
@@ -184,25 +157,18 @@ export default {
       }
     },
     *del({ payload }, { call, put }) {
-      const response = yield call(roleService.del, payload.id);
+      const response = yield call(userService.del, payload.id);
       if (response.status === 'OK') {
         message.success('删除成功');
         yield put({ type: 'fetch' });
       }
     },
-    *fetchSelect(_, { call, put }) {
-      const response = yield call(roleService.querySelect);
-      yield put({
-        type: 'saveSelectData',
-        payload: response.list || [],
-      });
-    },
     *changeStatus({ payload }, { call, put, select }) {
       let response;
       if (payload.is_active === true) {
-        response = yield call(roleService.enable, payload.id);
+        response = yield call(userService.enable, payload.id);
       } else {
-        response = yield call(roleService.disable, payload.id);
+        response = yield call(userService.disable, payload.id);
       }
 
       if (response.status === 'OK') {
@@ -211,7 +177,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.role.data);
+        const data = yield select((state) => state.user.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {
@@ -229,16 +195,12 @@ export default {
       }
     },
   },
-
   reducers: {
     saveData(state, { payload }) {
       return { ...state, data: payload };
     },
     saveSearch(state, { payload }) {
       return { ...state, search: payload };
-    },
-    savePagination(state, { payload }) {
-      return { ...state, pagination: payload };
     },
     changeFormVisible(state, { payload }) {
       if (payload) {
@@ -266,9 +228,6 @@ export default {
     },
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };
-    },
-    saveSelectData(state, { payload }) {
-      return { ...state, selectData: payload };
     },
   },
 };
