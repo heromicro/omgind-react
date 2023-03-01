@@ -1,6 +1,19 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Tag } from 'antd';
+import {
+  Form,
+  Row,
+  Col,
+  Card,
+  Input,
+  Button,
+  Cascader,
+  Modal,
+  Badge,
+  Space,
+  Tag,
+  Select,
+} from 'antd';
 import type { ColumnsState, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
@@ -8,7 +21,7 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { showPButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
-import { DistrctItem } from '@/scheme/sysdistrict';
+import { SysDistrctItem } from '@/scheme/sysdistrict';
 
 import { makeupSortKey } from '@/utils/urlutil';
 
@@ -30,12 +43,25 @@ class DistrictList extends PureComponent {
     this.state = {
       selectedRowKeys: [],
       selectedRows: [],
-      columnsStateMap:{},
+      columnsStateMap: {},
+      allDistrict: [],
     };
   }
 
   componentDidMount() {
     this.refetch();
+
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'sysdistrict/fetchAllDistricts',
+      params: { pid: '' },
+      callback: (res) => {
+        this.setState({
+          allDistrict: res,
+        });
+      },
+    });
   }
 
   onItemDisableClick = (item) => {
@@ -161,6 +187,32 @@ class DistrictList extends PureComponent {
     });
   };
 
+  parentFieldChanged = (values: string[]) => {
+    // console.log(" ------ ===== ---- values ", values);
+  };
+
+  parentFieldLoadData = (selectedOptions: SysDistrctItem[]) => {
+    console.log(' ------ ===== ---- selectedOptions: ', selectedOptions);
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    targetOption.loading = true;
+    console.log(' ------ ===== ---- targetOption: ', targetOption);
+    const { dispatch } = this.props;
+    const { allDistrict } = this.state;
+
+    dispatch({
+      type: 'sysdistrict/fetchAllDistricts',
+      params: { pid: targetOption.id },
+      callback: (res) => {
+        targetOption.loading = false;
+        targetOption.children = res;
+        console.log(' ------ === ---- === res ', res);
+        this.setState({
+          allDistrict,
+        });
+      },
+    });
+  };
+
   renderDataForm() {
     return <DistrictCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
   }
@@ -199,13 +251,62 @@ class DistrictList extends PureComponent {
     } = this.props;
 
     console.log(' -- --- == == = --- list: ', list);
-    console.log(' -- --- == == = --- location: ', location);
+    // console.log(' -- --- == == = --- location: ', location);
 
-    const { selectedRows, selectedRowKeys, columnsStateMap } = this.state;
+    const { selectedRows, selectedRowKeys, columnsStateMap, allDistrict } = this.state;
+    console.log(' -- --- == == = --- allDistrict: ', allDistrict);
 
-// {"id": "01GSWGT66YKJTK652JWVJHYWSE","pid": "01GSWGT66SN259NQ5DEVENTFDZ","name": "北京","sname": "北京","abbr": null,"suffix": "市","st_code": "110000","initials": "bj","pinyin": "beijing","longitude": 116.405281,"latitude": 39.904987,"area_code": "","zip_code": "","merge_name": "北京市","merge_sname": "北京","extra": "","is_active": true,"sort": 2,"is_del": false,"is_main": false,"is_hot": true,"is_real": true,"is_direct": true,"is_leaf": false,"tree_id": 1,"tree_level": 2,"tree_left": 2,"tree_right": 39,"tree_path": "01GSWGT66SN259NQ5DEVENTFDZ","creator": "","created_at": "2023-02-23T14:47:41.634339+08:00","updated_at": "2023-02-23T14:47:41.911614+08:00" }
+    const columns: ProColumns<SysDistrctItem>[] = [
+      {
+        title: '父级',
+        dataIndex: 'pid',
+        hideInTable: true,
+        renderFormItem: (item, config, form) => {
+          if (config.type === 'form') {
+            return null;
+          }
 
-    const columns:ProColumns<DistrctItem>[] = [
+          // return <Cascader
+          //   options={allDistrict}
+          //   changeOnSelect
+          //   // multiple
+          //   // maxTagCount="responsive"
+          //   displayRender={(label, selectedOptions) => {
+          //     console.log(" ------- ====== label  ", label);
+          //   }}
+          //   loadData={this.parentFieldLoadData}
+          //   onChange={this.parentFieldChanged}
+          //   fieldNames={{label: 'name', value:'id', children: 'children'}}
+          // />
+
+          return null;
+          // return config.defaultRender(item)
+        },
+      },
+      {
+        title: '国',
+        dataIndex: 'pid',
+        hideInTable: true,
+        renderFormItem: (item, config, form) => {
+          if (config.type === 'form') {
+            return null;
+          }
+
+          return (
+            <Space wrap>
+              <Select />
+
+              <Select />
+              <Select />
+              <Select />
+            </Space>
+          );
+
+          // return null;
+          // return config.defaultRender(item)
+        },
+      },
+
       {
         title: '名称',
         dataIndex: 'name',
@@ -234,13 +335,11 @@ class DistrictList extends PureComponent {
         title: '邮编',
         dataIndex: 'zip_code',
         hideInSearch: true,
-
       },
       {
         title: '区号',
         dataIndex: 'area_code',
         hideInSearch: true,
-        
       },
       {
         title: '树ID',
@@ -267,8 +366,8 @@ class DistrictList extends PureComponent {
         dataIndex: 'is_real',
         valueType: 'select',
         valueEnum: {
-          true: {text: '是', status: 'Default'},
-          false: {text: '否', status: 'Default'},
+          true: { text: '是', status: 'Default' },
+          false: { text: '否', status: 'Default' },
         },
         render: (val) => {
           if (val) {
@@ -282,8 +381,8 @@ class DistrictList extends PureComponent {
         dataIndex: 'is_hot',
         valueType: 'select',
         valueEnum: {
-          true: {text: '是', status: 'Default'},
-          false: {text: '否', status: 'Default'},
+          true: { text: '是', status: 'Default' },
+          false: { text: '否', status: 'Default' },
         },
         render: (val) => {
           if (val) {
@@ -297,8 +396,8 @@ class DistrictList extends PureComponent {
         dataIndex: 'is_direct',
         valueType: 'select',
         valueEnum: {
-          true: {text: '是', status: 'Default'},
-          false: {text: '否', status: 'Default'},
+          true: { text: '是', status: 'Default' },
+          false: { text: '否', status: 'Default' },
         },
         render: (val) => {
           if (val) {
@@ -312,8 +411,8 @@ class DistrictList extends PureComponent {
         dataIndex: 'is_leaf',
         valueType: 'select',
         valueEnum: {
-          true: {text: '是', status: 'Default'},
-          false: {text: '否', status: 'Default'},
+          true: { text: '是', status: 'Default' },
+          false: { text: '否', status: 'Default' },
         },
         render: (val) => {
           if (val) {
@@ -327,8 +426,8 @@ class DistrictList extends PureComponent {
         dataIndex: 'is_active',
         valueType: 'select',
         valueEnum: {
-          true: {text: '有效', status: 'Default'},
-          false: {text: '失效', status: 'Error'},
+          true: { text: '有效', status: 'Default' },
+          false: { text: '失效', status: 'Error' },
         },
         render: (val) => {
           if (val) {
@@ -362,6 +461,7 @@ class DistrictList extends PureComponent {
       <PageHeaderLayout title="行政区域" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
+            {/* <div className={styles.tableListForm}>{this.renderSearchForm()}</div> */}
             <div>
               <ProTable<ProColumns>
                 actionRef={this.actionRef}
@@ -377,27 +477,24 @@ class DistrictList extends PureComponent {
                   persistenceType: 'localStorage',
                   // persistenceKey: `columns-state-${location.pathname}`,
                   value: columnsStateMap,
-                  onChange:(map: Record<string, ColumnsState>) => {
-                    console.log(" ------ ====== map ",  map);
+                  onChange: (map: Record<string, ColumnsState>) => {
+                    console.log(' ------ ====== map ', map);
                     this.setState({
-                      columnsStateMap: map
-                    })
-
-                  }
+                      columnsStateMap: map,
+                    });
+                  },
                 }}
+                // search={false}
                 pagination={paginationProps}
                 request={(params, sort, filter) => {
-
-                  let nsort = makeupSortKey(sort)
+                  let nsort = makeupSortKey(sort);
                   this.refetch({
-                    search: {...params, ...nsort},
-                    pagination:{current: params.current, pageSize: params.pageSize}
+                    search: { ...params, ...nsort },
+                    pagination: { current: params.current, pageSize: params.pageSize },
                   });
-                  
                 }}
                 onChange={this.onMainTableChange}
                 size="small"
-
                 toolBarRender={() =>
                   showPButtons(
                     selectedRows,

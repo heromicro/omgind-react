@@ -5,6 +5,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
+import { SysAddressItem } from '@/scheme/sysaddress';
 
 import { showPButtons } from '@/utils/uiutil';
 import { makeupSortKey } from '@/utils/urlutil';
@@ -34,10 +35,9 @@ class AddressList extends PureComponent {
     this.refetch();
 
     this.dispatch({
-      type:'sysdistrict/fetchSubDistricts',
-      istop: true,
-      params: {tree_level: 2}
-    })
+      type: 'sysdistrict/fetchAllDistricts',
+      params: { tree_level: 2 },
+    });
   }
 
   onItemDisableClick = (item) => {
@@ -65,6 +65,8 @@ class AddressList extends PureComponent {
   };
 
   onAddClick = () => {
+    console.log(' ------ ======= ssss ');
+
     this.dispatch({
       type: 'sysaddress/loadForm',
       payload: {
@@ -203,18 +205,47 @@ class AddressList extends PureComponent {
 
     const { selectedRows, selectedRowKeys } = this.state;
 
-    const columns = [
+    const columns: ProColumns<SysAddressItem>[] = [
       {
         title: '省/市',
         dataIndex: 'provice',
+        hideInForm: true,
+      },
+      {
+        title: '省/市',
+        dataIndex: 'provice',
+        hideInTable: true,
+        renderFormItem: (item, config, form) => {
+          const { type, defaultRender } = config;
+          if (config.type === 'form') {
+            return null;
+          }
+
+          console.log(' -------- ==== ----- === item    ', item);
+          console.log(' -------- ==== ----- === config  ', config);
+
+          return defaultRender(item);
+        },
       },
       {
         title: '市/区',
         dataIndex: 'city',
+        hideInForm: true,
+      },
+      {
+        title: '市/区',
+        dataIndex: 'city',
+        hideInTable: true,
       },
       {
         title: '县/区',
         dataIndex: 'county',
+        hideInForm: true,
+      },
+      {
+        title: '县/区',
+        dataIndex: 'county',
+        hideInTable: true,
       },
       {
         title: '详细地址',
@@ -256,7 +287,7 @@ class AddressList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>
-              <ProTable
+              <ProTable<SysAddressItem>
                 rowSelection={{
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
@@ -267,17 +298,15 @@ class AddressList extends PureComponent {
                 columns={columns}
                 pagination={paginationProps}
                 request={(params, sort, filter) => {
+                  let nsort = makeupSortKey(sort);
 
-                  let nsort = makeupSortKey(sort)
-                  
                   this.refetch({
-                    search:{...params, ...nsort},
-                    pagination:{current: params.current, pageSize: params.pageSize}});
-
+                    search: { ...params, ...nsort },
+                    pagination: { current: params.current, pageSize: params.pageSize },
+                  });
                 }}
                 onChange={this.onMainTableChange}
                 size="small"
-
                 toolBarRender={() =>
                   showPButtons(
                     selectedRows,
@@ -288,7 +317,6 @@ class AddressList extends PureComponent {
                     this.onItemDisableClick
                   )
                 }
-
               />
             </div>
           </div>

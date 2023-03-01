@@ -4,7 +4,6 @@ import qs from 'qs';
 import * as districtService from '@/services/sysdistrict';
 import store from '@/utils/store';
 
-
 export default {
   namespace: 'sysdistrict',
   state: {
@@ -14,8 +13,7 @@ export default {
       list: [],
       pagination: {},
     },
-    subdistrict: { // pid:[districts]
-    },
+    allDistrict: [],
     submitting: false,
     formTitle: '',
     formID: '',
@@ -198,32 +196,42 @@ export default {
       }
     },
 
-    *fetchSubDistricts({istop=false, params}, {call, put, select}) {
-      const nparams = params
+    *fetchAllDistricts({ params, callback = null }, { call, put, select }) {
+      const nparams = params;
+      let mkey = nparams.pid;
+      if (nparams && (nparams.pid === '' || nparams.pid === null || nparams.pid === undefined)) {
+        nparams.pid = '-';
+      }
 
-      if (nparams && !nparams.pid) {
-        nparams.p_area_code = "086"
-      } 
-      // current=1&pageSize=10
       if (nparams && !nparams.current) {
-        nparams.current = 100
+        nparams.current = 1;
       }
 
       if (nparams && !nparams.pageSize) {
-        nparams.pageSize = 100
+        nparams.pageSize = 100;
       }
 
-      let skey = qs.stringify(nparams)
+      let skey = qs.stringify(nparams);
+      console.log(' ----- === ----- == skey == ', skey);
+      let list = store.getExpirableItem(skey);
+      if (!list || list.length === 0) {
+        let response = yield call(districtService.getSubstricts, nparams.pid, nparams);
+        if (response) {
+          list = response.list || [];
+          if (list.length > 0) {
+            store.setExpirableItem(skey, list, 20);
+          }
+        }
+      }
 
-      console.log(" ----- === ----- == skey == ", skey);
-
-      let response = yield call(districtService.getSubstricts, nparams)
-      const {list, pagination} = response;
-
-      console.log(" ----- === ----- == response == ", response);
-      console.log(" ----- === ----- == list == ", list);
-      console.log(" ----- === ----- == pagination == ", pagination);
-      
+      // yield put({
+      //   type: 'saveSubDistrict',
+      //   pid: nparams.pid,
+      //   payload: list,
+      // });
+      if (callback) {
+        callback(list);
+      }
     },
   },
   reducers: {
@@ -262,6 +270,9 @@ export default {
     },
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };
+    },
+    saveSubDistrict(state, { pid, payload }) {
+      return { ...state, allDistrict: payload };
     },
   },
 };

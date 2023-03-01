@@ -11,10 +11,30 @@ export async function get(id, params = {}) {
   return request(`/${version}/${router}/${id}`, { params });
 }
 
-export async function getSubstricts(params = {}) {
-  return request(`/${version}/${router}`, { params });
-  // return request(`/${version}/${router}/${pid}/substricts`, { params });
+export async function getSubstricts(pid = '', params = {}) {
+  return request(`/${version}/${router}/${pid}/substricts`, { params });
 }
+
+// export async function getSubstricts(params = {}, usecache=false) {
+//   let skey = qs.stringify(nparams)
+//   if (usecache) {
+//     let reponse = store.getExpirableItem(skey)
+//     if (reponse) {
+//       new Promise((resolve, reject) => {
+//         resolve(reponse)
+//       })
+//       // return reponse
+//     }
+//   }
+//   let reponse =  request(`/${version}/${router}`, { params });
+//   const {list} = reponse;
+//   if (list && list.length > 0) {
+//     store.setExpirableItem(skey, reponse, 20)
+//   }
+//   return new Promise((resolve, reject) => {
+//     resolve(reponse)
+//   })
+// }
 
 export async function create(data) {
   return request(`/${version}/${router}`, {

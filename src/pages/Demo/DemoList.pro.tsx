@@ -18,7 +18,6 @@ import DemoCard from './DemoCard';
 
 import styles from './DemoList.less';
 
-
 @connect((state) => ({
   loading: state.loading.models.demo,
   demo: state.demo,
@@ -112,15 +111,18 @@ class DemoList extends PureComponent {
     });
   };
 
-  onMainTableSelectChange = (newSelectedRowKeys: React.Key[], newSelectedRows:DemoItem[], info) => {  
-    console.log(" ======== ======== === newSelectedRowKeys ", newSelectedRowKeys)
-    console.log(" ======== ======== === newSelectedRows ", newSelectedRows)
-    console.log(" ======== ======== === info ", info)
-    console.log(" ======== ======== === info.type ", info.type)
+  onMainTableSelectChange = (
+    newSelectedRowKeys: React.Key[],
+    newSelectedRows: DemoItem[],
+    info
+  ) => {
+    console.log(' ======== ======== === newSelectedRowKeys ', newSelectedRowKeys);
+    console.log(' ======== ======== === newSelectedRows ', newSelectedRows);
+    console.log(' ======== ======== === info ', info);
+    console.log(' ======== ======== === info.type ', info.type);
 
-    this.setState({ selectedRowKeys: newSelectedRowKeys, selectedRows:newSelectedRows})
-
-  }
+    this.setState({ selectedRowKeys: newSelectedRowKeys, selectedRows: newSelectedRows });
+  };
 
   onMainTableChange = (pagination) => {
     this.refetch({ pagination });
@@ -217,7 +219,7 @@ class DemoList extends PureComponent {
       {
         title: '编号',
         dataIndex: 'code',
-        sorter: {compare:(a, b) => a.code - b.code, multiple: 1}
+        sorter: { compare: (a, b) => a.code - b.code, multiple: 1 },
       },
       {
         title: '名称',
@@ -235,8 +237,8 @@ class DemoList extends PureComponent {
         valueType: 'select',
         valueEnum: {
           // all: {text: '全部'},
-          true: {text: '有效', status: 'Default'},
-          false: {text: '失效', status: 'Error'},
+          true: { text: '有效', status: 'Default' },
+          false: { text: '失效', status: 'Error' },
         },
         // filters: true,
         // onFilter: true,
@@ -244,14 +246,13 @@ class DemoList extends PureComponent {
         //   {text: '有效', value: true},
         //   {text: '失效', value: false}
         // ],
-        // onFilter:  
+        // onFilter:
         render: (val) => {
           if (val) {
             return <Badge status="success" text="启用" />;
           }
           return <Badge status="error" text="停用" />;
         },
-        
       },
       {
         title: '排序',
@@ -259,7 +260,7 @@ class DemoList extends PureComponent {
         key: 'sort__show',
         hideInSearch: true,
         search: false,
-        sorter: {compare:(a, b) => a.sort - b.sort, multiple: 1},
+        sorter: { compare: (a, b) => a.sort - b.sort, multiple: 1 },
       },
       // {
       //   title: '排序',
@@ -284,10 +285,10 @@ class DemoList extends PureComponent {
       // },
       {
         title: '创建时间',
-        key: "create_at__show",
+        key: 'create_at__show',
         dataIndex: 'created_at',
         hideInSearch: true,
-        sorter: {compare: (a, b) => a.created_at - b.created_at, multiple: 2},
+        sorter: { compare: (a, b) => a.created_at - b.created_at, multiple: 2 },
         render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
       {
@@ -298,11 +299,11 @@ class DemoList extends PureComponent {
         // renderFormItem:{
         // },
         search: {
-          transform: (value:any, namePath, allValues:any) => {
-            let startd = dayjs(value[0]).startOf("day").valueOf(); 
-            let entd = dayjs(value[1]).endOf('day').valueOf();   
-            return {created_at__st:startd, created_at__ed:entd}
-          }
+          transform: (value: any, namePath, allValues: any) => {
+            let startd = dayjs(value[0]).startOf('day').valueOf();
+            let entd = dayjs(value[1]).endOf('day').valueOf();
+            return { created_at__st: startd, created_at__ed: entd };
+          },
         },
       },
     ];
@@ -318,19 +319,9 @@ class DemoList extends PureComponent {
 
     return (
       // <PageHeaderLayout title="基础示例" breadcrumbList={breadcrumbList}>
-      <PageHeaderLayout  title="基础示例"  breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="基础示例" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            {/* <div className={styles.tableListOperator}>
-              {showPButtons(
-                selectedRows,
-                this.onAddClick,
-                this.onItemEditClick,
-                this.onItemDelClick,
-                this.onItemEnableClick,
-                this.onItemDisableClick
-              )}
-            </div> */}
             <div>
               <ProTable<DemoItem>
                 actionRef={this.actionRef}
@@ -348,16 +339,16 @@ class DemoList extends PureComponent {
                 columns={columns}
                 pagination={paginationProps}
                 request={(params, sort, filter) => {
+                  console.log(' --- ===== ----- == params ', params);
+                  console.log(' --- ===== ----- == sort ', sort);
+                  console.log(' --- ===== ----- == filter ', filter);
 
-                  console.log(" --- ===== ----- == params ", params)
-                  console.log(" --- ===== ----- == sort ", sort)
-                  console.log(" --- ===== ----- == filter ", filter)
-                  
-                  let nsort = makeupSortKey(sort)
-                  
+                  let nsort = makeupSortKey(sort);
+
                   this.refetch({
-                    search:{...params, ...nsort},
-                    pagination:{current: params.current, pageSize: params.pageSize}});
+                    search: { ...params, ...nsort },
+                    pagination: { current: params.current, pageSize: params.pageSize },
+                  });
                 }}
                 onChange={this.onMainTableChange}
                 size="small"
