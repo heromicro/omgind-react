@@ -13,7 +13,6 @@ export default {
       list: [],
       pagination: {},
     },
-    allDistrict: [],
     submitting: false,
     formTitle: '',
     formID: '',
@@ -212,7 +211,8 @@ export default {
       }
 
       let skey = qs.stringify(nparams);
-      console.log(' ----- === ----- == skey == ', skey);
+      // console.log(' ----- === ----- == skey == ', skey);
+
       let list = store.getExpirableItem(skey);
       if (!list || list.length === 0) {
         let response = yield call(districtService.getSubstricts, nparams.pid, nparams);
@@ -270,9 +270,6 @@ export default {
     },
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };
-    },
-    saveSubDistrict(state, { pid, payload }) {
-      return { ...state, allDistrict: payload };
     },
   },
 };

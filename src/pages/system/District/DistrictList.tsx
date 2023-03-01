@@ -35,6 +35,7 @@ import styles from './DistrictList.less';
 }))
 class DistrictList extends PureComponent {
   formRef = React.createRef();
+  searchFormRef = React.createRef();
   actionRef = React.createRef();
 
   constructor(props) {
@@ -44,7 +45,10 @@ class DistrictList extends PureComponent {
       selectedRowKeys: [],
       selectedRows: [],
       columnsStateMap: {},
-      allDistrict: [],
+      countries: [],
+      provinces: [],
+      cities: [],
+      pid: null,
     };
   }
 
@@ -55,10 +59,10 @@ class DistrictList extends PureComponent {
 
     dispatch({
       type: 'sysdistrict/fetchAllDistricts',
-      params: { pid: '' },
+      params: { pid: '', is_real: true },
       callback: (res) => {
         this.setState({
-          allDistrict: res,
+          countries: res,
         });
       },
     });
@@ -136,8 +140,17 @@ class DistrictList extends PureComponent {
     });
   };
 
-  onMainTableChange = (pagination) => {
-    this.refetch({ pagination });
+  onMainTableChange = (pagination, filter, sorter) => {
+    const { pid } = this.state;
+    let search = { pid };
+    let nsort = makeupSortKey(sorter);
+
+    if (this.searchFormRef.current) {
+      let params = this.searchFormRef.current.getFieldsValue(true);
+      search = { pid, ...params };
+    }
+
+    this.refetch({ search, pagination });
     this.clearSelectRows();
   };
 
@@ -191,23 +204,52 @@ class DistrictList extends PureComponent {
     // console.log(" ------ ===== ---- values ", values);
   };
 
-  parentFieldLoadData = (selectedOptions: SysDistrctItem[]) => {
-    console.log(' ------ ===== ---- selectedOptions: ', selectedOptions);
-    const targetOption = selectedOptions[selectedOptions.length - 1];
-    targetOption.loading = true;
-    console.log(' ------ ===== ---- targetOption: ', targetOption);
+  onCountrySelectChange = (value, option: SysDistrctItem) => {
+    console.log(' ----- ====== ===== country ', value);
+    console.log(' ----- ====== =====  country option: ', option);
+
     const { dispatch } = this.props;
-    const { allDistrict } = this.state;
 
     dispatch({
       type: 'sysdistrict/fetchAllDistricts',
-      params: { pid: targetOption.id },
+      params: { pid: value, is_real: true },
       callback: (res) => {
-        targetOption.loading = false;
-        targetOption.children = res;
-        console.log(' ------ === ---- === res ', res);
         this.setState({
-          allDistrict,
+          provinces: res,
+          pid: value,
+        });
+      },
+    });
+  };
+
+  onProvinceSelectChange = (value, option: SysDistrctItem) => {
+    console.log(' ----- ====== ===== province ', value);
+    console.log(' ----- ====== =====  province option: ', option);
+
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'sysdistrict/fetchAllDistricts',
+      params: { pid: value, is_real: true },
+      callback: (res) => {
+        this.setState({
+          cities: res,
+          pid: value,
+        });
+      },
+    });
+  };
+
+  onCitySelectChange = (value, option: SysDistrctItem) => {
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'sysdistrict/fetchAllDistricts',
+      params: { pid: value, is_real: true },
+      callback: (res) => {
+        console.log(' ------- ======= res ', res);
+        this.setState({
+          pid: value,
         });
       },
     });
@@ -247,14 +289,16 @@ class DistrictList extends PureComponent {
       sysdistrict: {
         data: { list, pagination },
       },
-      location,
     } = this.props;
 
-    console.log(' -- --- == == = --- list: ', list);
+    // console.log(' -- --- == == = --- list: ', list);
     // console.log(' -- --- == == = --- location: ', location);
 
-    const { selectedRows, selectedRowKeys, columnsStateMap, allDistrict } = this.state;
-    console.log(' -- --- == == = --- allDistrict: ', allDistrict);
+    const { selectedRows, selectedRowKeys, columnsStateMap, countries, provinces, cities } =
+      this.state;
+    // console.log(' -- --- == == = --- countries: ', countries);
+    // console.log(' -- --- == == = --- provinces: ', provinces);
+    // console.log(' -- --- == == = --- cities: ', cities);
 
     const columns: ProColumns<SysDistrctItem>[] = [
       {
@@ -265,40 +309,34 @@ class DistrictList extends PureComponent {
           if (config.type === 'form') {
             return null;
           }
-
-          // return <Cascader
-          //   options={allDistrict}
-          //   changeOnSelect
-          //   // multiple
-          //   // maxTagCount="responsive"
-          //   displayRender={(label, selectedOptions) => {
-          //     console.log(" ------- ====== label  ", label);
-          //   }}
-          //   loadData={this.parentFieldLoadData}
-          //   onChange={this.parentFieldChanged}
-          //   fieldNames={{label: 'name', value:'id', children: 'children'}}
-          // />
-
-          return null;
-          // return config.defaultRender(item)
-        },
-      },
-      {
-        title: '国',
-        dataIndex: 'pid',
-        hideInTable: true,
-        renderFormItem: (item, config, form) => {
-          if (config.type === 'form') {
-            return null;
-          }
-
+          const rest = {
+            value: form.getFieldValue(`${item.dataIndex}`),
+            onChange: (value) => {
+              console.log(' ---- ======== 0000000 === ', value);
+              const newValues = {};
+              newValues[`${item.dataIndex}`] = value;
+              form.setFieldsValue(newValues);
+            },
+          };
           return (
-            <Space wrap>
-              <Select />
+            <Space wrap {...rest}>
+              <Select
+                style={{ width: 90 }}
+                onChange={this.onCountrySelectChange}
+                options={countries.map((oitem) => ({ label: oitem.name, value: oitem.id }))}
+              />
 
-              <Select />
-              <Select />
-              <Select />
+              <Select
+                style={{ width: 90 }}
+                onChange={this.onProvinceSelectChange}
+                options={provinces.map((oitem) => ({ label: oitem.name, value: oitem.id }))}
+              />
+
+              <Select
+                onChange={this.onCitySelectChange}
+                style={{ width: 90 }}
+                options={cities.map((oitem) => ({ label: oitem.name, value: oitem.id }))}
+              />
             </Space>
           );
 
@@ -465,6 +503,7 @@ class DistrictList extends PureComponent {
             <div>
               <ProTable<ProColumns>
                 actionRef={this.actionRef}
+                formRef={this.searchFormRef}
                 rowSelection={{
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
@@ -487,9 +526,19 @@ class DistrictList extends PureComponent {
                 // search={false}
                 pagination={paginationProps}
                 request={(params, sort, filter) => {
+                  // console.log(" ---- ==== ==== =");
+                  // console.log(" ---- ==== ==== =  params params ", params);
+                  // console.log(" ---- ==== ==== =");
+                  const nparams = params;
+                  const { pid } = this.state;
+                  if (pid) {
+                    nparams.pid = pid;
+                  }
+                  console.log(' ---- ==== ==== =  params param 111 ', nparams);
+
                   let nsort = makeupSortKey(sort);
                   this.refetch({
-                    search: { ...params, ...nsort },
+                    search: { ...nparams, ...nsort },
                     pagination: { current: params.current, pageSize: params.pageSize },
                   });
                 }}
