@@ -339,9 +339,6 @@ class DistrictList extends PureComponent {
               />
             </Space>
           );
-
-          // return null;
-          // return config.defaultRender(item)
         },
       },
 
