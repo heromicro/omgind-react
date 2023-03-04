@@ -8,7 +8,10 @@ export default {
   namespace: 'sysdistrict',
   state: {
     search: {},
-    pagination: {},
+    pagination: {
+      current: 1,
+      pageSize: 50,
+    },
     data: {
       list: [],
       pagination: {},
@@ -69,7 +72,7 @@ export default {
         }),
         put({
           type: 'saveFormTitle',
-          payload: '新建基础示例',
+          payload: '新建行政区域',
         }),
         put({
           type: 'saveFormID',
@@ -85,7 +88,7 @@ export default {
         yield [
           put({
             type: 'saveFormTitle',
-            payload: '编辑基础示例',
+            payload: '编辑行政区域',
           }),
           put({
             type: 'saveFormID',

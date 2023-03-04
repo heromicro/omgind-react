@@ -66,7 +66,6 @@ class DistrctCard extends PureComponent {
       >
         {formVisible && (
           <Form
-            ref={this.formRef}
             onFinishFailed={this.onFinishFailed}
             initialValues={{
               code: formData.code,

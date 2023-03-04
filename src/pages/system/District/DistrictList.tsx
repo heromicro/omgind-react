@@ -26,6 +26,7 @@ import { SysDistrctItem } from '@/scheme/sysdistrict';
 import { makeupSortKey } from '@/utils/urlutil';
 
 import DistrictCard from './DistrictCard';
+import DistrictFormDrawer from './DistrictFormDrawer';
 
 import styles from './DistrictList.less';
 
@@ -44,7 +45,11 @@ class DistrictList extends PureComponent {
     this.state = {
       selectedRowKeys: [],
       selectedRows: [],
-      columnsStateMap: {},
+      columnsStateMap: {
+        sname: { show: false, order: 3 },
+        merge_name: { show: false, order: 5 },
+        tree_id: { show: false, order: 8 },
+      },
       countries: [],
       provinces: [],
       cities: [],
@@ -53,7 +58,7 @@ class DistrictList extends PureComponent {
   }
 
   componentDidMount() {
-    this.refetch();
+    this.refetch({ pagination: { pageSize: 50, current: 1 } });
 
     const { dispatch } = this.props;
 
@@ -180,6 +185,8 @@ class DistrictList extends PureComponent {
   };
 
   onDataFormCancel = () => {
+    console.log(' ------ ===== -- cancel');
+
     this.dispatch({
       type: 'sysdistrict/changeModalFormVisible',
       payload: false,
@@ -255,7 +262,11 @@ class DistrictList extends PureComponent {
     });
   };
 
-  renderDataForm() {
+  renderDataDrawerForm() {
+    return <DistrictFormDrawer onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
+  }
+
+  renderDataModalForm() {
     return <DistrictCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
   }
 
@@ -367,6 +378,11 @@ class DistrictList extends PureComponent {
         dataIndex: 'merge_sname',
       },
       {
+        title: '行政后缀',
+        dataIndex: 'suffix',
+        hideInSearch: true,
+      },
+      {
         title: '邮编',
         dataIndex: 'zip_code',
         hideInSearch: true,
@@ -380,11 +396,13 @@ class DistrictList extends PureComponent {
         title: '树ID',
         dataIndex: 'tree_id',
         valueType: 'digit',
+        sorter: { compare: (a, b) => a.tree_id - b.tree_id, multiple: 1 },
       },
       {
         title: '树层级',
         dataIndex: 'tree_level',
         valueType: 'digit',
+        sorter: { compare: (a, b) => a.tree_level - b.tree_level, multiple: 2 },
       },
       {
         title: '树左值',
@@ -555,7 +573,8 @@ class DistrictList extends PureComponent {
             </div>
           </div>
         </Card>
-        {this.renderDataForm()}
+        {/* {this.renderDataModalForm()} */}
+        {this.renderDataDrawerForm()}
       </PageHeaderLayout>
     );
   }

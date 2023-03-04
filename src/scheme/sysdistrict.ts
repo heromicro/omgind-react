@@ -10,12 +10,15 @@ export type SysDistrctItem = {
   pinyin?: string;
   merge_name?: string;
   extra?: string;
+  zip_code?: string;
+  area_code?: string;
 
   longitude?: number;
   latitude?: number;
 
-  is_active?: boolean;
   is_del?: boolean;
+
+  is_active?: boolean;
   is_main?: boolean;
   is_hot?: boolean;
   is_real?: boolean;

@@ -66,7 +66,7 @@ export default {
         }),
         put({
           type: 'saveFormTitle',
-          payload: '新建基础示例',
+          payload: '新建地址',
         }),
         put({
           type: 'saveFormID',
@@ -82,7 +82,7 @@ export default {
         yield [
           put({
             type: 'saveFormTitle',
-            payload: '编辑基础示例',
+            payload: '编辑地址',
           }),
           put({
             type: 'saveFormID',
