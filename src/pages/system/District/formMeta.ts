@@ -3,7 +3,7 @@ export const DistrictFormSchema = {
   type: 'object',
   column: 2,
   labelWidth: 120,
-  displayType: 'column',
+  displayType: 'row',
   properties: {
     name: {
       title: '名称',
@@ -13,10 +13,9 @@ export const DistrictFormSchema = {
       },
       required: true,
       maxLength: 128,
-      displayType: 'row',
       description: '',
       bind: 'name',
-      hidden: false,
+      width: '100%',
       placeholder: '请输入名称',
     },
     pid: {
@@ -25,14 +24,12 @@ export const DistrictFormSchema = {
       enum: ['a', 'b', 'c'],
       enumNames: ['早', '中', '晚'],
       widget: 'select',
-      displayType: 'row',
       bind: 'pid',
       placeholder: '请选择上级',
     },
     sname: {
       title: '短名称',
       type: 'string',
-      displayType: 'column',
       bind: 'sname',
       props: {
         allowClear: true,
@@ -43,7 +40,6 @@ export const DistrictFormSchema = {
     abbr: {
       title: '简称',
       type: 'string',
-      displayType: 'row',
       placeholder: '请输入简称',
       bind: 'abbr',
       props: {
@@ -54,7 +50,6 @@ export const DistrictFormSchema = {
     merge_name: {
       title: '行政名称',
       type: 'string',
-      displayType: 'column',
       bind: 'merge_name',
       props: {
         allowClear: true,
@@ -64,7 +59,6 @@ export const DistrictFormSchema = {
     merge_sname: {
       title: '行政短名称',
       type: 'string',
-      displayType: 'column',
       bind: 'merge_sname',
       props: {
         allowClear: true,
@@ -74,25 +68,15 @@ export const DistrictFormSchema = {
     suffix: {
       title: '行政后缀',
       type: 'string',
-      displayType: 'column',
       props: {
         allowClear: true,
       },
       maxLength: 16,
       bind: 'suffix',
     },
-    html_Yb4Skn: {
-      title: 'HTML',
-      type: 'string',
-      widget: 'html',
-      props: {},
-      displayType: 'column',
-      readOnly: true,
-    },
     pinyin: {
       title: '拼音',
       type: 'string',
-      displayType: 'column',
       bind: 'pinyin',
       props: {
         allowClear: true,
@@ -102,7 +86,6 @@ export const DistrictFormSchema = {
     input__vp7_b: {
       title: '简拼',
       type: 'string',
-      displayType: 'column',
       props: {
         allowClear: true,
       },
@@ -115,14 +98,12 @@ export const DistrictFormSchema = {
       props: {
         allowClear: true,
       },
-      displayType: 'column',
       maxLength: 8,
       bind: 'area_code',
     },
     input_n4mwB_: {
       title: '邮码',
       type: 'string',
-      displayType: 'column',
       props: {
         allowClear: true,
       },
@@ -133,7 +114,6 @@ export const DistrictFormSchema = {
       title: '是否有效',
       type: 'boolean',
       widget: 'switch',
-      width: '20%',
       default: true,
       bind: 'is_active',
     },
@@ -141,14 +121,12 @@ export const DistrictFormSchema = {
       title: '是否主要',
       type: 'boolean',
       widget: 'switch',
-      width: '20%',
       bind: 'is_main',
     },
     switch_bzDGvw: {
       title: '是否真实',
       type: 'boolean',
       widget: 'switch',
-      width: '20%',
       default: true,
       bind: 'is_real',
     },
@@ -156,14 +134,12 @@ export const DistrictFormSchema = {
       title: '是否热点',
       type: 'boolean',
       widget: 'switch',
-      width: '20%',
       bind: 'is_hot',
     },
     switch_orG0Zt: {
       title: '是否直辖',
       type: 'boolean',
       widget: 'switch',
-      width: '20%',
       default: false,
       bind: 'is_direct',
     },

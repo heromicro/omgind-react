@@ -26,7 +26,7 @@ import { SysDistrctItem } from '@/scheme/sysdistrict';
 import { makeupSortKey } from '@/utils/urlutil';
 
 import DistrictCard from './DistrictCard';
-import DistrictFormDrawer from './DistrictFormDrawer';
+import DistrictDetail from './DistrictDetail';
 
 import styles from './DistrictList.less';
 
@@ -177,6 +177,8 @@ class DistrictList extends PureComponent {
   };
 
   onDataFormSubmit = (data) => {
+    console.log(' ---- --- == === data ', data);
+
     this.dispatch({
       type: 'sysdistrict/submit',
       payload: data,
@@ -184,7 +186,7 @@ class DistrictList extends PureComponent {
     this.clearSelectRows();
   };
 
-  onDataFormCancel = () => {
+  onDataFormClose = () => {
     console.log(' ------ ===== -- cancel');
 
     this.dispatch({
@@ -263,7 +265,9 @@ class DistrictList extends PureComponent {
   };
 
   renderDataDrawerForm() {
-    return <DistrictFormDrawer onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
+    return (
+      <DistrictDetail width={850} onClose={this.onDataFormClose} onSubmit={this.onDataFormSubmit} />
+    );
   }
 
   renderDataModalForm() {
@@ -573,6 +577,7 @@ class DistrictList extends PureComponent {
             </div>
           </div>
         </Card>
+
         {/* {this.renderDataModalForm()} */}
         {this.renderDataDrawerForm()}
       </PageHeaderLayout>

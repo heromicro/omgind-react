@@ -17,6 +17,7 @@ export default {
       pagination: {},
     },
     submitting: false,
+    formType: '',
     formTitle: '',
     formID: '',
     formModalVisible: false,
@@ -126,8 +127,8 @@ export default {
         type: 'changeSubmitting',
         payload: true,
       });
-      
-      console.log(" ---- ==== ==payload= ", payload)
+
+      console.log(' ---- ==== ==payload= ', payload);
 
       const params = { ...payload };
       const formType = yield select((state) => state.sysdistrict.formType);
