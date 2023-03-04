@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Button, Drawer, Space, Badge, } from 'antd';
+import { Button, Drawer, Space, Badge } from 'antd';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import FormRender, { connectForm } from 'form-render';
 
 import { SysDistrctItem } from '@/scheme/sysdistrict';
 
-import { DistrictFormSchema } from './formMeta'
+import { DistrictFormSchema } from './formMeta';
 
 import styles from './DistrictDetail.less';
 
@@ -24,19 +24,34 @@ class DistrictDetail extends PureComponent {
     };
   }
 
+  componentDidMount(): void {
+    // const { sysdistrict: { formType } } = this.props;
+    // if ( formType === 'A' ) {
+    //   this.setState({ editing: true });
+    // }
+  }
+
   onClickEdit = () => {
     console.log(' ---- ==== click edit eee ');
     this.setState({
       editing: true,
     });
-  }
+  };
 
   onClickCancel = () => {
-    console.log(' ---- ==== click cancel dddss ');
-    this.setState({
-      editing: false,
-    });
-  }
+    const {
+      onClose,
+      sysdistrict: { formType },
+    } = this.props;
+    if (formType === 'A') {
+      onClose();
+    } else {
+      console.log(' ---- ==== click cancel dddss ');
+      this.setState({
+        editing: false,
+      });
+    }
+  };
 
   onOpenChange = (visible: boolean) => {
     console.log(' ----- === visible :', visible);
@@ -48,16 +63,27 @@ class DistrictDetail extends PureComponent {
       });
     }
   };
-  
+
+  afterOpenChange = (open) => {
+    console.log(' ----- === open :', open);
+    const {
+      sysdistrict: { formType },
+    } = this.props;
+    if (open) {
+      if (formType === 'A') {
+        this.setState({ editing: true });
+      }
+    }
+  };
+
   onMount = () => {
-      
     const { form, sysdistrict } = this.props;
     const { formData } = sysdistrict;
     if (!formData) {
       return;
     }
-    
-    console.log(" ------- ======= ====== ", formData.content)
+
+    console.log(' ------- ======= ====== ', formData.content);
 
     form.setValues(formData.content);
   };
@@ -78,7 +104,7 @@ class DistrictDetail extends PureComponent {
     //     console.log(' ----- === err :', err.errorFields);
     //     console.log(' ----- === err :', err.outOfDate);
     //   });
-    return false
+    return false;
   };
 
   onFinishFailed({ values, errorFields, outOfDate }) {
@@ -96,7 +122,8 @@ class DistrictDetail extends PureComponent {
   render() {
     const { editing } = this.state;
     const { onClose, sysdistrict, form, ...restProps } = this.props;
-    const { formTitle, formVisible, formModalVisible, formData, submitting } = sysdistrict;
+    const { formType, formTitle, formVisible, formModalVisible, formData, submitting } =
+      sysdistrict;
 
     let detailData = formData;
 
@@ -118,17 +145,18 @@ class DistrictDetail extends PureComponent {
         {...restProps}
         title={formTitle}
         onClose={onClose}
+        afterOpenChange={this.afterOpenChange}
         open={formModalVisible}
         destroyOnClose
         style={{ top: 20 }}
         // bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
         footer={
           <Space className={styles.drawerFooter}>
-          <Space style={{ textAlign: 'left' }}>
-            <Button onClick={onClose} style={{ marginRight: 8 }} disabled={editing}>
-              关闭
-            </Button>
-          </Space>
+            <Space style={{ textAlign: 'left' }}>
+              <Button onClick={onClose} style={{ marginRight: 8 }} disabled={editing}>
+                关闭
+              </Button>
+            </Space>
             <Space style={{ textAlign: 'right' }}>
               {editing && (
                 <Button type="primary" onClick={form.submit} loading={submitting}>
@@ -148,30 +176,30 @@ class DistrictDetail extends PureComponent {
             </Space>
           </Space>
         }
-      > 
-      { editing && (
-        <div>
-          <FormRender
-            debug
-            initialValues={formData}
-            form={form}
-            schema={DistrictFormSchema}
-            // beforeFinish={this.beforeFinish}
-            onFinish={this.onFinish}
-            // onMount={this.onMount}
-            debugCss={true}
-            scrollToFirstError={true}
-          />
-        </div>
-      )}
-      {!editing && (
-        <div>
+      >
+        {editing && (
+          <div>
+            <FormRender
+              debug
+              initialValues={formData}
+              form={form}
+              schema={DistrictFormSchema}
+              // beforeFinish={this.beforeFinish}
+              onFinish={this.onFinish}
+              // onMount={this.onMount}
+              debugCss
+              scrollToFirstError
+            />
+          </div>
+        )}
+        {!editing && (
+          <div>
             <ProDescriptions column={2} title="基本信息">
               <ProDescriptions.Item label="名称" key="name">
                 {detailData.name}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="上级" key="parent">
-                { detailData.parent && (detailData.parent.name) }
+                {detailData.parent && detailData.parent.name}
               </ProDescriptions.Item>
 
               <ProDescriptions.Item label="短名称" key="sname">
@@ -182,24 +210,22 @@ class DistrictDetail extends PureComponent {
               </ProDescriptions.Item>
 
               <ProDescriptions.Item label="行政名称" key="merge_name">
-               {detailData.merge_name}
+                {detailData.merge_name}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="行政短名称" key="merge_sname">
-               {detailData.merge_sname}
+                {detailData.merge_sname}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="行政后缀" key="suffix">
-               {detailData.suffix}
+                {detailData.suffix}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="统计编号" key="st_code">
-               {detailData.st_code}
+                {detailData.st_code}
               </ProDescriptions.Item>
-
             </ProDescriptions>
             &nbsp;
             <ProDescriptions column={2} title="详细信息">
-
               <ProDescriptions.Item label="排序" key="sort">
-               {detailData.sort}
+                {detailData.sort}
               </ProDescriptions.Item>
 
               <ProDescriptions.Item label="状态">
@@ -217,7 +243,7 @@ class DistrictDetail extends PureComponent {
                   <Badge status="error" text="非主要" />
                 )}
               </ProDescriptions.Item>
-              
+
               <ProDescriptions.Item label="是否真实区域">
                 {detailData.is_real ? (
                   <Badge status="success" text="真实" />
@@ -225,7 +251,7 @@ class DistrictDetail extends PureComponent {
                   <Badge status="error" text="非真实" />
                 )}
               </ProDescriptions.Item>
-              
+
               <ProDescriptions.Item label="是否热点区域">
                 {detailData.is_hot ? (
                   <Badge status="success" text="热点" />
@@ -241,41 +267,34 @@ class DistrictDetail extends PureComponent {
                   <Badge status="error" text="非直辖" />
                 )}
               </ProDescriptions.Item>
-              
             </ProDescriptions>
             &nbsp;
             <ProDescriptions column={2} title="树形信息">
-
               <ProDescriptions.Item label="树id" key="tree_id">
-               {detailData.tree_id}
+                {detailData.tree_id}
               </ProDescriptions.Item>
-
               <ProDescriptions.Item label="树左值" key="tree_left">
-               {detailData.tree_left}
+                {detailData.tree_left}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="树右值" key="tree_right">
-               {detailData.tree_right}
+                {detailData.tree_right}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="是否子叶" key="isLeaf">
-               {detailData.isLeaf ? (
+                {detailData.isLeaf ? (
                   <Badge status="success" text="子叶" />
                 ) : (
                   <Badge status="error" text="非子叶" />
                 )}
               </ProDescriptions.Item>
-
             </ProDescriptions>
-            
             &nbsp;
             <ProDescriptions column={1} title="地理信息">
-              
               <ProDescriptions.Item label="经纬度" key="longlat">
-               { `${detailData.longitude}` + ", " + `${detailData.latitude}`}
+                {`${detailData.longitude}, ${detailData.latitude}`}
               </ProDescriptions.Item>
             </ProDescriptions>
             &nbsp;
-          
-          {/* 
+            {/* 
             <ProDescriptions column={1} title="json">
               
               <ProDescriptions.Item label="all" key="json">
@@ -284,14 +303,11 @@ class DistrictDetail extends PureComponent {
 
               </ProDescriptions.Item>
             </ProDescriptions> */}
-            
-        </div>
-      )
-      }
+          </div>
+        )}
       </Drawer>
     );
   }
 }
 
 export default connectForm(DistrictDetail);
-
