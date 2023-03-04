@@ -24,7 +24,7 @@
     "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
     "dva": "^2.4.1",
-    "form-render": "^2.0.2",
+    "form-render": "^2.0.10",
     "history": "^4.7.2",
     "lodash": "^4.17.21",
     "lodash-decorators": "^6.0.0",
