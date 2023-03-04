@@ -2,7 +2,7 @@
   "type": "object",
   "column": 2,
   "labelWidth": 120,
-  "displayType": "column",
+  "displayType": "row",
   "properties": {
     "name": {
       "title": "名称",
@@ -12,7 +12,7 @@
       },
       "required": true,
       "maxLength": 128,
-      "displayType": "column",
+      "displayType": "row",
       "description": "",
       "bind": "name",
       "hidden": false,
@@ -32,7 +32,7 @@
         "晚"
       ],
       "widget": "select",
-      "displayType": "column",
+      "displayType": "row",
       "bind": "pid",
       "placeholder": "请选择上级"
     },
@@ -50,7 +50,7 @@
     "abbr": {
       "title": "简称",
       "type": "string",
-      "displayType": "column",
+      "displayType": "row",
       "placeholder": "请输入简称",
       "bind": "abbr",
       "props": {
@@ -135,6 +135,44 @@
       },
       "maxLength": 8,
       "bind": "zip_code"
+    },
+    "switch_1DYOgA": {
+      "title": "是否有效",
+      "type": "boolean",
+      "widget": "switch",
+      "width": "20%",
+      "default": true,
+      "bind": "is_active"
+    },
+    "switch_PtXQte": {
+      "title": "是否主要",
+      "type": "boolean",
+      "widget": "switch",
+      "width": "20%",
+      "bind": "is_main"
+    },
+    "switch_bzDGvw": {
+      "title": "是否真实",
+      "type": "boolean",
+      "widget": "switch",
+      "width": "20%",
+      "default": true,
+      "bind": "is_real"
+    },
+    "switch_GcTbuJ": {
+      "title": "是否热点",
+      "type": "boolean",
+      "widget": "switch",
+      "width": "20%",
+      "bind": "is_hot"
+    },
+    "switch_orG0Zt": {
+      "title": "是否直辖",
+      "type": "boolean",
+      "widget": "switch",
+      "width": "20%",
+      "default": false,
+      "bind": "is_direct"
     }
   }
 }

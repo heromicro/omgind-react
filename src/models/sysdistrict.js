@@ -34,7 +34,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.district.search);
+        const s = yield select((state) => state.sysdistrict.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -47,7 +47,7 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.district.pagination);
+        const p = yield select((state) => state.sysdistrict.pagination);
         if (p) {
           params = { ...params, ...p };
         }
@@ -126,12 +126,14 @@ export default {
         type: 'changeSubmitting',
         payload: true,
       });
+      
+      console.log(" ---- ==== ==payload= ", payload)
 
       const params = { ...payload };
-      const formType = yield select((state) => state.district.formType);
+      const formType = yield select((state) => state.sysdistrict.formType);
       let success = false;
       if (formType === 'E') {
-        const id = yield select((state) => state.district.formID);
+        const id = yield select((state) => state.sysdistrict.formID);
         const response = yield call(districtService.update, id, params);
         if (response.status === 'OK') {
           success = true;
@@ -180,7 +182,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.district.data);
+        const data = yield select((state) => state.sysdistrict.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {

@@ -1,6 +1,7 @@
 export type SysDistrctItem = {
   id: string;
   pid?: string;
+  parent?: SysDistrctItem;
   name: string;
   sname: string;
   abbr?: string;
