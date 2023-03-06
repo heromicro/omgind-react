@@ -186,6 +186,7 @@ class DistrictDetail extends PureComponent {
           <div>
             <FormRender
               debug
+              widgets={{}}
               initialValues={formData}
               form={form}
               schema={DistrictFormSchema}

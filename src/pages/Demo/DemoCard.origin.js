@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Modal, Switch } from 'antd';
 
+import DistrictCascader from '@/components/DistrictCascader';
+
+
 @connect((state) => ({
   demo: state.demo,
 }))
@@ -83,6 +86,7 @@ class DemoCard extends PureComponent {
             >
               <Input placeholder="请输入编号" />
             </Form.Item>
+
             <Form.Item
               {...formItemLayout}
               label="名称"
@@ -91,6 +95,8 @@ class DemoCard extends PureComponent {
             >
               <Input placeholder="请输入名称" />
             </Form.Item>
+            
+            
             <Form.Item {...formItemLayout} label="备注" name="memo">
               <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
             </Form.Item>

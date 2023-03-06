@@ -7,7 +7,7 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { showPButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
-import DemoCard from './DemoCard';
+import DemoCard from './DemoCard.origin';
 
 import styles from './DemoList.less';
 

@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Modal, Switch } from 'antd';
 
+import DistrictCascader from '@/components/DistrictCascader'
+
 @connect((state) => ({
   sysaddress: state.sysaddress,
 }))
@@ -91,6 +93,16 @@ class AddressCard extends PureComponent {
             >
               <Input placeholder="请输入名称" />
             </Form.Item>
+
+            <Form.Item
+              {...formItemLayout}
+              label="省/市/区"
+              name="pid"
+              rules={[{ required: true, message: '请选择 省/市/区' }]}
+            >
+              <DistrictCascader fieldNames={{ label: 'name', value: 'id', children: 'children' }} />
+            </Form.Item>
+
             <Form.Item {...formItemLayout} label="备注" name="memo">
               <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
             </Form.Item>
