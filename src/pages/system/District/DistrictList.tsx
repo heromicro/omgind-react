@@ -16,6 +16,8 @@ import {
 } from 'antd';
 import type { ColumnsState, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
+import qs from 'qs';
+import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { showPButtons } from '@/utils/uiutil';
@@ -58,6 +60,10 @@ class DistrictList extends PureComponent {
   }
 
   componentDidMount() {
+    const { location } = this.props;
+
+    console.log(' -- --- == == = --- location: ', location);
+
     this.refetch({ pagination: { pageSize: 50, current: 1 } });
 
     const { dispatch } = this.props;
@@ -161,6 +167,9 @@ class DistrictList extends PureComponent {
 
   onResetFormClick = () => {
     this.formRef.current.resetFields();
+    const { location } = this.props;
+    history.push({ pathname: location.pathname });
+
     this.refetch();
   };
 
@@ -178,11 +187,21 @@ class DistrictList extends PureComponent {
 
   onDataFormSubmit = (data) => {
     console.log(' ---- --- == === data ', data);
+    const { dispatch } = this.props;
 
-    this.dispatch({
+    dispatch({
       type: 'sysdistrict/submit',
       payload: data,
+      callback: (success) => {
+        if (success) {
+          const { location } = this.props;
+          history.push({ pathname: location.pathname, search: 'tree_id__order=desc' });
+
+          this.refetch();
+        }
+      },
     });
+
     this.clearSelectRows();
   };
 
@@ -201,10 +220,15 @@ class DistrictList extends PureComponent {
   };
 
   refetch = ({ search = {}, pagination = {} } = {}) => {
-    console.log(' --------- ===== 9999 == ');
+    const { location } = this.props;
+
+    console.log(' --------- ===== 9999 == location ', location);
+    let params = qs.parse(location.search, { ignoreQueryPrefix: true });
+    console.log(' --------- ===== 9999 == params ', params);
+
     this.dispatch({
       type: 'sysdistrict/fetch',
-      search,
+      search: { ...params, ...search },
       pagination,
     });
   };

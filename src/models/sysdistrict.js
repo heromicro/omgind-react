@@ -122,7 +122,7 @@ export default {
         }),
       ];
     },
-    *submit({ payload }, { call, put, select }) {
+    *submit({ payload, callback = null }, { call, put, select }) {
       yield put({
         type: 'changeSubmitting',
         payload: true,
@@ -145,6 +145,9 @@ export default {
         if (response.id && response.id !== '') {
           success = true;
         }
+        if (callback) {
+          callback(success);
+        }
       }
 
       yield put({
@@ -158,9 +161,11 @@ export default {
           type: 'changeModalFormVisible',
           payload: false,
         });
-        yield put({
-          type: 'fetch',
-        });
+        if (!callback) {
+          yield put({
+            type: 'fetch',
+          });
+        }
       }
     },
     *del({ payload }, { call, put }) {
