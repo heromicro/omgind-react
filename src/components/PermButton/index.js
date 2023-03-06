@@ -9,6 +9,9 @@ export default function ({ code, children, ...rest }) {
     <GlobalContext.Consumer>
       {(global) => {
         const { menuPaths } = global;
+
+        // console.log(" ----menuPaths---- === menuPaths=== ", menuPaths );
+
         if (menuPaths) {
           const item = menuPaths[window.location.pathname];
           if (item && item.actions) {

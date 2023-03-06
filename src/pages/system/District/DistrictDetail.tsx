@@ -4,6 +4,8 @@ import { Button, Drawer, Space, Badge } from 'antd';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import FormRender, { connectForm } from 'form-render';
 
+import PButton from '@/components/PermButton';
+
 import { SysDistrctItem } from '@/scheme/sysdistrict';
 
 import { DistrictFormSchema } from './formMeta';
@@ -164,9 +166,9 @@ class DistrictDetail extends PureComponent {
                 </Button>
               )}
               {!editing && (
-                <Button type="primary" onClick={this.onClickEdit} danger>
+                <PButton code="edit" type="primary" onClick={this.onClickEdit} danger>
                   编 辑
-                </Button>
+                </PButton>
               )}
               {editing && (
                 <Button type="ghost" onClick={this.onClickCancel}>
