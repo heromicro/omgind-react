@@ -6,7 +6,7 @@ export const DistrictFormSchema = {
   displayType: 'column',
   column: 2,
   properties: {
-    input_a6S1dv: {
+    name: {
       title: '名称',
       type: 'string',
       props: {
@@ -17,7 +17,7 @@ export const DistrictFormSchema = {
       bind: 'name',
       placeholder: '请输入名称',
     },
-    input_QUDA9R: {
+    name_en: {
       title: '英语名称',
       type: 'string',
       props: {
@@ -27,7 +27,7 @@ export const DistrictFormSchema = {
       bind: 'name_en',
       placeholder: '请输入英语名称',
     },
-    input_QHFPpT: {
+    sname: {
       title: '短名称',
       type: 'string',
       props: {
@@ -37,7 +37,7 @@ export const DistrictFormSchema = {
       bind: 'sname',
       placeholder: '请输入短名称',
     },
-    input_ZGVbYu: {
+    sname_en: {
       title: '英语短名称',
       type: 'string',
       props: {
@@ -47,7 +47,7 @@ export const DistrictFormSchema = {
       bind: 'sname_en',
       placeholder: '请输入英语短名称',
     },
-    select_Ntj6Yx: {
+    pid: {
       title: '上级',
       type: 'string',
       enum: ['a', 'b', 'c'],
@@ -56,7 +56,7 @@ export const DistrictFormSchema = {
       placeholder: '请选择上级',
       bind: 'pid',
     },
-    input_mYAR0H: {
+    abbr: {
       title: '简称',
       type: 'string',
       props: {
@@ -66,7 +66,7 @@ export const DistrictFormSchema = {
       placeholder: '请输入简称',
       bind: 'abbr',
     },
-    input_tOMu8C: {
+    merge_name: {
       title: '行政名称',
       type: 'string',
       props: {
@@ -76,7 +76,7 @@ export const DistrictFormSchema = {
       placeholder: '请输入行政名称',
       bind: 'merge_name',
     },
-    input_weWqJv: {
+    merge_sname: {
       title: '行政短名称',
       type: 'string',
       props: {
@@ -86,7 +86,7 @@ export const DistrictFormSchema = {
       placeholder: '请输入行政短名称',
       bind: 'merge_sname',
     },
-    input_Uh68U3: {
+    suffix: {
       title: '行政后缀',
       type: 'string',
       props: {
@@ -96,7 +96,7 @@ export const DistrictFormSchema = {
       placeholder: '请输入行政后缀',
       bind: 'suffix',
     },
-    input_sICl7S: {
+    pinyin: {
       title: '拼音',
       type: 'string',
       props: {
@@ -106,7 +106,7 @@ export const DistrictFormSchema = {
       placeholder: '请输入拼音',
       bind: 'pinyin',
     },
-    input_H79d6K: {
+    initials: {
       title: '简拼',
       type: 'string',
       props: {
@@ -116,7 +116,7 @@ export const DistrictFormSchema = {
       placeholder: '请输入简拼',
       bind: 'initials',
     },
-    input_hUoeQR: {
+    area_code: {
       title: '区号',
       type: 'string',
       props: {
@@ -126,7 +126,7 @@ export const DistrictFormSchema = {
       placeholder: '请输入区号',
       bind: 'area_code',
     },
-    input_wA6wgv: {
+    zip_code: {
       title: '邮码',
       type: 'string',
       props: {
@@ -136,35 +136,35 @@ export const DistrictFormSchema = {
       bind: 'zip_code',
       placeholder: '请输入邮码',
     },
-    switch_1DYOgA: {
+    is_active: {
       title: '是否有效',
       type: 'boolean',
       widget: 'switch',
       default: true,
       bind: 'is_active',
     },
-    switch_nFniaw: {
+    is_main: {
       title: '是否主要',
       type: 'boolean',
       widget: 'switch',
       default: false,
       bind: 'is_main',
     },
-    switch_1HLMM8: {
+    is_real: {
       title: '是否真实',
       type: 'boolean',
       widget: 'switch',
       default: true,
       bind: 'is_real',
     },
-    switch_wTE0rL: {
+    is_hot: {
       title: '是否热点',
       type: 'boolean',
       widget: 'switch',
       default: false,
       bind: 'is_hot',
     },
-    switch_zo7CJT: {
+    is_direct: {
       title: '是否直辖',
       type: 'boolean',
       widget: 'switch',

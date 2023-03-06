@@ -4,6 +4,8 @@ import { Button, Drawer, Space, Badge } from 'antd';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import FormRender, { connectForm } from 'form-render';
 
+import * as _ from 'lodash';
+
 import PButton from '@/components/PermButton';
 
 import { SysDistrctItem } from '@/scheme/sysdistrict';
@@ -60,7 +62,7 @@ class DistrictDetail extends PureComponent {
     const { dispatch } = this.props;
     if (!visible) {
       dispatch({
-        type: 'sysdistrict/changeModalFormVisible',
+        type: 'sysdistrict/changeDrawerOpen',
         payload: false,
       });
     }
@@ -70,10 +72,12 @@ class DistrictDetail extends PureComponent {
     console.log(' ----- === open :', open);
     const {
       sysdistrict: { formType },
+      form,
     } = this.props;
     if (open) {
-      if (formType === 'A') {
+      if (formType === 'A' || formType === 'E') {
         this.setState({ editing: true });
+        form.resetFields();
       }
     }
   };
@@ -124,8 +128,7 @@ class DistrictDetail extends PureComponent {
   render() {
     const { editing } = this.state;
     const { onClose, sysdistrict, form, ...restProps } = this.props;
-    const { formType, formTitle, formVisible, formModalVisible, formData, submitting } =
-      sysdistrict;
+    const { formType, formTitle, formVisible, drawerOpen, formData, submitting } = sysdistrict;
 
     let detailData = formData;
 
@@ -148,7 +151,7 @@ class DistrictDetail extends PureComponent {
         title={formTitle}
         onClose={onClose}
         afterOpenChange={this.afterOpenChange}
-        open={formModalVisible}
+        open={drawerOpen}
         destroyOnClose
         style={{ top: 20 }}
         // bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
@@ -179,7 +182,7 @@ class DistrictDetail extends PureComponent {
           </Space>
         }
       >
-        {editing && (
+        {editing && !_.isEmpty(formData) && (
           <div>
             <FormRender
               debug

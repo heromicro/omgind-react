@@ -209,7 +209,7 @@ class DistrictList extends PureComponent {
     console.log(' ------ ===== -- cancel');
 
     this.dispatch({
-      type: 'sysdistrict/changeModalFormVisible',
+      type: 'sysdistrict/changeDrawerOpen',
       payload: false,
     });
   };

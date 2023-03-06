@@ -20,7 +20,7 @@ export default {
     formType: '',
     formTitle: '',
     formID: '',
-    formModalVisible: false,
+    drawerOpen: false,
     formVisible: false,
     formData: {},
   },
@@ -62,7 +62,7 @@ export default {
     },
     *loadForm({ payload }, { put }) {
       yield put({
-        type: 'changeModalFormVisible',
+        type: 'changeDrawerOpen',
         payload: true,
       });
 
@@ -158,7 +158,7 @@ export default {
       if (success) {
         message.success('保存成功');
         yield put({
-          type: 'changeModalFormVisible',
+          type: 'changeDrawerOpen',
           payload: false,
         });
         if (!callback) {
@@ -258,15 +258,16 @@ export default {
     },
     changeFormVisible(state, { payload }) {
       if (payload) {
-        return { ...state, formModalVisible: payload, formVisible: payload };
+        return { ...state, drawerOpen: payload, formVisible: payload };
       }
       return { ...state, formVisible: payload };
     },
-    changeModalFormVisible(state, { payload }) {
+    changeDrawerOpen(state, { payload }) {
       if (!payload) {
-        return { ...state, formModalVisible: payload, formVisible: payload };
+        console.log(' ------ ====== ----- ');
+        return { ...state, drawerOpen: payload, formVisible: payload, formData: {}, formID: '' };
       }
-      return { ...state, formModalVisible: payload };
+      return { ...state, drawerOpen: payload };
     },
     saveFormTitle(state, { payload }) {
       return { ...state, formTitle: payload };
