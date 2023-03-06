@@ -132,6 +132,8 @@ export const DistrictFormSchema = {
       props: {
         allowClear: true,
       },
+      maxLength: 8,
+      bind: 'zip_code',
       placeholder: '请输入邮码',
     },
     switch_1DYOgA: {
@@ -141,10 +143,11 @@ export const DistrictFormSchema = {
       default: true,
       bind: 'is_active',
     },
-    'switch_nFni-w': {
+    switch_nFniaw: {
       title: '是否主要',
       type: 'boolean',
       widget: 'switch',
+      default: false,
       bind: 'is_main',
     },
     switch_1HLMM8: {
@@ -158,12 +161,14 @@ export const DistrictFormSchema = {
       title: '是否热点',
       type: 'boolean',
       widget: 'switch',
+      default: false,
       bind: 'is_hot',
     },
     switch_zo7CJT: {
       title: '是否直辖',
       type: 'boolean',
       widget: 'switch',
+      default: false,
       bind: 'is_direct',
     },
   },
