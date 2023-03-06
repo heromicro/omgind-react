@@ -22,7 +22,8 @@
         "allowClear": true
       },
       "bind": "name_en",
-      "placeholder": "请输入英语名称"
+      "placeholder": "请输入英语名称",
+      "maxLength": 128
     },
     "input_QHFPpT": {
       "title": "短名称",
@@ -78,7 +79,8 @@
         "allowClear": true
       },
       "placeholder": "请输入行政名称",
-      "bind": "merge_name"
+      "bind": "merge_name",
+      "maxLength": 256
     },
     "input_weWqJv": {
       "title": "行政短名称",
@@ -86,6 +88,7 @@
       "props": {
         "allowClear": true
       },
+      "maxLength": 256,
       "placeholder": "请输入行政短名称",
       "bind": "merge_sname"
     },
@@ -95,6 +98,7 @@
       "props": {
         "allowClear": true
       },
+      "maxLength": 16,
       "placeholder": "请输入行政后缀",
       "bind": "suffix"
     },

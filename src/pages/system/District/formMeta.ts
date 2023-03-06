@@ -23,6 +23,7 @@ export const DistrictFormSchema = {
       props: {
         allowClear: true,
       },
+      maxLength: 128,
       bind: 'name_en',
       placeholder: '请输入英语名称',
     },
@@ -71,6 +72,7 @@ export const DistrictFormSchema = {
       props: {
         allowClear: true,
       },
+      maxLength: 256,
       placeholder: '请输入行政名称',
       bind: 'merge_name',
     },
@@ -80,6 +82,7 @@ export const DistrictFormSchema = {
       props: {
         allowClear: true,
       },
+      maxLength: 256,
       placeholder: '请输入行政短名称',
       bind: 'merge_sname',
     },
@@ -89,6 +92,7 @@ export const DistrictFormSchema = {
       props: {
         allowClear: true,
       },
+      maxLength: 16,
       placeholder: '请输入行政后缀',
       bind: 'suffix',
     },
@@ -98,6 +102,7 @@ export const DistrictFormSchema = {
       props: {
         allowClear: true,
       },
+      maxLength: 128,
       placeholder: '请输入拼音',
       bind: 'pinyin',
     },
@@ -107,13 +112,17 @@ export const DistrictFormSchema = {
       props: {
         allowClear: true,
       },
+      maxLength: 128,
       placeholder: '请输入简拼',
       bind: 'initials',
     },
     input_hUoeQR: {
       title: '区号',
       type: 'string',
-      props: {},
+      props: {
+        allowClear: true,
+      },
+      maxLength: 8,
       placeholder: '请输入区号',
       bind: 'area_code',
     },
