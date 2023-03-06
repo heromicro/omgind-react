@@ -4,6 +4,8 @@ export type SysDistrctItem = {
   parent?: SysDistrctItem;
   name: string;
   sname: string;
+  name_en?: string;
+  sname_en?: string;
   abbr?: string;
   suffix?: string;
   st_code?: string;

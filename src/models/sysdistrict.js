@@ -141,6 +141,7 @@ export default {
         }
       } else {
         const response = yield call(districtService.create, params);
+
         if (response.id && response.id !== '') {
           success = true;
         }

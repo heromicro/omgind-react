@@ -362,12 +362,24 @@ class DistrictList extends PureComponent {
         dataIndex: 'name',
       },
       {
+        title: '名称[英语]',
+        dataIndex: 'name_en',
+      },
+      {
         title: '简码',
         dataIndex: 'initials',
       },
       {
-        title: '短称',
+        title: '短名称',
         dataIndex: 'sname',
+      },
+      {
+        title: '短名称[英语]',
+        dataIndex: 'sname_en',
+      },
+      {
+        title: '简称',
+        dataIndex: 'abbr',
       },
       {
         title: '拼音',
@@ -523,6 +535,7 @@ class DistrictList extends PureComponent {
               <ProTable<ProColumns>
                 actionRef={this.actionRef}
                 formRef={this.searchFormRef}
+                scroll={{ x: 'max-content' }}
                 rowSelection={{
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,

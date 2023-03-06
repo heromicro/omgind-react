@@ -1,11 +1,12 @@
 /* eslint-disable */
+// The Great Britain of United Kingdom
 export const DistrictFormSchema = {
   type: 'object',
   column: 2,
   labelWidth: 120,
-  displayType: 'row',
+  displayType: 'column',
   properties: {
-    name: {
+    input__1111: {
       title: '名称',
       type: 'string',
       props: {
@@ -15,19 +16,20 @@ export const DistrictFormSchema = {
       maxLength: 128,
       description: '',
       bind: 'name',
-      width: '100%',
       placeholder: '请输入名称',
     },
-    pid: {
-      title: '上级',
+    input__1112: {
+      title: '英语名称',
       type: 'string',
-      enum: ['a', 'b', 'c'],
-      enumNames: ['早', '中', '晚'],
-      widget: 'select',
-      bind: 'pid',
-      placeholder: '请选择上级',
+      props: {
+        allowClear: true,
+      },
+      maxLength: 128,
+      description: '',
+      bind: 'name_en',
+      placeholder: '请输入英语名称',
     },
-    sname: {
+    input__1113: {
       title: '短名称',
       type: 'string',
       bind: 'sname',
@@ -37,7 +39,26 @@ export const DistrictFormSchema = {
       placeholder: '请输入短名称',
       maxLength: 64,
     },
-    abbr: {
+    input__1114: {
+      title: '英语短名称',
+      type: 'string',
+      bind: 'sname_en',
+      props: {
+        allowClear: true,
+      },
+      placeholder: '请输入英语短名称',
+      maxLength: 64,
+    },
+    select__1111: {
+      title: '上级',
+      type: 'string',
+      enum: ['a', 'b', 'c'],
+      enumNames: ['早', '中', '晚'],
+      widget: 'select',
+      bind: 'pid',
+      placeholder: '请选择上级',
+    },
+    input__1115: {
       title: '简称',
       type: 'string',
       placeholder: '请输入简称',
@@ -47,7 +68,7 @@ export const DistrictFormSchema = {
       },
       maxLength: 64,
     },
-    merge_name: {
+    input__1116: {
       title: '行政名称',
       type: 'string',
       bind: 'merge_name',
@@ -56,7 +77,7 @@ export const DistrictFormSchema = {
       },
       maxLength: 256,
     },
-    merge_sname: {
+    input__1117: {
       title: '行政短名称',
       type: 'string',
       bind: 'merge_sname',
@@ -65,7 +86,7 @@ export const DistrictFormSchema = {
       },
       maxLength: 256,
     },
-    suffix: {
+    input__1118: {
       title: '行政后缀',
       type: 'string',
       props: {
@@ -74,7 +95,7 @@ export const DistrictFormSchema = {
       maxLength: 16,
       bind: 'suffix',
     },
-    pinyin: {
+    input__1119: {
       title: '拼音',
       type: 'string',
       bind: 'pinyin',
