@@ -6,7 +6,7 @@ export const DistrictFormSchema = {
   labelWidth: 120,
   displayType: 'column',
   properties: {
-    input__1111: {
+    input_a6S1dv: {
       title: '名称',
       type: 'string',
       props: {
@@ -18,7 +18,7 @@ export const DistrictFormSchema = {
       bind: 'name',
       placeholder: '请输入名称',
     },
-    input__1112: {
+    input_QUDA9R: {
       title: '英语名称',
       type: 'string',
       props: {
@@ -29,7 +29,7 @@ export const DistrictFormSchema = {
       bind: 'name_en',
       placeholder: '请输入英语名称',
     },
-    input__1113: {
+    input_QHFPpT: {
       title: '短名称',
       type: 'string',
       bind: 'sname',
@@ -39,7 +39,7 @@ export const DistrictFormSchema = {
       placeholder: '请输入短名称',
       maxLength: 64,
     },
-    input__1114: {
+    input_ZGVbYu: {
       title: '英语短名称',
       type: 'string',
       bind: 'sname_en',
@@ -49,7 +49,7 @@ export const DistrictFormSchema = {
       placeholder: '请输入英语短名称',
       maxLength: 64,
     },
-    select__1111: {
+    select_Ntj6Yx: {
       title: '上级',
       type: 'string',
       enum: ['a', 'b', 'c'],
@@ -58,7 +58,7 @@ export const DistrictFormSchema = {
       bind: 'pid',
       placeholder: '请选择上级',
     },
-    input__1115: {
+    input_mYAR0H: {
       title: '简称',
       type: 'string',
       placeholder: '请输入简称',
@@ -68,7 +68,7 @@ export const DistrictFormSchema = {
       },
       maxLength: 64,
     },
-    input__1116: {
+    input_tOMu8C: {
       title: '行政名称',
       type: 'string',
       bind: 'merge_name',
@@ -77,7 +77,7 @@ export const DistrictFormSchema = {
       },
       maxLength: 256,
     },
-    input__1117: {
+    input_weWqJv: {
       title: '行政短名称',
       type: 'string',
       bind: 'merge_sname',
@@ -95,7 +95,7 @@ export const DistrictFormSchema = {
       maxLength: 16,
       bind: 'suffix',
     },
-    input__1119: {
+    input_sICl7S: {
       title: '拼音',
       type: 'string',
       bind: 'pinyin',
@@ -104,7 +104,7 @@ export const DistrictFormSchema = {
       },
       maxLength: 128,
     },
-    input__vp7_b: {
+    input_H79d6K: {
       title: '简拼',
       type: 'string',
       props: {
@@ -113,7 +113,7 @@ export const DistrictFormSchema = {
       maxLength: 128,
       bind: 'initials',
     },
-    input_Bslexk: {
+    input_hUoeQR: {
       title: '区号',
       type: 'string',
       props: {
@@ -122,7 +122,7 @@ export const DistrictFormSchema = {
       maxLength: 8,
       bind: 'area_code',
     },
-    input_n4mwB_: {
+    input_wA6wgv: {
       title: '邮码',
       type: 'string',
       props: {
