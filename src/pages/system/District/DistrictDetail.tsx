@@ -182,7 +182,7 @@ class DistrictDetail extends PureComponent {
           </Space>
         }
       >
-        {editing && !_.isEmpty(formData) && (
+        {editing && (!_.isEmpty(formData) || formType === 'A') && (
           <div>
             <FormRender
               debug
