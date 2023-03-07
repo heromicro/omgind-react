@@ -100,13 +100,14 @@ class AddressCard extends PureComponent {
               name="pid"
               rules={[{ required: true, message: '请选择 省/市/区' }]}
             >
-              <DistrictCascader fieldNames={{ label: 'name', value: 'id', children: 'children' }} />
+              {/* <DistrictCascader fieldNames={{ label: 'name', value: 'id', children: 'children' }} /> */}
+              <DistrictCascader  />
             </Form.Item>
 
             <Form.Item {...formItemLayout} label="备注" name="memo">
               <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
             </Form.Item>
-            <Form.Item {...formItemLayout} label="状态" name="is_active">
+            <Form.Item {...formItemLayout} valuePropName="checked" label="状态" name="is_active">
               <Switch defaultChecked />
             </Form.Item>
           </Form>

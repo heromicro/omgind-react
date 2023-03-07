@@ -201,7 +201,7 @@ class AddressList extends PureComponent {
       },
     } = this.props;
 
-    console.log(' -- --- == == = --- list: ', list);
+    // console.log(' -- --- == == = --- list: ', list);
 
     const { selectedRows, selectedRowKeys } = this.state;
 
@@ -210,6 +210,7 @@ class AddressList extends PureComponent {
         title: '省/市',
         dataIndex: 'provice',
         hideInForm: true,
+        hideInSearch: true,
       },
       {
         title: '省/市',
@@ -221,8 +222,8 @@ class AddressList extends PureComponent {
             return null;
           }
 
-          console.log(' -------- ==== ----- === item    ', item);
-          console.log(' -------- ==== ----- === config  ', config);
+          // console.log(' -------- ==== ----- === item    ', item);
+          // console.log(' -------- ==== ----- === config  ', config);
 
           return defaultRender(item);
         },
@@ -231,6 +232,7 @@ class AddressList extends PureComponent {
         title: '市/区',
         dataIndex: 'city',
         hideInForm: true,
+        hideInSearch: true,
       },
       {
         title: '市/区',
@@ -241,6 +243,7 @@ class AddressList extends PureComponent {
         title: '县/区',
         dataIndex: 'county',
         hideInForm: true,
+        hideInSearch: true,
       },
       {
         title: '县/区',
