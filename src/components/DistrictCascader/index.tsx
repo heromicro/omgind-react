@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Cascader } from 'antd';
+import * as _ from 'lodash';
 
 import { getSubstricts } from '@/services/sysdistrict';
 
@@ -27,7 +28,19 @@ const DistrictCascader = (props) => {
 
   // 页面初始化请求一级目录
   useEffect(() => {
+    const {value} = props;
+    if (_.isEmpty(value)) {
+      return;
+    }
+    
     getOptions('-');
+    if (Array.isArray(value) ){
+
+    } else {
+      if (value.includes("/")) {
+
+      }
+    }
   }, []);
 
   // 显示/隐藏浮层的回调
@@ -40,8 +53,8 @@ const DistrictCascader = (props) => {
 
   // 点击目录事件
   const onCascaderChange = (value, selectedOptions) => {
+
     setDefaultValue(value);
-    console.log(value);
     const { onChange } = props;
     if (onChange) {
       onChange({
