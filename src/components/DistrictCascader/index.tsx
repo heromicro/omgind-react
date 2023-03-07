@@ -1,109 +1,92 @@
 import React, { useEffect, useState } from 'react';
-
 import { Cascader } from 'antd';
 
 import { getSubstricts } from '@/services/sysdistrict';
 
+const DistrictCascader = (props) => {
+  const [options, setOptions] = useState([]);
+  const [pid] = useState('-');
 
-export default class DistrictCascader extends React.PureComponent {
-    
-    static getDerivedStateFromProps(nextProps) {
-  
-      // Should be a controlled component.
-      if ('value' in nextProps) {
-        return {
-          ...(nextProps.value || {}),
-        };
-      }
-      return null;
-    }
-  
-    constructor(props) {
-      super(props);
-      
-      this.state = {
-          value: props.value,
-          options: [],
-      }
-  
-    }
-  
-    componentDidMount() {
-  
-      getSubstricts('-', {is_real: true}).then(data => {
-          console.log(" ----- === ------- ===== ", data);
-          const {list } = data;
-  
-          this.setState({
-              options: list.map(item => {
-                  return {...item, label:item.name, value:item.id}
-              }),
-          });
-  
+  // 编辑页面默认要展示，所以要设置value
+  const [defaultValue, setDefaultValue] = useState([]);
+
+  const getOptions = async (idStr: string) => {
+    const params = { is_real: true };
+    const { list, pagination } = await getSubstricts(idStr, params);
+    const newData = [];
+    list.map((item) => {
+      return newData.push({
+        ...item,
+        label: item.name,
+        value: item.id,
+        isLeaf: item.is_leaf,
       });
-  
+    });
+    setOptions(newData);
+  };
+
+  // 页面初始化请求一级目录
+  useEffect(() => {
+    getOptions('-');
+  }, []);
+
+  // 显示/隐藏浮层的回调
+  const onDropdownVisibleChange = (open) => {
+    const { value } = props;
+    if (!value || open) {
+      getOptions(pid);
     }
-  
-    loadData = async (selectedOptions:[]) => {
-      
-      if (selectedOptions.length > 0) {
-          const targetOption = selectedOptions[selectedOptions.length - 1];
-          targetOption.loading = true;
-          console.log(" ----- === ------- ===== targetOption.id ", targetOption.id);
-          // const {options} = this.state;
-          let data = await getSubstricts(targetOption.id, {is_real: true})
-          console.log(" ----- === ------- =====  data  ",data );
-          const { list } = data;
-  
-          targetOption.children = list.map(item => {
-              return {...item, label:item.name, value:item.id}
-          });
-          targetOption.loading = false;
-          
-          // this.setState({
-          //     options
-          // })
-          // console.log(" ----- === ------- =====  options  ", options );
-  
-          // getSubstricts(targetOption.id, {is_real: true}).then((data) => {
-          //     const { list } = data;
-          //     console.log(" ----- === ------- ===== data ", data);
-          //     console.log(" ----- === ------- ===== list ", list);
-  
-          //     // targetOption.children = list;
-              
-          //     // this.setState({
-          //     //     options
-          //     // })
-  
-          //     targetOption.loading = false;
-  
-          // });
-  
-      } else {
-  
-      }
-  
+  };
+
+  // 点击目录事件
+  const onCascaderChange = (value, selectedOptions) => {
+    setDefaultValue(value);
+    console.log(value);
+    const { onChange } = props;
+    if (onChange) {
+      onChange({
+        value,
+        selectedOptions,
+      });
     }
-  
-    onCascaderChange = (value, selectOptions:[]) => {
-  
-       this.triggerChange(value, selectOptions);
-    }
-  
-    triggerChange = (value, selectOptions:[]) => {
-      const { onChange } = this.props;
-      if (onChange) {
-        onChange(value, selectOptions);
-      }
-    };
-  
-    render() {
-  
-      // const { ...restProps } = this.props;
-      const { options } = this.state;
-  
-      return <Cascader options={options} loadData={this.loadData} onChange={this.onCascaderChange} changeOnSelect  />;
-    }
-  }
-  
+  };
+
+  // 动态加载事件
+  const loadData = async (selectedOptions) => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    targetOption.loading = true;
+
+    let id = selectedOptions[selectedOptions.length - 1].value;
+    const params = { is_real: true, pid: id };
+    const { list } = await getSubstricts(id, params);
+
+    targetOption.loading = false;
+    const newData = [];
+    list.map((item) => {
+      return newData.push({
+        ...item,
+        label: item.name,
+        value: item.id,
+        isLeaf: item.is_leaf,
+      });
+    });
+
+    targetOption.children = newData;
+
+    setOptions([...options]);
+  };
+
+  return (
+    <Cascader
+      options={options}
+      loadData={loadData}
+      onChange={onCascaderChange}
+      changeOnSelect
+      allowClear={false}
+      onDropdownVisibleChange={onDropdownVisibleChange}
+      value={defaultValue}
+    />
+  );
+};
+
+export default DistrictCascader;

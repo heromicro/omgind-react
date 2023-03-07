@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Modal, Switch } from 'antd';
 
-import DistrictCascader from '@/components/DistrictCascader'
+import DistrictCascader from '@/components/DistrictCascader';
 
 @connect((state) => ({
   sysaddress: state.sysaddress,
@@ -34,6 +34,11 @@ class AddressCard extends PureComponent {
   dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
+  };
+
+  onDistrictChange = (value, selectedOptions) => {
+    console.log(' ------ ==== -- ===== value ', value);
+    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
   };
 
   render() {
@@ -100,8 +105,7 @@ class AddressCard extends PureComponent {
               name="pid"
               rules={[{ required: true, message: '请选择 省/市/区' }]}
             >
-              {/* <DistrictCascader fieldNames={{ label: 'name', value: 'id', children: 'children' }} /> */}
-              <DistrictCascader  />
+              <DistrictCascader onChange={this.onDistrictChange} />
             </Form.Item>
 
             <Form.Item {...formItemLayout} label="备注" name="memo">

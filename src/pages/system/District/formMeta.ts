@@ -136,6 +136,16 @@ export const DistrictFormSchema = {
       bind: 'zip_code',
       placeholder: '请输入邮码',
     },
+    input: {
+      title: '邮码',
+      type: 'void',
+      props: {
+        allowClear: true,
+      },
+      maxLength: 8,
+      bind: 'zip_code',
+      placeholder: '请输入邮码',
+    },
     is_active: {
       title: '是否有效',
       type: 'boolean',

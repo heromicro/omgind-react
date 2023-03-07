@@ -27,7 +27,7 @@ export type SysDistrctItem = {
   is_real?: boolean;
   is_direct?: boolean;
 
-  isLeaf: boolean;
+  is_leaf: boolean;
 
   tree_id: number;
   tree_left: number;
