@@ -50,9 +50,7 @@ export const DistrictFormSchema = {
     pid: {
       title: '上级',
       type: 'string',
-      enum: ['a', 'b', 'c'],
-      enumNames: ['早', '中', '晚'],
-      widget: 'select',
+      widget: 'district',
       placeholder: '请选择上级',
       bind: 'pid',
     },
@@ -62,7 +60,7 @@ export const DistrictFormSchema = {
       props: {
         allowClear: true,
       },
-      maxLength: 64,
+      maxLength: 16,
       placeholder: '请输入简称',
       bind: 'abbr',
     },
@@ -135,17 +133,7 @@ export const DistrictFormSchema = {
       maxLength: 8,
       bind: 'zip_code',
       placeholder: '请输入邮码',
-    },
-    input: {
-      title: '邮码',
-      type: 'void',
-      props: {
-        allowClear: true,
-      },
-      maxLength: 8,
-      bind: 'zip_code',
-      placeholder: '请输入邮码',
-    },
+    }, 
     is_active: {
       title: '是否有效',
       type: 'boolean',

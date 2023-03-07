@@ -20,9 +20,11 @@ export default {
     formType: '',
     formTitle: '',
     formID: '',
-    drawerOpen: false,
+    detailDrawerOpen: false,
+    formDrawerOpen: false,
     formVisible: false,
     formData: {},
+    detailData: {},
   },
   effects: {
     *fetch({ search, pagination }, { call, put, select }) {
@@ -61,8 +63,11 @@ export default {
       });
     },
     *loadForm({ payload }, { put }) {
+      
+      console.log(" ----- ======  111111  ")
+
       yield put({
-        type: 'changeDrawerOpen',
+        type: 'changeFormDrawerOpen',
         payload: true,
       });
 
@@ -84,6 +89,8 @@ export default {
           payload: {},
         }),
       ];
+      
+      console.log(" ----- ======  222222  ", payload)
 
       if (payload.type === 'E') {
         yield [
@@ -101,6 +108,9 @@ export default {
           }),
         ];
       } else {
+        
+        console.log(" ----- ======  33333  ")
+
         yield [
           put({
             type: 'changeFormVisible',
@@ -122,12 +132,33 @@ export default {
         }),
       ];
     },
+    *loadDetail({ payload }, { call, put, select }) {
+      yield put({
+        type: 'changeDetailDrawerOpen',
+        payload: true,
+      });
+      let { record } = payload;
+      yield put({
+        type: 'saveDetailData',
+        payload: record,
+      });
+
+      const response = yield call(districtService.view, record.id);
+      if (response.code === 0) {
+        yield [
+          put({
+            type: 'saveDetailData',
+            payload: response.payload,
+          }),
+        ];
+      }
+
+    },
     *submit({ payload, callback = null }, { call, put, select }) {
       yield put({
         type: 'changeSubmitting',
         payload: true,
       });
-
       console.log(' ---- ==== ==payload= ', payload);
 
       const params = { ...payload };
@@ -158,7 +189,7 @@ export default {
       if (success) {
         message.success('保存成功');
         yield put({
-          type: 'changeDrawerOpen',
+          type: 'changeFormDrawerOpen',
           payload: false,
         });
         if (!callback) {
@@ -256,18 +287,21 @@ export default {
     savePagination(state, { payload }) {
       return { ...state, pagination: payload };
     },
+    changeDetailDrawerOpen(state, { payload }) {
+      return { ...state, detailDrawerOpen: payload };
+    },
     changeFormVisible(state, { payload }) {
       if (payload) {
-        return { ...state, drawerOpen: payload, formVisible: payload };
+        return { ...state, formDrawerOpen: payload, formVisible: payload };
       }
       return { ...state, formVisible: payload };
     },
-    changeDrawerOpen(state, { payload }) {
+    changeFormDrawerOpen(state, { payload }) {
+      
       if (!payload) {
-        console.log(' ------ ====== ----- ');
-        return { ...state, drawerOpen: payload, formVisible: payload, formData: {}, formID: '' };
+        return { ...state, formDrawerOpen: payload, formVisible: payload, formData: {}, formID: '' };
       }
-      return { ...state, drawerOpen: payload };
+      return {...state, formDrawerOpen: payload }
     },
     saveFormTitle(state, { payload }) {
       return { ...state, formTitle: payload };
@@ -283,6 +317,9 @@ export default {
     },
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };
+    },
+    saveDetailData(state, { payload }) {
+      return { ...state, detailData: payload };
     },
   },
 };

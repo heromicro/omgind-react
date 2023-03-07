@@ -1,9 +1,8 @@
-import exp from 'constants';
-import React from 'react';
+import React, {forwardRef} from 'react';
 import { connect } from 'dva';
 
-import { Form, Input, Switch } from 'antd';
-import { ProForm, ProFormDatePicker, ProFormText } from '@ant-design/pro-components';
+import { Form, Input, Switch, Row, Col } from 'antd';
+import { ProForm, ProFormGroup, ProFormDatePicker, ProFormText } from '@ant-design/pro-components';
 
 import { SysDistrctItem } from '@/scheme/sysdistrict';
 import DistrictCascader from '@/components/DistrictCascader';
@@ -12,11 +11,11 @@ import DistrictCascader from '@/components/DistrictCascader';
   sysdistrict: state.sysdistrict,
 }))
 class DistrictForm extends React.PureComponent {
-  formRef = React.createRef();
+  // formRef = React.createRef();
 
-  // constructor(props) {
-  //     super(props);
-  // }
+  constructor(props) {
+    super(props);
+  }
 
   onFinish = (formData) => {
     const { onSubmit } = this.props;
@@ -25,162 +24,189 @@ class DistrictForm extends React.PureComponent {
     return false;
   };
 
+  onDistrictChange = (value, selectedOptions) => {
+    console.log(' ------ ==== -- ===== value ', value);
+    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
+  };
+    
+
   render() {
-    const { sysdistrict } = this.props;
+    const { sysdistrict, formRef, ...restProps } = this.props;
     const { formData, submitting } = sysdistrict;
+
+    console.log(' ------ ======== submitting ', submitting);
+    console.log(' ----- === formData == == ', formData);
 
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 6 },
+        sm: { span: 12 },
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 },
+        sm: { span: 23 },
       },
     };
 
     return (
-      <ProForm<SysDistrctItem>
-        ref={this.formRef}
-        disabled={!submitting}
-        layout='vertical'
+      <Form
+        ref={formRef}
+        layout="vertical"
+        {...formItemLayout}
+        disabled={submitting}
         initialValues={{
           ...formData,
           is_active: formData.statuis_actives === undefined ? true : formData.is_active,
         }}
+        {...restProps}
       >
-        <Form.Item
-          {...formItemLayout}
-          label="名称"
-          name="name"
-          rules={[{ required: true, message: '请输入名称' }, {}]}
-        >
-          <Input placeholder="请输入名称" />
-        </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label="名称[英语]"
-          name="name"
-          rules={[{ required: true, message: '请输入名称[英语]' }]}
-        >
-          <Input placeholder="请输入名称[英语]" />
-        </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label="短名称"
-          name="sname"
-          rules={[{ required: true, message: '请输入短名称' }, {}]}
-        >
-          <Input placeholder="请输入短名称" />
-        </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label="短名称[英语]"
-          name="sname"
-          rules={[{ required: true, message: '请输入短名称[英语]' }]}
-        >
-          <Input placeholder="请输入短名称[英语]" />
-        </Form.Item>
-        
+        <Row>
+          <Col span={12}>
+            <Form.Item
+              label="名称"
+              name="name"
+              rules={[
+                { required: true, message: '请输入名称' },
+                { max: 128, message: '最多 128 字符' },
+              ]}
+            >
+              <Input placeholder="请输入名称" allowClear />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="名称[英语]"
+              name="name_en"
+              rules={[{ max: 128, message: '最多 128 字符' }]}
+            >
+              <Input placeholder="请输入名称[英语]" allowClear />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <Form.Item label="短名称" name="sname" rules={[{ max: 64, message: '最多 64 字符' }]}>
+              <Input placeholder="请输入短名称" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="短名称[英语]"
+              name="sname_en"
+              rules={[{ max: 64, message: '最多 64 字符' }]}
+            >
+              <Input placeholder="请输入短名称[英语]" allowClear/>
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Form.Item 
-          {...formItemLayout}
-          label="上级"
-          name="pid"
-        >
-            <DistrictCascader />
-        </Form.Item>
+        <Row>
+          <Col span={12}>
+            <Form.Item label="上级" name="pid">
+              <DistrictCascader onChange={this.onDistrictChange} />
+            </Form.Item>
+          </Col>
 
-        <Form.Item
-          {...formItemLayout}
-          label="短简称"
-          name="abbr"
-          rules={[{ required: true, message: '请输入简称' }, {}]}
-        >
-          <Input placeholder="请输入简称" />
-        </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label="行政名称"
-          name="merge_name"
-          rules={[{ required: true, message: '行政名称' }, {}]}
-        >
-          <Input placeholder="请输入行政名称" />
-        </Form.Item>
+          <Col span={12}>
+            <Form.Item label="短简称" name="abbr" rules={[{ max: 16, message: '最多 16 字符' }]}>
+              <Input placeholder="请输入简称" allowClear />
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Form.Item
-          {...formItemLayout}
-          label="行政短名称"
-          name="merge_sname"
-          rules={[{ required: false, message: '行政短名称' }]}
-        >
-          <Input placeholder="请输入行政短名称" />
-        </Form.Item>
+        <Row>
+          <Col span={12}>
+            <Form.Item
+              label="行政名称"
+              name="merge_name"
+              rules={[{ max: 256, message: '最多 256 字符' }]}
+            >
+              <Input placeholder="请输入行政名称" allowClear/>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="行政短名称"
+              name="merge_sname"
+              rules={[{ max: 256, message: '最多 256 字符' }]}
+            >
+              <Input placeholder="请输入行政短名称" allowClear/>
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Form.Item
-          {...formItemLayout}
-          label="行政后缀"
-          name="merge_sname"
-          rules={[{ required: false, message: '行政后缀' }]}
-        >
-          <Input placeholder="请输入行政后缀" />
-        </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label="拼音"
-          name="pinyin"
-          rules={[{ required: false, message: '拼音' }]}
-        >
-          <Input placeholder="请输入拼音" />
-        </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label="简拼"
-          name="initials"
-          rules={[{ required: false, message: '简拼' }]}
-        >
-          <Input placeholder="请输入简拼" />
-        </Form.Item>
+        <Row>
+          <Col span={12}>
+            <Form.Item
+              label="行政后缀"
+              name="suffix"
+              rules={[{ max: 32, message: '最多 32 字符' }]}
+            >
+              <Input placeholder="请输入行政后缀" allowClear/>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="拼音" name="pinyin" rules={[{ max: 128, message: '最多 128 字符' }]}>
+              <Input placeholder="请输入拼音" allowClear/>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <Form.Item label="简拼" name="initials" rules={[{ max: 32, message: '最多 32 字符' }]}>
+              <Input placeholder="请输入简拼" allowClear/>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="区号" name="area_code" rules={[{ max: 8, message: '最多 8 字符' }]}>
+              <Input placeholder="请输入区号" allowClear/>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <Form.Item label="邮码" name="zip_code" rules={[{ max: 8, message: '最多 8 字符' }]}>
+              <Input placeholder="请输入邮码" allowClear/>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={6}>
+            <Form.Item label="状态" name="is_active">
+              <Switch defaultChecked />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item label="是否主要" name="is_main">
+              <Switch />
+            </Form.Item>
+          </Col>
 
-        <Form.Item
-          {...formItemLayout}
-          label="区号"
-          name="area_code"
-          rules={[{ required: false, message: '区号' }]}
-        >
-          <Input placeholder="请输入区号" />
-        </Form.Item>
+          <Col span={6}>
+            <Form.Item label="是否真实" name="is_real">
+              <Switch defaultChecked />
+            </Form.Item>
+          </Col>
 
-        <Form.Item
-          {...formItemLayout}
-          label="邮码"
-          name="zip_code"
-          rules={[{ required: false, message: '邮码' }]}
-        >
-          <Input placeholder="请输入邮码" />
-        </Form.Item>
-
-
-        <Form.Item {...formItemLayout} label="状态" name="is_active">
-          <Switch defaultChecked />
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="是否主要" name="is_main">
-          <Switch defaultChecked />
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="是否真实" name="is_real">
-          <Switch defaultChecked />
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="是否热点" name="is_hot">
-          <Switch defaultChecked />
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="是否直辖" name="is_direct">
-          <Switch defaultChecked />
-        </Form.Item>
-
-      </ProForm>
+          <Col span={6}>
+            <Form.Item label="是否热点" name="is_hot">
+              <Switch />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row></Row>
+        <Row>
+          <Col span={6}>
+            <Form.Item label="是否直辖" name="is_direct">
+              <Switch />
+            </Form.Item>
+          </Col>
+          <Col span={6}></Col>
+        </Row>
+      </Form>
     );
   }
 }
 
-export default DistrictForm;
+export default forwardRef(( props, ref) => (<DistrictForm {...props} innerRef={ref}/>));
+

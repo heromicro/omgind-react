@@ -11,6 +11,10 @@ export async function get(id, params = {}) {
   return request(`/${version}/${router}/${id}`, { params });
 }
 
+export async function view(id, params = {}) {
+  return request(`/${version}/${router}/${id}/view`, { params });
+}
+
 export async function getSubstricts(pid = '', params = {}) {
   return request(`/${version}/${router}/${pid}/substricts`, { params });
 }

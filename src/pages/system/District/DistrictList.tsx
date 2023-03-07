@@ -29,6 +29,7 @@ import { makeupSortKey } from '@/utils/urlutil';
 
 import DistrictCard from './DistrictCard';
 import DistrictDetail from './DistrictDetail';
+import DistrictDrawerForm from './DistrictDrawerForm';
 
 import styles from './DistrictList.less';
 
@@ -205,11 +206,20 @@ class DistrictList extends PureComponent {
     this.clearSelectRows();
   };
 
+  onDetailDrawerClose = () => {
+    console.log(' ------ ===== -- cancel');
+
+    this.dispatch({
+      type: 'sysdistrict/changeDetailDrawerOpen',
+      payload: false,
+    });
+  };
+
   onDataFormClose = () => {
     console.log(' ------ ===== -- cancel');
 
     this.dispatch({
-      type: 'sysdistrict/changeDrawerOpen',
+      type: 'sysdistrict/changeFormDrawerOpen',
       payload: false,
     });
   };
@@ -287,10 +297,24 @@ class DistrictList extends PureComponent {
       },
     });
   };
+  
+  onClickShowDetail = (item) => {
+    this.dispatch({
+      type: 'sysdistrict/loadDetail',
+      payload: {
+        record: item,
+      },
+    });
+  }
+
+  renderItemDetail() {
+    return <DistrictDetail width={850} onClose={this.onDetailDrawerClose} />;
+  }
 
   renderDataDrawerForm() {
     return (
-      <DistrictDetail width={850} onClose={this.onDataFormClose} onSubmit={this.onDataFormSubmit} />
+      // <DistrictDrawerForm width={850} onClose={this.onDataFormClose} onSubmit={this.onDataFormSubmit} />
+      <DistrictDrawerForm width={850} onSubmit={this.onDataFormSubmit} />
     );
   }
 
@@ -539,6 +563,17 @@ class DistrictList extends PureComponent {
         dataIndex: 'extra',
         hideInSearch: true,
       },
+      {
+        title: '操作',
+        dataIndex: 'option',
+        hideInSearch: true,
+        fixed: 'right',
+        width: "60px",
+        render:(val, record, row) => {
+
+          return <a onClick={() => {this.onClickShowDetail(record)}}>查看</a>
+        }
+      },
     ];
 
     const paginationProps = {
@@ -614,8 +649,7 @@ class DistrictList extends PureComponent {
             </div>
           </div>
         </Card>
-
-        {/* {this.renderDataModalForm()} */}
+        {this.renderItemDetail()}
         {this.renderDataDrawerForm()}
       </PageHeaderLayout>
     );

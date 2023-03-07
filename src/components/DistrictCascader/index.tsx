@@ -12,7 +12,7 @@ const DistrictCascader = (props) => {
   const [defaultValue, setDefaultValue] = useState([]);
 
   const getOptions = async (idStr: string) => {
-    const params = { is_real: true };
+    const params = { is_real: true, pid: idStr };
     const { list, pagination } = await getSubstricts(idStr, params);
     const newData = [];
     list.map((item) => {

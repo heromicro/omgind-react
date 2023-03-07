@@ -53,7 +53,9 @@ class DemoCard extends PureComponent {
       form,
     } = this.props;
 
-    const onMount = () => {};
+    const onMount = () => {
+      
+    };
 
     const watch = {
       '#': (val) => {},
