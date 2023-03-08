@@ -49,10 +49,11 @@ export default {
       }
 
       const response = yield call(dictService.query, params);
-      if (response.code === 0) {
+      const { code, burden} = response;
+      if (code === 0) {
         yield put({
           type: 'saveData',
-          payload: response.payload,
+          payload: burden,
         });
       }
     },
@@ -108,11 +109,12 @@ export default {
     },
     *fetchForm({ payload }, { call, put }) {
       const response = yield call(dictService.get, payload.id);
-      if (response.code === 0) {
+      const { code, burden } = response;
+      if (code === 0) {
         yield [
           put({
             type: 'saveFormData',
-            payload: response.payload,
+            payload: burden,
           }),
           put({
             type: 'changeFormVisible',
@@ -140,12 +142,14 @@ export default {
       if (formType === 'E') {
         const id = yield select((state) => state.dict.formID);
         const response = yield call(dictService.update, id, params);
-        if (response.code === 0) {
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
       } else {
         const response = yield call(dictService.create, params);
-        if (response.code === 0) {
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
       }
@@ -160,7 +164,7 @@ export default {
       if (success) {
         message.success('保存成功');
         yield put({
-          type: 'changeModalFormVisible',
+          type: 'changeModalFormVisibresponse =le',
           payload: false,
         });
         yield put({ type: 'fetch' });
@@ -168,7 +172,8 @@ export default {
     },
     *del({ payload }, { call, put }) {
       const response = yield call(dictService.del, payload.id);
-      if (response.code === 0) {
+      const { code } = response;
+      if (code === 0) {
         message.success('删除成功');
         yield put({ type: 'fetch' });
       }
@@ -180,8 +185,8 @@ export default {
       } else {
         response = yield call(dictService.disable, payload.id);
       }
-
-      if (response.code === 0) {
+      const { code } = response;
+      if (code === 0) {
         let msg = '启用成功';
         if (payload.is_active === false) {
           msg = '停用成功';

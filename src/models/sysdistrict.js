@@ -57,14 +57,16 @@ export default {
       }
 
       const response = yield call(districtService.query, params);
-      yield put({
-        type: 'saveData',
-        payload: response,
-      });
+      const { code, burden} = response;
+      if (code === 0) {
+        yield put({
+          type: 'saveData',
+          payload: burden,
+        });
+      }
     },
     *loadForm({ payload }, { put }) {
-      
-      console.log(" ----- ======  111111  ")
+      console.log(' ----- ======  111111  ');
 
       yield put({
         type: 'changeFormDrawerOpen',
@@ -89,8 +91,8 @@ export default {
           payload: {},
         }),
       ];
-      
-      console.log(" ----- ======  222222  ", payload)
+
+      console.log(' ----- ======  222222  ', payload);
 
       if (payload.type === 'E') {
         yield [
@@ -108,8 +110,7 @@ export default {
           }),
         ];
       } else {
-        
-        console.log(" ----- ======  33333  ")
+        console.log(' ----- ======  33333  ');
 
         yield [
           put({
@@ -121,16 +122,19 @@ export default {
     },
     *fetchForm({ payload }, { call, put }) {
       const response = yield call(districtService.get, payload.id);
-      yield [
-        put({
-          type: 'saveFormData',
-          payload: response,
-        }),
-        put({
-          type: 'changeFormVisible',
-          payload: true,
-        }),
-      ];
+      const { code, burden } = response;
+      if (code === 0) {
+        yield [
+          put({
+            type: 'saveFormData',
+            payload: burden,
+          }),
+          put({
+            type: 'changeFormVisible',
+            payload: true,
+          }),
+        ];
+      }
     },
     *loadDetail({ payload }, { call, put, select }) {
       yield put({
@@ -144,13 +148,13 @@ export default {
       // });
 
       const response = yield call(districtService.view, record.id);
-      console.log(" ------ ===== ", response);
-      
-      if (response.code === 0) {
+      console.log(' ------ ===== ', response);
+      const { code, burden } = response;
+      if (code === 0) {
         yield [
           put({
             type: 'saveDetailData',
-            payload: response.payload,
+            payload: burden,
           }),
         ];
       }
@@ -168,13 +172,14 @@ export default {
       if (formType === 'E') {
         const id = yield select((state) => state.sysdistrict.formID);
         const response = yield call(districtService.update, id, params);
-        if (response.status === 'OK') {
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
       } else {
         const response = yield call(districtService.create, params);
-
-        if (response.id && response.id !== '') {
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
         if (callback) {
@@ -202,7 +207,8 @@ export default {
     },
     *del({ payload }, { call, put }) {
       const response = yield call(districtService.del, payload.id);
-      if (response.status === 'OK') {
+      const { code } = response;
+      if (code === 0) {
         message.success('删除成功');
         yield put({ type: 'fetch' });
       }
@@ -215,7 +221,8 @@ export default {
         response = yield call(districtService.disable, payload.id);
       }
 
-      if (response.status === 'OK') {
+      const { code } = response;
+      if (code === 0) {
         let msg = '启用成功';
         if (payload.is_active === false) {
           msg = '停用成功';
@@ -260,8 +267,9 @@ export default {
       let list = store.getExpirableItem(skey);
       if (!list || list.length === 0) {
         let response = yield call(districtService.getSubstricts, nparams.pid, nparams);
-        if (response) {
-          list = response.list || [];
+        const { code, burden } = response;
+        if (code === 0) {
+          list = burden.list || [];
           if (list.length > 0) {
             store.setExpirableItem(skey, list, 20);
           }
@@ -298,11 +306,16 @@ export default {
       return { ...state, formVisible: payload };
     },
     changeFormDrawerOpen(state, { payload }) {
-      
       if (!payload) {
-        return { ...state, formDrawerOpen: payload, formVisible: payload, formData: {}, formID: '' };
+        return {
+          ...state,
+          formDrawerOpen: payload,
+          formVisible: payload,
+          formData: {},
+          formID: '',
+        };
       }
-      return {...state, formDrawerOpen: payload }
+      return { ...state, formDrawerOpen: payload };
     },
     saveFormTitle(state, { payload }) {
       return { ...state, formTitle: payload };

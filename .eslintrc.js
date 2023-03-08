@@ -36,6 +36,8 @@ module.exports = {
     page: true,
   },
   rules: {
+    'no-empty': 'warn',
+    'no-useless-constructor': 'warn',
     'arrow-body-style': 'warn',
     'import/prefer-default-export': 'warn',
     'compat/compat': 'warn',

@@ -17,19 +17,23 @@ export default {
   effects: {
     *loadCaptcha(_, { call, put }) {
       const response = yield call(signinService.captchaID);
-      const { captcha_id: captchaID } = response;
-
-      yield put({
-        type: 'saveCaptchaID',
-        payload: captchaID,
-      });
-      yield put({
-        type: 'saveCaptcha',
-        payload: signinService.captcha(captchaID),
-      });
+      const {
+        code,
+        burden: { captcha_id: captchaID },
+      } = response;
+      if (code === 0) {
+        yield put({
+          type: 'saveCaptchaID',
+          payload: captchaID,
+        });
+        yield put({
+          type: 'saveCaptcha',
+          payload: signinService.captcha(captchaID),
+        });
+      }
     },
     *reloadCaptcha(_, { put, select }) {
-      const captchaID = yield select(state => state.signin.captchaID);
+      const captchaID = yield select((state) => state.signin.captchaID);
       yield put({
         type: 'saveCaptcha',
         payload: `${signinService.captcha(captchaID)}&reload=${Math.random()}`,
@@ -42,34 +46,38 @@ export default {
       });
 
       console.log(' ---- pppppp === ', payload);
-
+      
       const response = yield call(signinService.signIn, payload);
-      if (response.data && response.data.error) {
-        const {
-          data: {
-            error: { message },
-          },
-          status,
-        } = response;
+      const { code,   } = response;
+      if (code === 0) {
+        // FIXME:
+        if (response.data && response.data.error) {
+          const {
+            data: {
+              error: { message },
+            },
+            status,
+          } = response;
 
-        yield [
-          put({
-            type: 'saveTip',
-            payload: message,
-          }),
-          put({
-            type: 'saveStatus',
-            payload: status >= 500 ? 'ERROR' : 'FAIL',
-          }),
-          put({
-            type: 'changeSubmitting',
-            payload: false,
-          }),
-          put({
-            type: 'loadCaptcha',
-          }),
-        ];
-        return;
+          yield [
+            put({
+              type: 'saveTip',
+              payload: message,
+            }),
+            put({
+              type: 'saveStatus',
+              payload: status >= 500 ? 'ERROR' : 'FAIL',
+            }),
+            put({
+              type: 'changeSubmitting',
+              payload: false,
+            }),
+            put({
+              type: 'loadCaptcha',
+            }),
+          ];
+          return;
+        }
       }
 
       // 保存访问令牌
@@ -102,7 +110,8 @@ export default {
     *signOut(_, { call }) {
       console.log(' -------- 0000000 ======= ');
       const response = yield call(signinService.signOut);
-      if (response.status === 'OK') {
+      const {code } = response;
+      if (code === 0) {
         signOut();
       }
     },

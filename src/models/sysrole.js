@@ -49,10 +49,13 @@ export default {
       }
 
       const response = yield call(roleService.query, params);
-      yield put({
-        type: 'saveData',
-        payload: response,
-      });
+      const { code, burden } = response;
+      if (code === 0) {
+        yield put({
+          type: 'saveData',
+          payload: burden,
+        });
+      }
     },
 
     *loadForm({ payload }, { put }) {
@@ -107,27 +110,30 @@ export default {
     *fetchForm({ payload }, { call, put }) {
       const response = yield call(roleService.get, payload.id);
 
-      const { role_menus: roleMenus } = response;
-      if (roleMenus) {
-        const mRoleMenus = {};
-        const nRoleMenus = [];
-        roleMenus.forEach((item) => {
-          if (mRoleMenus[item.menu_id]) {
-            mRoleMenus[item.menu_id] = [...mRoleMenus[item.menu_id], item.action_id];
-          } else {
-            mRoleMenus[item.menu_id] = [item.action_id];
-          }
-        });
-        Object.keys(mRoleMenus).forEach((key) => {
-          nRoleMenus.push({ menu_id: key, actions: mRoleMenus[key] });
-        });
-        response.role_menus = nRoleMenus;
+      const { code, burden } = response;
+      if (code === 0) {
+        const { role_menus: roleMenus } = burden;
+        if (roleMenus) {
+          const mRoleMenus = {};
+          const nRoleMenus = [];
+          roleMenus.forEach((item) => {
+            if (mRoleMenus[item.menu_id]) {
+              mRoleMenus[item.menu_id] = [...mRoleMenus[item.menu_id], item.action_id];
+            } else {
+              mRoleMenus[item.menu_id] = [item.action_id];
+            }
+          });
+          Object.keys(mRoleMenus).forEach((key) => {
+            nRoleMenus.push({ menu_id: key, actions: mRoleMenus[key] });
+          });
+          burden.role_menus = nRoleMenus;
+        }
       }
 
       yield [
         put({
           type: 'saveFormData',
-          payload: response,
+          payload: burden,
         }),
         put({
           type: 'changeFormVisible',
@@ -154,15 +160,15 @@ export default {
         console.log(' ----- ====== ==== id == ', id);
 
         const response = yield call(roleService.update, id, params);
-
-        console.log(' ----- ====== ==== response == ', response);
-
-        if (response.status === 'OK') {
+        console.log(' ----- ====== ==== response  == ', response);
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
       } else {
         const response = yield call(roleService.create, params);
-        if (response.id && response.id !== '') {
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
       }
@@ -185,17 +191,21 @@ export default {
     },
     *del({ payload }, { call, put }) {
       const response = yield call(roleService.del, payload.id);
-      if (response.status === 'OK') {
+      const { code } = response;
+      if (code === 0) {
         message.success('删除成功');
         yield put({ type: 'fetch' });
       }
     },
     *fetchSelect(_, { call, put }) {
       const response = yield call(roleService.querySelect);
-      yield put({
-        type: 'saveSelectData',
-        payload: response.list || [],
-      });
+      const { code, burden } = response;
+      if (code === 0) {
+        yield put({
+          type: 'saveSelectData',
+          payload: burden.list || [],
+        });
+      }
     },
     *changeStatus({ payload }, { call, put, select }) {
       let response;
@@ -205,7 +215,8 @@ export default {
         response = yield call(roleService.disable, payload.id);
       }
 
-      if (response.status === 'OK') {
+      const { code, burden } = response;
+      if (code === 0) {
         let msg = '启用成功';
         if (payload.is_active === false) {
           msg = '停用成功';

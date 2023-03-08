@@ -25,10 +25,10 @@ export default {
     *menuEvent({ pathname }, { put, select }) {
       let p = pathname;
       if (p === '/') {
-        p = yield select(state => state.global.defaultURL);
+        p = yield select((state) => state.global.defaultURL);
       }
 
-      const menuPaths = yield select(state => state.global.menuPaths);
+      const menuPaths = yield select((state) => state.global.menuPaths);
       const item = menuPaths[p];
       if (!item) {
         return;
@@ -48,20 +48,28 @@ export default {
     },
     *fetchUser(_, { call, put }) {
       const response = yield call(signinService.getCurrentUser);
-      yield put({
-        type: 'saveUser',
-        payload: response,
-      });
+      const {code, burden} = response;
+      if ( code === 0) {
+        yield put({
+          type: 'saveUser',
+          payload: burden,
+        });
+      }
     },
     *fetchMenuTree({ pathname }, { call, put }) {
-
-      let skey = "admin-current-user-menu"
-      let list = store.getExpirableItem(skey)
+      let skey = 'admin-current-user-menu';
+      let list = store.getExpirableItem(skey);
       if (!list) {
         const response = yield call(signinService.queryMenuTree);
-        list = response.list;
-        if (list) {
-          store.setExpirableItem(skey, list, 10)
+        const {
+          code,
+          burden
+        } = response;
+        if (code === 0) {
+          if (burden.list) {
+            list = burden.list
+            store.setExpirableItem(skey, burden.list, 10);
+          }
         }
       }
 

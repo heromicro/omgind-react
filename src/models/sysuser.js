@@ -48,10 +48,13 @@ export default {
       }
 
       const response = yield call(userService.query, params);
-      yield put({
-        type: 'saveData',
-        payload: response,
-      });
+      const { code, burden } = response;
+      if (code === 0) {
+        yield put({
+          type: 'saveData',
+          payload: burden,
+        });
+      }
     },
 
     *loadForm({ payload }, { put }) {
@@ -106,16 +109,19 @@ export default {
 
     *fetchForm({ payload }, { call, put }) {
       const response = yield call(userService.get, payload.id);
-      yield [
-        put({
-          type: 'saveFormData',
-          payload: response,
-        }),
-        put({
-          type: 'changeFormVisible',
-          payload: true,
-        }),
-      ];
+      const { code, burden } = response;
+      if (code === 0) {
+        yield [
+          put({
+            type: 'saveFormData',
+            payload: burden,
+          }),
+          put({
+            type: 'changeFormVisible',
+            payload: true,
+          }),
+        ];
+      }
     },
 
     *submit({ payload }, { call, put, select }) {
@@ -130,12 +136,14 @@ export default {
       if (formType === 'E') {
         const id = yield select((state) => state.user.formID);
         const response = yield call(userService.update, id, params);
-        if (response.status === 'OK') {
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
       } else {
         const response = yield call(userService.create, params);
-        if (response.id && response.id !== '') {
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
       }
@@ -158,7 +166,8 @@ export default {
     },
     *del({ payload }, { call, put }) {
       const response = yield call(userService.del, payload.id);
-      if (response.status === 'OK') {
+      const { code } = response;
+      if (code === 0) {
         message.success('删除成功');
         yield put({ type: 'fetch' });
       }
@@ -171,7 +180,8 @@ export default {
         response = yield call(userService.disable, payload.id);
       }
 
-      if (response.status === 'OK') {
+      const { code, burden } = response;
+      if (code === 0) {
         let msg = '启用成功';
         if (payload.is_active === false) {
           msg = '停用成功';
