@@ -138,12 +138,14 @@ export default {
         payload: true,
       });
       let { record } = payload;
-      yield put({
-        type: 'saveDetailData',
-        payload: record,
-      });
+      // yield put({
+      //   type: 'saveDetailData',
+      //   payload: record,
+      // });
 
       const response = yield call(districtService.view, record.id);
+      console.log(" ------ ===== ", response);
+      
       if (response.code === 0) {
         yield [
           put({
@@ -152,7 +154,6 @@ export default {
           }),
         ];
       }
-
     },
     *submit({ payload, callback = null }, { call, put, select }) {
       yield put({

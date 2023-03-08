@@ -67,8 +67,7 @@ class DistrictDetail extends PureComponent {
     const { editing } = this.state;
     const { onClose, sysdistrict, ...restProps } = this.props;
     const { formTitle, detailDrawerOpen, detailData, submitting } = sysdistrict;
-
-
+    
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -115,13 +114,16 @@ class DistrictDetail extends PureComponent {
           </Space>
         }
       >
+        {
+          !_.isEmpty(detailData) && (
+        
         <div>
           <ProDescriptions column={2} title="基本信息">
             <ProDescriptions.Item label="名称" key="name">
               {detailData.name}
             </ProDescriptions.Item>
             <ProDescriptions.Item label="上级" key="parent">
-              {detailData.parent && detailData.parent.name}
+              {detailData.parent ? (`${detailData.parent.name}`): ("")}
             </ProDescriptions.Item>
 
             <ProDescriptions.Item label="短名称" key="sname">
@@ -226,6 +228,7 @@ class DistrictDetail extends PureComponent {
               </ProDescriptions.Item>
             </ProDescriptions> */}
         </div>
+      )}
       </Drawer>
     );
   }
