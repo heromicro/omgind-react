@@ -65,7 +65,7 @@ class DistrictList extends PureComponent {
 
     console.log(' -- --- == == = --- location: ', location);
 
-    this.refetch({ pagination: { pageSize: 50, current: 1 } });
+    this.refetch({ pagination: { pageSize: 10, current: 1 } });
 
     const { dispatch } = this.props;
 
@@ -193,11 +193,11 @@ class DistrictList extends PureComponent {
     dispatch({
       type: 'sysdistrict/submit',
       payload: data,
-      callback: (success) => {
+      callback: (success, burden) => {
+
         if (success) {
           const { location } = this.props;
-          history.push({ pathname: location.pathname, search: 'tree_id__order=desc' });
-
+          history.push({ pathname: location.pathname, search: `tree_id__order=desc&after=${burden.id}` });
           this.refetch();
         }
       },
@@ -308,7 +308,7 @@ class DistrictList extends PureComponent {
   }
 
   renderItemDetail() {
-    return <DistrictDetail width={850} onClose={this.onDetailDrawerClose} />;
+    return <DistrictDetail width={850} onClose={this.onDetailDrawerClose}  onAddClick={this.onAddClick}/>;
   }
 
   renderDataDrawerForm() {
@@ -408,6 +408,7 @@ class DistrictList extends PureComponent {
       {
         title: '名称',
         dataIndex: 'name',
+        fixed: 'left',
       },
       {
         title: '名称[英语]',

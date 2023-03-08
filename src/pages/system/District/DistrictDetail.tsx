@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Button, Drawer, Space, Badge } from 'antd';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import { PlusOutlined } from '@ant-design/icons';
 
 import * as _ from 'lodash';
 
@@ -23,10 +24,17 @@ class DistrictDetail extends PureComponent {
 
   componentDidMount(): void {}
 
-  onClickEdit = () => {
+  onClickEdit = (item) => {
     console.log(' ---- ==== click edit eee ');
+
+    this.dispatch({
+      type: 'sysdistrict/loadForm',
+      payload: {
+        type: 'E',
+        id: item.id,
+      },
+    });
   };
- 
 
   onOpenChange = (visible: boolean) => {
     console.log(' ----- === visible :', visible);
@@ -51,29 +59,19 @@ class DistrictDetail extends PureComponent {
   };
 
   render() {
-    const { onClose, sysdistrict, ...restProps } = this.props;
-    const { formTitle, detailDrawerOpen, detailData, submitting } = sysdistrict;
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 6 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
+    const { onClose, onAddClick, sysdistrict, ...restProps } = this.props;
+    const { detailDrawerOpen, detailData } = sysdistrict;
 
     console.log(' ----- === detailData == == ', detailData);
 
     return (
       <Drawer
         {...restProps}
-        title={formTitle}
+        title={_.isEmpty(detailData) ? '' : `行政区域--${detailData.name}`}
         onClose={onClose}
         open={detailDrawerOpen}
         destroyOnClose
+        maskClosable={false}
         style={{ top: 20 }}
         // bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
         footer={
@@ -84,7 +82,22 @@ class DistrictDetail extends PureComponent {
               </Button>
             </Space>
             <Space style={{ textAlign: 'right' }}>
-              <PButton code="edit" type="primary" onClick={this.onClickEdit} danger>
+              <PButton
+                code="add"
+                key="add"
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={() => onAddClick()}
+              >
+                新建
+              </PButton>
+              <PButton
+                code="edit"
+                type="primary"
+                onClick={() => this.onClickEdit(detailData)}
+                danger
+                disabled={_.isEmpty(detailData)}
+              >
                 编 辑
               </PButton>
               <Button type="ghost" onClick={onClose}>

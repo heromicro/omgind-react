@@ -57,7 +57,7 @@ export default {
       }
 
       const response = yield call(districtService.query, params);
-      const { code, burden} = response;
+      const { code, burden } = response;
       if (code === 0) {
         yield put({
           type: 'saveData',
@@ -68,10 +68,16 @@ export default {
     *loadForm({ payload }, { put }) {
       console.log(' ----- ======  111111  ');
 
-      yield put({
-        type: 'changeFormDrawerOpen',
-        payload: true,
-      });
+      yield [
+        put({
+          type: 'changeDetailDrawerOpen',
+          payload: false,
+        }),
+        put({
+          type: 'changeFormDrawerOpen',
+          payload: true,
+        }),
+      ];
 
       yield [
         put({
@@ -178,12 +184,12 @@ export default {
         }
       } else {
         const response = yield call(districtService.create, params);
-        const { code } = response;
+        const { code, burden } = response;
         if (code === 0) {
           success = true;
         }
         if (callback) {
-          callback(success);
+          callback(success, burden);
         }
       }
 

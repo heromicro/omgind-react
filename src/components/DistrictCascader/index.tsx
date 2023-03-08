@@ -13,7 +13,7 @@ const DistrictCascader = (props) => {
 
   const getOptions = async (idStr: string) => {
     const params = { is_real: true, pid: idStr };
-    const { list, pagination } = await getSubstricts(idStr, params);
+    const { burden: {list} } = await getSubstricts(idStr, params);
     const newData = [];
     list.map((item) => {
       return newData.push({
@@ -71,7 +71,7 @@ const DistrictCascader = (props) => {
 
     let id = selectedOptions[selectedOptions.length - 1].value;
     const params = { is_real: true, pid: id };
-    const { list } = await getSubstricts(id, params);
+    const { burden: {list} } = await getSubstricts(id, params);
 
     targetOption.loading = false;
     const newData = [];
