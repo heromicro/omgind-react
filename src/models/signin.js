@@ -48,9 +48,13 @@ export default {
       console.log(' ---- pppppp === ', payload);
       
       const response = yield call(signinService.signIn, payload);
-      const { code,   } = response;
-      if (code === 0) {
+      const { code,  burden } = response;
+      if (code !== 0) {
         // FIXME:
+
+        console.log(' ---- response === ', response);
+        // console.log(' ---- burden === ', burden);
+
         if (response.data && response.data.error) {
           const {
             data: {
@@ -81,7 +85,7 @@ export default {
       }
 
       // 保存访问令牌
-      setToken(response);
+      setToken(burden);
 
       yield [
         put({
