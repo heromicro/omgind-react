@@ -247,8 +247,9 @@ class DemoList extends PureComponent {
         //   {text: '失效', value: false}
         // ],
         // onFilter:
-        render: (val) => {
-          if (val) {
+        render: (_, entity) => {
+          console.log(" -------- ======= val ", entity);
+          if (entity.is_active) {
             return <Badge status="success" text="启用" />;
           }
           return <Badge status="error" text="停用" />;

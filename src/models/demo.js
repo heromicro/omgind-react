@@ -48,10 +48,13 @@ export default {
       }
 
       const response = yield call(demoService.query, params);
-      yield put({
-        type: 'saveData',
-        payload: response,
-      });
+      if (response.code === 0) {
+        yield put({
+          type: 'saveData',
+          payload: response.payload,
+        });
+      } else {
+      }
     },
     *loadForm({ payload }, { put }) {
       yield put({
@@ -104,16 +107,20 @@ export default {
     },
     *fetchForm({ payload }, { call, put }) {
       const response = yield call(demoService.get, payload.id);
-      yield [
-        put({
-          type: 'saveFormData',
-          payload: response,
-        }),
-        put({
-          type: 'changeFormVisible',
-          payload: true,
-        }),
-      ];
+      if (response.code === 0) {
+        yield [
+          put({
+            type: 'saveFormData',
+            payload: response.payload,
+          }),
+          put({
+            type: 'changeFormVisible',
+            payload: true,
+          }),
+        ];
+      } else {
+
+      }
     },
     *submit({ payload }, { call, put, select }) {
       yield put({
@@ -128,12 +135,12 @@ export default {
         const id = yield select((state) => state.demo.formID);
 
         const response = yield call(demoService.update, id, params);
-        if (response.status === 'OK') {
+        if (response.code === 0) {
           success = true;
         }
       } else {
         const response = yield call(demoService.create, params);
-        if (response.id && response.id !== '') {
+        if (response.code === 0) {
           success = true;
         }
       }
@@ -156,7 +163,7 @@ export default {
     },
     *del({ payload }, { call, put }) {
       const response = yield call(demoService.del, payload.id);
-      if (response.status === 'OK') {
+      if (response.code === 0) {
         message.success('删除成功');
         yield put({ type: 'fetch' });
       }
@@ -169,7 +176,7 @@ export default {
         response = yield call(demoService.disable, payload.id);
       }
 
-      if (response.status === 'OK') {
+      if (response.code === 0) {
         let msg = '启用成功';
         if (payload.is_active === false) {
           msg = '停用成功';
