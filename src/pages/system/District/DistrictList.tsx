@@ -42,6 +42,7 @@ class DistrictList extends PureComponent {
   searchFormRef = React.createRef();
   actionRef = React.createRef();
 
+//            
   constructor(props) {
     super(props);
 
@@ -49,9 +50,20 @@ class DistrictList extends PureComponent {
       selectedRowKeys: [],
       selectedRows: [],
       columnsStateMap: {
+        "name": {   "order": 0 }, "name_en": {   "order": 1 },
+        "initials": {   "order": 2 },
         sname: { show: false, order: 3 },
-        merge_name: { show: false, order: 5 },
-        tree_id: { show: false, order: 8 },
+        "sname_en": {   "order": 4 }, 
+        "abbr": {   "order": 5 },
+        "pinyin": {   "order": 6 },
+        merge_name: { show: false, order: 7 },
+        merge_sname: { show: false, order: 8 },
+        "suffix": {   "order": 9 }, 
+        tree_id: { show: false, order: 10 },
+        "tree_level": {   "order": 11 }, "tree_left": {   "order": 12 }, "tree_right": {   "order": 13 }, "is_leaf": {   "order": 15 },
+        "zip_code": {   "order": 16 }, "area_code": {   "order": 17 },"is_active": {   "order": 18 }, 
+        "is_real": {   "order": 19 }, "is_hot": {   "order": 20 }, "is_direct": {   "order": 21 },
+        "sort": {   "order": 22 }, "extra": {   "order": 23 },
       },
       countries: [],
       provinces: [],
