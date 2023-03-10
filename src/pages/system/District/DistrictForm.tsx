@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react';
+import React, { forwardRef } from 'react';
 import { connect } from 'dva';
 
 import { Form, Input, Switch, Row, Col } from 'antd';
@@ -28,7 +28,6 @@ class DistrictForm extends React.PureComponent {
     console.log(' ------ ==== -- ===== value ', value);
     console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
   };
-    
 
   render() {
     const { sysdistrict, formRef, ...restProps } = this.props;
@@ -95,7 +94,7 @@ class DistrictForm extends React.PureComponent {
               name="sname_en"
               rules={[{ max: 64, message: '最多 64 字符' }]}
             >
-              <Input placeholder="请输入短名称[英语]" allowClear/>
+              <Input placeholder="请输入短名称[英语]" allowClear />
             </Form.Item>
           </Col>
         </Row>
@@ -121,7 +120,7 @@ class DistrictForm extends React.PureComponent {
               name="merge_name"
               rules={[{ max: 256, message: '最多 256 字符' }]}
             >
-              <Input placeholder="请输入行政名称" allowClear/>
+              <Input placeholder="请输入行政名称" allowClear />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -130,7 +129,7 @@ class DistrictForm extends React.PureComponent {
               name="merge_sname"
               rules={[{ max: 256, message: '最多 256 字符' }]}
             >
-              <Input placeholder="请输入行政短名称" allowClear/>
+              <Input placeholder="请输入行政短名称" allowClear />
             </Form.Item>
           </Col>
         </Row>
@@ -142,31 +141,31 @@ class DistrictForm extends React.PureComponent {
               name="suffix"
               rules={[{ max: 32, message: '最多 32 字符' }]}
             >
-              <Input placeholder="请输入行政后缀" allowClear/>
+              <Input placeholder="请输入行政后缀" allowClear />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item label="拼音" name="pinyin" rules={[{ max: 128, message: '最多 128 字符' }]}>
-              <Input placeholder="请输入拼音" allowClear/>
+              <Input placeholder="请输入拼音" allowClear />
             </Form.Item>
           </Col>
         </Row>
         <Row>
           <Col span={12}>
             <Form.Item label="简拼" name="initials" rules={[{ max: 32, message: '最多 32 字符' }]}>
-              <Input placeholder="请输入简拼" allowClear/>
+              <Input placeholder="请输入简拼" allowClear />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item label="区号" name="area_code" rules={[{ max: 8, message: '最多 8 字符' }]}>
-              <Input placeholder="请输入区号" allowClear/>
+              <Input placeholder="请输入区号" allowClear />
             </Form.Item>
           </Col>
         </Row>
         <Row>
           <Col span={12}>
             <Form.Item label="邮码" name="zip_code" rules={[{ max: 8, message: '最多 8 字符' }]}>
-              <Input placeholder="请输入邮码" allowClear/>
+              <Input placeholder="请输入邮码" allowClear />
             </Form.Item>
           </Col>
         </Row>
@@ -194,19 +193,18 @@ class DistrictForm extends React.PureComponent {
             </Form.Item>
           </Col>
         </Row>
-        <Row></Row>
+        {/* <Row></Row> */}
         <Row>
           <Col span={6}>
             <Form.Item label="是否直辖" name="is_direct">
               <Switch />
             </Form.Item>
           </Col>
-          <Col span={6}></Col>
+          {/* <Col span={6}></Col> */}
         </Row>
       </Form>
     );
   }
 }
 
-export default forwardRef(( props, ref) => (<DistrictForm {...props} innerRef={ref}/>));
-
+export default forwardRef((props, ref) => <DistrictForm {...props} innerRef={ref} />);

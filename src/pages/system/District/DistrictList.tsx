@@ -24,6 +24,7 @@ import { showPButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
 import { SysDistrctItem } from '@/scheme/sysdistrict';
+import DistrictCascader from '@/components/DistrictCascader';
 
 import { makeupSortKey } from '@/utils/urlutil';
 
@@ -42,7 +43,7 @@ class DistrictList extends PureComponent {
   searchFormRef = React.createRef();
   actionRef = React.createRef();
 
-//            
+  //
   constructor(props) {
     super(props);
 
@@ -50,20 +51,29 @@ class DistrictList extends PureComponent {
       selectedRowKeys: [],
       selectedRows: [],
       columnsStateMap: {
-        "name": {   "order": 0 }, "name_en": {   "order": 1 },
-        "initials": {   "order": 2 },
-        sname: { show: false, order: 3 },
-        "sname_en": {   "order": 4 }, 
-        "abbr": {   "order": 5 },
-        "pinyin": {   "order": 6 },
+        name: { order: 0 },
+        name_en: { order: 1 },
+        initials: { order: 2 },
+        sname: { show: true, order: 3 },
+        sname_en: { order: 4 },
+        abbr: { order: 5 },
+        pinyin: { order: 6 },
         merge_name: { show: false, order: 7 },
         merge_sname: { show: false, order: 8 },
-        "suffix": {   "order": 9 }, 
-        tree_id: { show: false, order: 10 },
-        "tree_level": {   "order": 11 }, "tree_left": {   "order": 12 }, "tree_right": {   "order": 13 }, "is_leaf": {   "order": 15 },
-        "zip_code": {   "order": 16 }, "area_code": {   "order": 17 },"is_active": {   "order": 18 }, 
-        "is_real": {   "order": 19 }, "is_hot": {   "order": 20 }, "is_direct": {   "order": 21 },
-        "sort": {   "order": 22 }, "extra": {   "order": 23 },
+        suffix: { order: 9 },
+        tree_id: { show: true, order: 10 },
+        tree_level: { order: 11 },
+        tree_left: { order: 12 },
+        tree_right: { order: 13 },
+        is_leaf: { order: 15 },
+        zip_code: { order: 16 },
+        area_code: { order: 17 },
+        is_active: { order: 18 },
+        is_real: { order: 19 },
+        is_hot: { order: 20 },
+        is_direct: { order: 21 },
+        sort: { order: 22 },
+        extra: { order: 23 },
       },
       countries: [],
       provinces: [],
@@ -206,10 +216,12 @@ class DistrictList extends PureComponent {
       type: 'sysdistrict/submit',
       payload: data,
       callback: (success, burden) => {
-
         if (success) {
           const { location } = this.props;
-          history.push({ pathname: location.pathname, search: `tree_id__order=desc&after=${burden.id}` });
+          history.push({
+            pathname: location.pathname,
+            search: `tree_id__order=desc&after=${burden.id}`,
+          });
           this.refetch();
         }
       },
@@ -257,6 +269,11 @@ class DistrictList extends PureComponent {
 
   parentFieldChanged = (values: string[]) => {
     // console.log(" ------ ===== ---- values ", values);
+  };
+
+  onDistrictChange = (value: string[], selectedOptions: []) => {
+    console.log(' ----- ====== ===== value ', value);
+    console.log(' ----- ====== ===== selectedOptions ', selectedOptions);
   };
 
   onCountrySelectChange = (value, option: SysDistrctItem) => {
@@ -309,7 +326,7 @@ class DistrictList extends PureComponent {
       },
     });
   };
-  
+
   onClickShowDetail = (item) => {
     this.dispatch({
       type: 'sysdistrict/loadDetail',
@@ -317,10 +334,12 @@ class DistrictList extends PureComponent {
         record: item,
       },
     });
-  }
+  };
 
   renderItemDetail() {
-    return <DistrictDetail width={850} onClose={this.onDetailDrawerClose}  onAddClick={this.onAddClick}/>;
+    return (
+      <DistrictDetail width={850} onClose={this.onDetailDrawerClose} onAddClick={this.onAddClick} />
+    );
   }
 
   renderDataDrawerForm() {
@@ -380,16 +399,20 @@ class DistrictList extends PureComponent {
         title: '父级',
         dataIndex: 'pid',
         hideInTable: true,
-        renderFormItem: (item, config, form) => {
+        renderFormItem: (schema, config, form) => {
+          // console.log(' ---- ======== 0000000 == schema= ', schema);
+          console.log(' ---- ======== 0000000 == config= ', config);
+
           if (config.type === 'form') {
             return null;
           }
+
           const rest = {
-            value: form.getFieldValue(`${item.dataIndex}`),
+            value: form.getFieldValue(`${schema.dataIndex}`),
             onChange: (value) => {
               console.log(' ---- ======== 0000000 === ', value);
               const newValues = {};
-              newValues[`${item.dataIndex}`] = value;
+              newValues[`${schema.dataIndex}`] = value;
               form.setFieldsValue(newValues);
             },
           };
@@ -400,13 +423,11 @@ class DistrictList extends PureComponent {
                 onChange={this.onCountrySelectChange}
                 options={countries.map((oitem) => ({ label: oitem.name, value: oitem.id }))}
               />
-
               <Select
                 style={{ width: 90 }}
                 onChange={this.onProvinceSelectChange}
                 options={provinces.map((oitem) => ({ label: oitem.name, value: oitem.id }))}
               />
-
               <Select
                 onChange={this.onCitySelectChange}
                 style={{ width: 90 }}
@@ -414,6 +435,7 @@ class DistrictList extends PureComponent {
               />
             </Space>
           );
+          // return <DistrictCascader onChange={this.onDistrictChange} />
         },
       },
 
@@ -581,11 +603,18 @@ class DistrictList extends PureComponent {
         dataIndex: 'option',
         hideInSearch: true,
         fixed: 'right',
-        width: "60px",
-        render:(val, record, row) => {
-
-          return <a onClick={() => {this.onClickShowDetail(record)}}>查看</a>
-        }
+        width: '60px',
+        render: (val, record, row) => {
+          return (
+            <a
+              onClick={() => {
+                this.onClickShowDetail(record);
+              }}
+            >
+              查看
+            </a>
+          );
+        },
       },
     ];
 

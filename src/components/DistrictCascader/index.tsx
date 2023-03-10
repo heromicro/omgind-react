@@ -13,7 +13,9 @@ const DistrictCascader = (props) => {
 
   const getOptions = async (idStr: string) => {
     const params = { is_real: true, pid: idStr };
-    const { burden: {list} } = await getSubstricts(idStr, params);
+    const {
+      burden: { list },
+    } = await getSubstricts(idStr, params);
     const newData = [];
     list.map((item) => {
       return newData.push({
@@ -28,17 +30,18 @@ const DistrictCascader = (props) => {
 
   // 页面初始化请求一级目录
   useEffect(() => {
-    const {value} = props;
+    const { value } = props;
     if (_.isEmpty(value)) {
       return;
     }
-    
+
     getOptions('-');
-    if (Array.isArray(value) ){
-
+    if (Array.isArray(value)) {
+      console.log(' ------- ------ cascader value is array ');
     } else {
-      if (value.includes("/")) {
-
+      console.log(' ------- ------ cascader value is not array ');
+      if (value.includes('/')) {
+        console.log(' ------- ------ cascader include / ');
       }
     }
   }, []);
@@ -53,7 +56,6 @@ const DistrictCascader = (props) => {
 
   // 点击目录事件
   const onCascaderChange = (value, selectedOptions) => {
-
     setDefaultValue(value);
     const { onChange } = props;
     if (onChange) {
@@ -71,7 +73,9 @@ const DistrictCascader = (props) => {
 
     let id = selectedOptions[selectedOptions.length - 1].value;
     const params = { is_real: true, pid: id };
-    const { burden: {list} } = await getSubstricts(id, params);
+    const {
+      burden: { list },
+    } = await getSubstricts(id, params);
 
     targetOption.loading = false;
     const newData = [];
@@ -95,7 +99,7 @@ const DistrictCascader = (props) => {
       loadData={loadData}
       onChange={onCascaderChange}
       changeOnSelect
-      allowClear={false}
+      allowClear
       onDropdownVisibleChange={onDropdownVisibleChange}
       value={defaultValue}
     />

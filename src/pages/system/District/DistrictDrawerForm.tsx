@@ -34,7 +34,7 @@ class DistrictDrawerForm extends React.PureComponent {
   onFinish = (data) => {
     console.log(' ======== === 0000 data : ', data);
     // console.log(' ======== === this.formRef.current : ', this.formRef.current);
-    let formData = data
+    let formData = data;
     const { onSubmit } = this.props;
     if (formData.pid) {
       const {
@@ -192,7 +192,7 @@ class DistrictDrawerForm extends React.PureComponent {
             <Row>
               <Col span={12}>
                 <Form.Item label="上级" name="pid">
-                  <DistrictCascader onChange={this.onDistrictChange} />
+                  <DistrictCascader onChange={this.onDistrictChange} allowClear />
                 </Form.Item>
               </Col>
 
@@ -306,7 +306,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   <Switch />
                 </Form.Item>
               </Col>
-              <Col span={6}></Col>
+              {/* <Col span={6}></Col> */}
             </Row>
           </Form>
         )}
