@@ -128,12 +128,14 @@ export default function request(url, options = { method: methods.GET }) {
       return data;
     })
     .catch((error) => {
-      const { response } = error;
-      const { status, data } = response;
+      console.log(' ----- ddddd =error==== ', error);
+
+      // const { response } = error;
+      const { status, data } = error;
       console.log(' ----- ddddd ===== ', data);
       if (status === 401 && data.error && data.error.code === 9999) {
         signOut();
-        return response;
+        return error;
       }
 
       if (showNotify) {
@@ -149,7 +151,7 @@ export default function request(url, options = { method: methods.GET }) {
           description: msg,
         });
       }
-      return response;
+      return error;
     });
 }
 

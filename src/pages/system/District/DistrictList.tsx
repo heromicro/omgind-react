@@ -85,7 +85,7 @@ class DistrictList extends PureComponent {
   componentDidMount() {
     const { location } = this.props;
 
-    console.log(' -- --- == == = --- location: ', location);
+    // console.log(' -- --- == == = --- location: ', location);
 
     this.refetch({ pagination: { pageSize: 10, current: 1 } });
 
@@ -256,9 +256,9 @@ class DistrictList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     const { location } = this.props;
 
-    console.log(' --------- ===== 9999 == location ', location);
+    // console.log(' ---- ----- ===== 9999 == location ', location);
     let params = qs.parse(location.search, { ignoreQueryPrefix: true });
-    console.log(' --------- ===== 9999 == params ', params);
+    // console.log(' --------- ===== 9999 == params ', params);
 
     this.dispatch({
       type: 'sysdistrict/fetch',
@@ -401,7 +401,7 @@ class DistrictList extends PureComponent {
         hideInTable: true,
         renderFormItem: (schema, config, form) => {
           // console.log(' ---- ======== 0000000 == schema= ', schema);
-          console.log(' ---- ======== 0000000 == config= ', config);
+          // console.log(' ---- ======== 0000000 == config= ', config);
 
           if (config.type === 'form') {
             return null;
@@ -410,7 +410,7 @@ class DistrictList extends PureComponent {
           const rest = {
             value: form.getFieldValue(`${schema.dataIndex}`),
             onChange: (value) => {
-              console.log(' ---- ======== 0000000 === ', value);
+              // console.log(' ---- ======== 0000000 === ', value);
               const newValues = {};
               newValues[`${schema.dataIndex}`] = value;
               form.setFieldsValue(newValues);

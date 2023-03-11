@@ -16,7 +16,7 @@ export function fillFormKey(data) {
   if (!data) {
     return [];
   }
-  return data.map(item => {
+  return data.map((item) => {
     const nitem = { ...item };
     if (!nitem.key) {
       nitem.key = newUUID();
@@ -29,7 +29,7 @@ export function parseValue(value, key) {
   if (!value) {
     return [];
   }
-  return value.map(v => v[key]);
+  return value.map((v) => v[key]);
 }
 
 export function plainDataToTree({
@@ -109,7 +109,7 @@ export function genTreeNode(dataArr, parentId = null, isLeaf = false) {
     let data = dataArr[i];
     let oned = {
       id: data.id,
-      pId: parentId,
+      pid: parentId,
       value: data.id,
       title: data.name,
       isLeaf,
@@ -118,4 +118,36 @@ export function genTreeNode(dataArr, parentId = null, isLeaf = false) {
     rd.push(oned);
   }
   return rd;
+}
+
+export function listToTree(odata, ooptions) {
+  let data = odata || [];
+  let options = ooptions || {};
+  let ID_KEY = options.idKey || 'id';
+  let PARENT_KEY = options.parentKey || 'parent_id';
+  let CHILDREN_KEY = options.childrenKey || 'children';
+
+  let item;
+  let id;
+  let map = {};
+  for (let i = 0; i < data.length; i += 1) {
+    if (data[i][ID_KEY]) {
+      map[data[i][ID_KEY]] = data[i];
+      data[i][CHILDREN_KEY] = [];
+    }
+  }
+  for (let i = 0; i < data.length; i += 1) {
+    if (data[i][PARENT_KEY]) {
+      // is a child
+      if (map[data[i][PARENT_KEY]]) {
+        // for dirty data
+        map[data[i][PARENT_KEY]][CHILDREN_KEY].push(data[i]); // add child to parent
+        data.splice(i, 1); // remove from root
+        i -= 1; // iterator correction
+      } else {
+        data[i][PARENT_KEY] = 0; // clean dirty data
+      }
+    }
+  }
+  return data;
 }

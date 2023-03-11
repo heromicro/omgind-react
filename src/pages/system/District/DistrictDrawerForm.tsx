@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 import PButton from '@/components/PermButton';
 
 import DistrictCascader from '@/components/DistrictCascader';
+import DistrictTree from '@/components/DistrictTree';
+
 import { SysDistrctItem } from '@/scheme/sysdistrict';
 
 import styles from './DistrictDetail.less';
@@ -36,18 +38,8 @@ class DistrictDrawerForm extends React.PureComponent {
     // console.log(' ======== === this.formRef.current : ', this.formRef.current);
     let formData = data;
     const { onSubmit } = this.props;
-    if (formData.pid) {
-      const {
-        pid: { value },
-      } = formData;
-
-      console.log(' ---- == dd value ', value);
-
-      if (value && value.length > 0) {
-        formData.pid = value[value.length - 1];
-      } else {
-        formData.pid = null;
-      }
+    if (formData.pids) {
+      delete formData.pids;
     }
 
     console.log(' ======== === 1111 formData : ', formData);
@@ -69,6 +61,11 @@ class DistrictDrawerForm extends React.PureComponent {
   onDistrictChange = (value, selectedOptions) => {
     console.log(' ------ ==== -- ===== value ', value);
     console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
+    if (value && value.length > 0) {
+      this.formRef.current.setFieldValue('pid', value[0]);
+    } else {
+      this.formRef.current.setFieldValue('pid', '');
+    }
   };
 
   render() {
@@ -143,6 +140,8 @@ class DistrictDrawerForm extends React.PureComponent {
               is_real: formData.is_real === undefined ? true : formData.is_real,
               is_hot: formData.is_hot === undefined ? false : formData.is_hot,
               is_direct: formData.is_direct === undefined ? false : formData.is_direct,
+              pids: formData.tree_path === undefined ? '' : formData.tree_path.split('/'),
+              // pids: formData.tree_path === undefined ? "" : formData.tree_path.split('/'),
             }}
           >
             <Row>
@@ -191,8 +190,11 @@ class DistrictDrawerForm extends React.PureComponent {
 
             <Row>
               <Col span={12}>
-                <Form.Item label="上级" name="pid">
-                  <DistrictCascader onChange={this.onDistrictChange} allowClear />
+                <Form.Item label="上级" name="pids">
+                  <DistrictTree onChange={this.onDistrictChange} allowClear />
+                </Form.Item>
+                <Form.Item label="上级" name="pid" style={{}}>
+                  <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
 

@@ -62,7 +62,7 @@ class DistrictDetail extends PureComponent {
     const { onClose, onAddClick, sysdistrict, ...restProps } = this.props;
     const { detailDrawerOpen, detailData } = sysdistrict;
 
-    console.log(' ----- === detailData == == ', detailData);
+    // console.log(' ----- === detailData == == ', detailData);
 
     return (
       <Drawer

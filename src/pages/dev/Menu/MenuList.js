@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Layout, Tree, Badge } from 'antd';
-// import { arrayToTree } from "performant-array-to-tree";
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
