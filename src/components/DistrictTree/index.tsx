@@ -28,6 +28,7 @@ class DistrictTree extends React.PureComponent<
       return {
         ...state,
         // dataSource: fillFormKey(nextProps.value),
+        value: nextProps.value,
       };
     }
     return state;

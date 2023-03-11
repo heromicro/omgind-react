@@ -34,7 +34,8 @@ class DistrictDrawerForm extends React.PureComponent {
   }
 
   onFinish = (data) => {
-    console.log(' ======== === 0000 data : ', data);
+    // console.log(' ======== === 0000 data : ', data);
+    // console.log(' ======== === 0000 data : ', data.pids);
     // console.log(' ======== === this.formRef.current : ', this.formRef.current);
     let formData = data;
     const { onSubmit } = this.props;
