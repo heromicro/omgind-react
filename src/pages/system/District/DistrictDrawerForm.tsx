@@ -193,7 +193,7 @@ class DistrictDrawerForm extends React.PureComponent {
                 <Form.Item label="上级" name="pids">
                   <DistrictTree onChange={this.onDistrictChange} allowClear />
                 </Form.Item>
-                <Form.Item label="上级" name="pid" style={{}}>
+                <Form.Item label="上级" name="pid" style={{ display: 'none' }}>
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
