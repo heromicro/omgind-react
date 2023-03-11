@@ -6,8 +6,10 @@ import * as districtService from '@/services/sysdistrict';
 
 import { listToTree } from '@/utils/utils';
 
+type onChangeFunc = (value, selectedOptions) => void;
+
 class DistrictTree extends React.PureComponent<
-  { value: string[]; onChange: (value, selectedOptions) => void },
+  { value: string[]; onChange: onChangeFunc },
   { options: string[]; defaultValue: string[]; svalue: string[] }
 > {
   //
