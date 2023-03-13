@@ -60,10 +60,10 @@ class DistrictDrawerForm extends React.PureComponent {
   };
 
   onDistrictChange = (value, selectedOptions) => {
-    console.log(' ------ ==== -- ===== value ', value);
+    console.log(' ------ = === -- == === value ', value);
     console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
     if (value && value.length > 0) {
-      this.formRef.current.setFieldValue('pid', value[0]);
+      this.formRef.current.setFieldValue('pid', value[value.length - 1]);
     } else {
       this.formRef.current.setFieldValue('pid', '');
     }
