@@ -3,15 +3,19 @@ import { connect } from 'dva';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
+import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { SysAddressItem } from '@/scheme/sysaddress';
 
+import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';
 import { makeupSortKey } from '@/utils/urlutil';
 
 import { formatDate } from '@/utils/datetime';
-import AddressCard from './addressCard';
+
+import AddressDetail from './addressDetail';
+import AddressDrawerForm from './addressDrawerForm';
 
 import styles from './addressList.less';
 
@@ -22,6 +26,10 @@ import styles from './addressList.less';
 }))
 class AddressList extends PureComponent {
   formRef = React.createRef();
+
+  searchFormRef = React.createRef();
+  actionRef = React.createRef();
+
   constructor(props) {
     super(props);
 
@@ -33,11 +41,6 @@ class AddressList extends PureComponent {
 
   componentDidMount() {
     this.refetch();
-
-    this.dispatch({
-      type: 'sysdistrict/fetchAllDistricts',
-      params: { tree_level: 2 },
-    });
   }
 
   onItemDisableClick = (item) => {
@@ -77,7 +80,7 @@ class AddressList extends PureComponent {
 
   onItemDelClick = (item) => {
     Modal.confirm({
-      title: `确定删除【基础示例数据：${item.name}】？`,
+      title: `确定删除【地址数据：${item.name}】？`,
       okText: '确认',
       okType: 'danger',
       cancelText: '取消',
@@ -121,6 +124,9 @@ class AddressList extends PureComponent {
 
   onResetFormClick = () => {
     this.formRef.current.resetFields();
+    const { location } = this.props;
+    history.push({ pathname: location.pathname });
+
     this.refetch();
   };
 
@@ -137,18 +143,28 @@ class AddressList extends PureComponent {
   };
 
   onDataFormSubmit = (data) => {
-    this.dispatch({
+    // this.dispatch({
+    //   type: 'sysaddress/submit',
+    //   payload: data,
+    // });
+    const { dispatch } = this.props;
+
+    dispatch({
       type: 'sysaddress/submit',
       payload: data,
+      callback: (success, burden) => {
+        if (success) {
+          const { location } = this.props;
+          history.push({
+            pathname: location.pathname,
+            search: `created_at__order=desc&after=${burden.id}`,
+          });
+          this.refetch();
+        }
+      },
     });
-    this.clearSelectRows();
-  };
 
-  onDataFormCancel = () => {
-    this.dispatch({
-      type: 'sysaddress/changeModalFormVisible',
-      payload: false,
-    });
+    this.clearSelectRows();
   };
 
   dispatch = (action) => {
@@ -165,8 +181,32 @@ class AddressList extends PureComponent {
     });
   };
 
-  renderDataForm() {
-    return <AddressCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
+  onDetailDrawerClose = () => {
+    console.log(' --- --- === == -- cancel');
+
+    this.dispatch({
+      type: 'sysaddress/changeDetailDrawerOpen',
+      payload: false,
+    });
+  };
+
+  onClickShowDetail = (item) => {
+    this.dispatch({
+      type: 'sysaddress/loadDetail',
+      payload: {
+        record: item,
+      },
+    });
+  };
+
+  renderItemDetail() {
+    return (
+      <AddressDetail width={850} onClose={this.onDetailDrawerClose} onAddClick={this.onAddClick} />
+    );
+  }
+
+  renderDrawerForm() {
+    return <AddressDrawerForm width={850} onSubmit={this.onDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -206,6 +246,13 @@ class AddressList extends PureComponent {
     const { selectedRows, selectedRowKeys } = this.state;
 
     const columns: ProColumns<SysAddressItem>[] = [
+      {
+        title: '国',
+        dataIndex: 'country',
+        fixed: 'left',
+        hideInForm: true,
+        hideInSearch: true,
+      },
       {
         title: '省/市',
         dataIndex: 'provice',
@@ -274,6 +321,26 @@ class AddressList extends PureComponent {
         search: false,
         render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
+      {
+        title: '操作',
+        dataIndex: 'option',
+        hideInSearch: true,
+        fixed: 'right',
+        width: '60px',
+        render: (val, record, row) => {
+          return (
+            <PButton
+              type="link"
+              code="view"
+              onClick={() => {
+                this.onClickShowDetail(record);
+              }}
+            >
+              查看
+            </PButton>
+          );
+        },
+      },
     ];
 
     const paginationProps = {
@@ -291,7 +358,11 @@ class AddressList extends PureComponent {
           <div className={styles.tableList}>
             <div>
               <ProTable<SysAddressItem>
+                actionRef={this.actionRef}
+                formRef={this.searchFormRef}
+                scroll={{ x: 'max-content' }}
                 rowSelection={{
+                  fixed: 'left',
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
                 }}
@@ -324,7 +395,8 @@ class AddressList extends PureComponent {
             </div>
           </div>
         </Card>
-        {this.renderDataForm()}
+        {this.renderItemDetail()}
+        {this.renderDrawerForm()}
       </PageHeaderLayout>
     );
   }

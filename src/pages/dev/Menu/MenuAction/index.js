@@ -117,6 +117,11 @@ export default class MenuAction extends PureComponent {
         name: '禁用',
         resources: [{ method: 'PATCH', path: `${path}/:id/disable` }],
       },
+      {
+        code: 'view',
+        name: '查看',
+        resources: [{ method: 'GET', path: `${path}/:id/view` }],
+      },
     ];
 
     const newData = tplData.map((v) => ({ key: v.code, ...v }));

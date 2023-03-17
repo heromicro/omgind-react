@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 
 import * as districtService from '@/services/sysdistrict';
 
-import { listToTree } from '@/utils/utils';
+import { listToTree } from '@/utils/uiutil';
 
 type onChangeFunc = (value, selectedOptions) => void;
 
@@ -136,6 +136,13 @@ class DistrictTree extends React.PureComponent<
     this.triggerChange(value, selectedOptions);
   };
 
+  onCascaderClear = () => {
+    this.setState({
+      svalue: [],
+    });
+    this.triggerChange([], []);
+  };
+
   triggerChange = (value, selectedOptions) => {
     const { onChange } = this.props;
     if (onChange) {
@@ -188,6 +195,7 @@ class DistrictTree extends React.PureComponent<
         onDropdownVisibleChange={this.onDropdownVisibleChange}
         value={svalue}
         defaultValue={defaultValue}
+        onClear={this.onCascaderClear}
       />
     );
   }

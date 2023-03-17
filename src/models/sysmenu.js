@@ -54,7 +54,7 @@ export default {
       }
 
       const response = yield call(menuService.query, params);
-      const { code, burden} = response;
+      const { code, burden } = response;
       if (code === 0) {
         yield put({
           type: 'saveData',
@@ -190,6 +190,8 @@ export default {
       }
 
       const response = yield call(menuService.queryTree, params);
+      console.log(' ---- = rrr ====- response -- ', response);
+
       const { code, burden } = response;
       if (code === 0) {
         yield put({

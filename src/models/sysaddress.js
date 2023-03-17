@@ -5,17 +5,25 @@ export default {
   namespace: 'sysaddress',
   state: {
     search: {},
-    pagination: {},
+    pagination: {
+      current: 1,
+      pageSize: 20,
+    },
     data: {
       list: [],
       pagination: {},
     },
     submitting: false,
+    formType: '',
     formTitle: '',
     formID: '',
+    detailDrawerOpen: false,
+    formDrawerOpen: false,
+
     formModalVisible: false,
     formVisible: false,
     formData: {},
+    detailData: {},
   },
   effects: {
     *fetch({ search, pagination }, { call, put, select }) {
@@ -48,7 +56,7 @@ export default {
       }
 
       const response = yield call(sysaddressService.query, params);
-      const { code, burden} = response;
+      const { code, burden } = response;
       if (code === 0) {
         yield put({
           type: 'saveData',
@@ -57,10 +65,16 @@ export default {
       }
     },
     *loadForm({ payload }, { put }) {
-      yield put({
-        type: 'changeModalFormVisible',
-        payload: true,
-      });
+      yield [
+        put({
+          type: 'changeDetailDrawerOpen',
+          payload: false,
+        }),
+        put({
+          type: 'changeFormDrawerOpen',
+          payload: true,
+        }),
+      ];
 
       yield [
         put({
@@ -121,7 +135,32 @@ export default {
         ];
       }
     },
-    *submit({ payload }, { call, put, select }) {
+    *loadDetail({ payload }, { call, put, select }) {
+      yield put({
+        type: 'changeDetailDrawerOpen',
+        payload: true,
+      });
+      let { record } = payload;
+      // yield put({
+      //   type: 'saveDetailData',
+      //   payload: record,
+      // });
+
+      const response = yield call(sysaddressService.view, record.id);
+      console.log(' -- ---- == === ', response);
+
+      const { code, burden } = response;
+      if (code === 0) {
+        // console.log(' -- ---- == burden === ', burden);
+        yield [
+          put({
+            type: 'saveDetailData',
+            payload: burden,
+          }),
+        ];
+      }
+    },
+    *submit({ payload, callback = null }, { call, put, select }) {
       yield put({
         type: 'changeSubmitting',
         payload: true,
@@ -139,9 +178,12 @@ export default {
         }
       } else {
         const response = yield call(sysaddressService.create, params);
-        const { code } = response;
+        const { code, burden } = response;
         if (code === 0) {
           success = true;
+        }
+        if (callback) {
+          callback(success, burden);
         }
       }
 
@@ -153,14 +195,17 @@ export default {
       if (success) {
         message.success('保存成功');
         yield put({
-          type: 'changeModalFormVisible',
+          type: 'changeFormDrawerOpen',
           payload: false,
         });
-        yield put({
-          type: 'fetch',
-        });
+        if (!callback) {
+          yield put({
+            type: 'fetch',
+          });
+        }
       }
     },
+
     *del({ payload }, { call, put }) {
       const response = yield call(sysaddressService.del, payload.id);
       const { code } = response;
@@ -212,17 +257,26 @@ export default {
     savePagination(state, { payload }) {
       return { ...state, pagination: payload };
     },
+    changeDetailDrawerOpen(state, { payload }) {
+      return { ...state, detailDrawerOpen: payload };
+    },
     changeFormVisible(state, { payload }) {
       if (payload) {
-        return { ...state, formModalVisible: payload, formVisible: payload };
+        return { ...state, formDrawerOpen: payload, formVisible: payload };
       }
       return { ...state, formVisible: payload };
     },
-    changeModalFormVisible(state, { payload }) {
+    changeFormDrawerOpen(state, { payload }) {
       if (!payload) {
-        return { ...state, formModalVisible: payload, formVisible: payload };
+        return {
+          ...state,
+          formDrawerOpen: payload,
+          formVisible: payload,
+          formData: {},
+          formID: '',
+        };
       }
-      return { ...state, formModalVisible: payload };
+      return { ...state, formDrawerOpen: payload };
     },
     saveFormTitle(state, { payload }) {
       return { ...state, formTitle: payload };
@@ -238,6 +292,9 @@ export default {
     },
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };
+    },
+    saveDetailData(state, { payload }) {
+      return { ...state, detailData: payload };
     },
   },
 };

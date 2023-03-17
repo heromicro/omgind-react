@@ -21,6 +21,7 @@ import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { showPButtons } from '@/utils/uiutil';
+import PButton from '@/components/PermButton';
 
 import { formatDate } from '@/utils/datetime';
 import { SysDistrctItem } from '@/scheme/sysdistrict';
@@ -51,20 +52,19 @@ class DistrictList extends PureComponent {
       selectedRowKeys: [],
       selectedRows: [],
       columnsStateMap: {
-        name: { order: 0 },
-        name_en: { order: 1 },
-        initials: { order: 2 },
-        sname: { show: true, order: 3 },
-        sname_en: { order: 4 },
-        abbr: { order: 5 },
-        pinyin: { order: 6 },
-        merge_name: { show: false, order: 7 },
-        merge_sname: { show: false, order: 8 },
-        suffix: { order: 9 },
-        tree_id: { show: true, order: 10 },
-        tree_level: { order: 11 },
-        tree_left: { order: 12 },
-        tree_right: { order: 13 },
+        name_en: { order: 2 },
+        initials: { order: 3 },
+        sname: { show: true, order: 4 },
+        sname_en: { order: 5 },
+        abbr: { order: 6 },
+        pinyin: { order: 7 },
+        merge_name: { show: false, order: 8 },
+        merge_sname: { show: false, order: 9 },
+        suffix: { order: 10 },
+        tree_id: { show: true, order: 11 },
+        tree_level: { order: 12 },
+        tree_left: { order: 13 },
+        tree_right: { order: 14 },
         is_leaf: { order: 15 },
         zip_code: { order: 16 },
         area_code: { order: 17 },
@@ -137,7 +137,7 @@ class DistrictList extends PureComponent {
 
   onItemDelClick = (item) => {
     Modal.confirm({
-      title: `确定删除【基础示例数据：${item.name}】？`,
+      title: `确定删除【行政区域：${item.name}】？`,
       okText: '确认',
       okType: 'danger',
       cancelText: '取消',
@@ -177,13 +177,19 @@ class DistrictList extends PureComponent {
   onMainTableChange = (pagination, filter, sorter) => {
     const { pid } = this.state;
     let search = { pid };
+
     let nsort = makeupSortKey(sorter);
+
+    console.log(' -------- ===== pid ', pid);
 
     if (this.searchFormRef.current) {
       let params = this.searchFormRef.current.getFieldsValue(true);
       search = { pid, ...params };
     }
-
+    console.log(' -------- ===== search ', search);
+    if (!pid) {
+      delete search.pid;
+    }
     this.refetch({ search, pagination });
     this.clearSelectRows();
   };
@@ -220,7 +226,7 @@ class DistrictList extends PureComponent {
           const { location } = this.props;
           history.push({
             pathname: location.pathname,
-            search: `tree_id__order=desc&after=${burden.id}`,
+            search: `tree_id__order=desc&tree_left__order=asc&after=${burden.id}`,
           });
           this.refetch();
         }
@@ -231,7 +237,7 @@ class DistrictList extends PureComponent {
   };
 
   onDetailDrawerClose = () => {
-    console.log(' ------ ===== -- cancel');
+    console.log(' ----- - ==== = -- cancel');
 
     this.dispatch({
       type: 'sysdistrict/changeDetailDrawerOpen',
@@ -240,7 +246,7 @@ class DistrictList extends PureComponent {
   };
 
   onDataFormClose = () => {
-    console.log(' ------ ===== -- cancel');
+    console.log(' ------ = === - - cancel');
 
     this.dispatch({
       type: 'sysdistrict/changeFormDrawerOpen',
@@ -268,7 +274,7 @@ class DistrictList extends PureComponent {
   };
 
   parentFieldChanged = (values: string[]) => {
-    // console.log(" ------ ===== ---- values ", values);
+    // console.log(" -- -- -- ===== ---- values ", values);
   };
 
   onDistrictChange = (value: string[], selectedOptions: []) => {
@@ -342,15 +348,8 @@ class DistrictList extends PureComponent {
     );
   }
 
-  renderDataDrawerForm() {
-    return (
-      // <DistrictDrawerForm width={850} onClose={this.onDataFormClose} onSubmit={this.onDataFormSubmit} />
-      <DistrictDrawerForm width={850} onSubmit={this.onDataFormSubmit} />
-    );
-  }
-
-  renderDataModalForm() {
-    return <DistrictCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
+  renderDrawerForm() {
+    return <DistrictDrawerForm width={850} onSubmit={this.onDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -606,13 +605,15 @@ class DistrictList extends PureComponent {
         width: '60px',
         render: (val, record, row) => {
           return (
-            <a
+            <PButton
+              type="link"
+              code="view"
               onClick={() => {
                 this.onClickShowDetail(record);
               }}
             >
               查看
-            </a>
+            </PButton>
           );
         },
       },
@@ -633,11 +634,12 @@ class DistrictList extends PureComponent {
           <div className={styles.tableList}>
             {/* <div className={styles.tableListForm}>{this.renderSearchForm()}</div> */}
             <div>
-              <ProTable<ProColumns>
+              <ProTable<SysDistrctItem>
                 actionRef={this.actionRef}
                 formRef={this.searchFormRef}
                 scroll={{ x: 'max-content' }}
                 rowSelection={{
+                  fixed: 'left',
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
                 }}
@@ -674,6 +676,7 @@ class DistrictList extends PureComponent {
                     search: { ...nparams, ...nsort },
                     pagination: { current: params.current, pageSize: params.pageSize },
                   });
+                  this.clearSelectRows();
                 }}
                 onChange={this.onMainTableChange}
                 size="small"
@@ -692,7 +695,7 @@ class DistrictList extends PureComponent {
           </div>
         </Card>
         {this.renderItemDetail()}
-        {this.renderDataDrawerForm()}
+        {this.renderDrawerForm()}
       </PageHeaderLayout>
     );
   }

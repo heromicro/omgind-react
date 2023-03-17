@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 
 import * as districtService from '@/services/sysdistrict';
 
-import { listToTree } from '@/utils/utils';
+import { listToTree } from '@/utils/uiutil';
 
 const DistrictCascader = (props) => {
   const [options, setOptions] = useState([]);

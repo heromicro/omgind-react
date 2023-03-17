@@ -154,7 +154,7 @@ export default {
       // });
 
       const response = yield call(districtService.view, record.id);
-      console.log(' ------ ===== ', response);
+      console.log(' -- --- - === == ', response);
       const { code, burden } = response;
       if (code === 0) {
         yield [

@@ -45,7 +45,6 @@ const cancelSelected = (data, selectedRows) => {
 };
 
 export default class RoleMenu extends PureComponent {
-  
   constructor(props) {
     super(props);
 
@@ -70,7 +69,8 @@ export default class RoleMenu extends PureComponent {
 
   componentDidMount() {
     menuService.queryTree().then((data) => {
-      const list = data.list || [];
+      const { burden } = data;
+      const list = burden.list || [];
       this.setState({ menuData: this.fillData(list) });
     });
   }
@@ -136,7 +136,6 @@ export default class RoleMenu extends PureComponent {
     }
     return child;
   };
-
 
   handleSelectedRow = (record, selected) => {
     let selectedRows = [record];

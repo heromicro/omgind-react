@@ -48,8 +48,8 @@ export default {
     },
     *fetchUser(_, { call, put }) {
       const response = yield call(signinService.getCurrentUser);
-      const {code, burden} = response;
-      if ( code === 0) {
+      const { code, burden } = response;
+      if (code === 0) {
         yield put({
           type: 'saveUser',
           payload: burden,
@@ -61,13 +61,13 @@ export default {
       let list = store.getExpirableItem(skey);
       if (!list) {
         const response = yield call(signinService.queryMenuTree);
-        const {
-          code,
-          burden
-        } = response;
+
+        console.log(' -----  dddd ===== ', response);
+
+        const { code, burden } = response;
         if (code === 0) {
           if (burden.list) {
-            list = burden.list
+            list = burden.list;
             store.setExpirableItem(skey, burden.list, 10);
           }
         }

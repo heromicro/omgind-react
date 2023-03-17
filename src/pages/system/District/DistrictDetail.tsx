@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
 import { Button, Drawer, Space, Badge } from 'antd';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import { PlusOutlined } from '@ant-design/icons';
+import { connect } from 'dva';
 
 import * as _ from 'lodash';
 
@@ -46,12 +46,6 @@ class DistrictDetail extends PureComponent {
       });
     }
   };
-
-  onFinishFailed({ values, errorFields, outOfDate }) {
-    console.log(' ----- === values  :', values);
-    console.log(' ----- === errorFields :', errorFields);
-    console.log(' ----- === outOfDate :', outOfDate);
-  }
 
   dispatch = (action) => {
     const { dispatch } = this.props;

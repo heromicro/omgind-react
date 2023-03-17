@@ -14,7 +14,7 @@ import {
   Col,
   Switch,
 } from 'antd';
-import { adaptTreeSelect } from '@/utils/utils';
+import { adaptTreeSelect } from '@/utils/uiutil';
 
 import MenuAction from './MenuAction';
 
@@ -32,15 +32,15 @@ class MenuCard extends PureComponent {
     const { onSubmit } = this.props;
     this.formRef.current
       .validateFields()
-      .then(values => {
+      .then((values) => {
         const formData = { ...values };
         formData.sort = parseInt(formData.sort, 10);
         onSubmit(formData);
       })
-      .catch(err => {});
+      .catch((err) => {});
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };
