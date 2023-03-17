@@ -1,21 +1,26 @@
 export type SysAddressItem = {
   id: string;
   country: string;
-  provice: string;
+  province: string;
   city: string;
   county: string;
 
   country_id: string;
-  provice_id: string;
+  province_id: string;
   city_id: string;
   county_id: string;
 
   zip_code: string;
   daddr: string;
-  name: string;
+
+  last_name: string;
+  first_name: string;
+
+  area_code?: string;
   mobile: string;
 
   sort: number;
+  is_active: boolean;
 
   created_at: string;
   updated_at: string;
@@ -24,16 +29,23 @@ export type SysAddressItem = {
 
 export function concatenateDistricts(
   addr: SysAddressItem,
-  { cat = ' ', withname = false, withzip = false, withmoible = false, reverse = false }
-) {
+  {
+    cat = ' ',
+    withFirstName = false,
+    withLastName = false,
+    withzip = false,
+    withmoible = false,
+    reverse = false,
+  }
+): string {
   let darr = [];
   let rst = '';
 
   if (addr.country) {
     darr.push(addr.country);
   }
-  if (addr.provice) {
-    darr.push(addr.provice);
+  if (addr.province) {
+    darr.push(addr.province);
   }
   if (addr.city) {
     darr.push(addr.city);
@@ -49,12 +61,48 @@ export function concatenateDistricts(
   if (withzip && addr.zip_code) {
     rst += ` ${addr.zip_code}`;
   }
-  if (withname && addr.name) {
-    rst += ` ${addr.name}`;
+
+  let names = [];
+
+  if (withLastName && addr.last_name) {
+    names.push(addr.last_name);
   }
+
+  if (withFirstName && addr.first_name) {
+    names.push(addr.first_name);
+  }
+
+  if (reverse) {
+    names = names.reverse();
+  }
+
+  if (names) {
+    let namesStr = names.join(' ');
+    rst += ` ${namesStr}`;
+  }
+
   if (withmoible && addr.mobile) {
     rst += ` ${addr.mobile}`;
   }
 
   return rst;
+}
+
+export function collectionDistrictIDs(addr: SysAddressItem): string[] {
+  let ids = [];
+
+  if (addr.country_id) {
+    ids.push(addr.country_id);
+  }
+  if (addr.province_id) {
+    ids.push(addr.province_id);
+  }
+  if (addr.city_id) {
+    ids.push(addr.city_id);
+  }
+  if (addr.county_id) {
+    ids.push(addr.county_id);
+  }
+
+  return ids;
 }

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
+import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Tag } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
@@ -255,13 +255,13 @@ class AddressList extends PureComponent {
       },
       {
         title: '省/市',
-        dataIndex: 'provice',
+        dataIndex: 'province',
         hideInForm: true,
         hideInSearch: true,
       },
       {
         title: '省/市',
-        dataIndex: 'provice',
+        dataIndex: 'province',
         hideInTable: true,
         renderFormItem: (item, config, form) => {
           const { type, defaultRender } = config;
@@ -305,10 +305,29 @@ class AddressList extends PureComponent {
       {
         title: '姓名',
         dataIndex: 'name',
+        hideInSearch: true,
+        render: (val, record, row) => {
+          return `${record.last_name} ${record.first_name}`;
+        },
       },
       {
         title: '电话',
         dataIndex: 'mobile',
+      },
+      {
+        title: '状态',
+        dataIndex: 'is_active',
+        valueType: 'select',
+        valueEnum: {
+          true: { text: '有效', status: 'Default' },
+          false: { text: '失效', status: 'Error' },
+        },
+        render: (_, entity, row) => {
+          if (entity.is_active) {
+            return <Tag color="#87d068">有效</Tag>;
+          }
+          return <Tag color="#f50">失效</Tag>;
+        },
       },
       {
         title: '排序',

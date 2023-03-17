@@ -103,14 +103,14 @@ class AddressDetail extends React.PureComponent {
           <div>
             <ProDescriptions column={2} title="基本信息">
               <ProDescriptions.Item label="联系人" key="name">
-                {detailData.name}
+                {`${detailData.last_name} ${detailData.first_name} `}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="联系电话" key="mobile">
                 {detailData.mobile}
               </ProDescriptions.Item>
 
               <ProDescriptions.Item label="地址" key="mobile">
-                {concatenateDistricts(detailData, { reverse: true })}
+                {concatenateDistricts(detailData, { reverse: false })}
               </ProDescriptions.Item>
             </ProDescriptions>
             &nbsp;
