@@ -28,9 +28,9 @@ export default [
         path: '/organ',
         routes: [
           { path: '/organ/organ', component: './org/organ/organList' },
-          { path: '/organ/department', component: './org/organ/organList' },
-          { path: '/organ/staff', component: './org/organ/organList' },
-          { path: '/organ/position', component: './org/organ/organList' },
+          { path: '/organ/department', component: './org/department/departmentList' },
+          { path: '/organ/staff', component: './org/staff/staffList' },
+          { path: '/organ/position', component: './org/position/positionList' },
         ],
       },
       {
