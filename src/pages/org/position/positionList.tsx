@@ -246,72 +246,12 @@ class PositionList extends PureComponent {
 
     const columns: ProColumns<OrgPositionItem>[] = [
       {
-        title: '国',
-        dataIndex: 'country',
-        fixed: 'left',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '省/市',
-        dataIndex: 'province',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '省/市',
-        dataIndex: 'province',
-        hideInTable: true,
-        renderFormItem: (item, config, form) => {
-          const { type, defaultRender } = config;
-          if (config.type === 'form') {
-            return null;
-          }
-
-          // console.log(' -------- ==== ----- === item    ', item);
-          // console.log(' -------- ==== ----- === config  ', config);
-
-          return defaultRender(item);
-        },
-      },
-      {
-        title: '市/区',
-        dataIndex: 'city',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '市/区',
-        dataIndex: 'city',
-        hideInTable: true,
-      },
-      {
-        title: '县/区',
-        dataIndex: 'county',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '县/区',
-        dataIndex: 'county',
-        hideInTable: true,
-      },
-      {
-        title: '详细地址',
-        dataIndex: 'daddr',
-        search: false,
-      },
-      {
-        title: '姓名',
+        title: '名称',
         dataIndex: 'name',
-        hideInSearch: true,
-        render: (val, record, row) => {
-          return `${record.last_name} ${record.first_name}`;
-        },
       },
       {
-        title: '电话',
-        dataIndex: 'mobile',
+        title: '助记码',
+        dataIndex: 'code',
       },
       {
         title: '状态',
@@ -334,10 +274,17 @@ class PositionList extends PureComponent {
         search: false,
       },
       {
+        title: '备注',
+        dataIndex: 'memo',
+        hideInSearch: true,
+      },
+      {
         title: '创建时间',
         dataIndex: 'created_at',
         search: false,
-        render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+        render: (_, entity, row) => (
+          <span>{formatDate(entity.created_at, 'YYYY-MM-DD HH:mm')}</span>
+        ),
       },
       {
         title: '操作',

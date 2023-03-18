@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as orgStaffService from '@/services/sysaddress';
+import * as orgStaffService from '@/services/orgstaff';
 
 export default {
   namespace: 'orgstaff',

@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as sysaddressService from '@/services/sysaddress';
+import * as orgPositionService from '@/services/orgposition';
 
 export default {
   namespace: 'orgposition',
@@ -55,7 +55,7 @@ export default {
         }
       }
 
-      const response = yield call(sysaddressService.query, params);
+      const response = yield call(orgPositionService.query, params);
       const { code, burden } = response;
       if (code === 0) {
         yield put({
@@ -120,7 +120,7 @@ export default {
       }
     },
     *fetchForm({ payload }, { call, put }) {
-      const response = yield call(sysaddressService.get, payload.id);
+      const response = yield call(orgPositionService.get, payload.id);
       const { code, burden } = response;
       if (code === 0) {
         yield [
@@ -146,7 +146,7 @@ export default {
       //   payload: record,
       // });
 
-      const response = yield call(sysaddressService.view, record.id);
+      const response = yield call(orgPositionService.view, record.id);
       console.log(' -- ---- == === ', response);
 
       const { code, burden } = response;
@@ -171,13 +171,13 @@ export default {
       let success = false;
       if (formType === 'E') {
         const id = yield select((state) => state.orgposition.formID);
-        const response = yield call(sysaddressService.update, id, params);
+        const response = yield call(orgPositionService.update, id, params);
         const { code } = response;
         if (code === 0) {
           success = true;
         }
       } else {
-        const response = yield call(sysaddressService.create, params);
+        const response = yield call(orgPositionService.create, params);
         const { code, burden } = response;
         if (code === 0) {
           success = true;
@@ -207,7 +207,7 @@ export default {
     },
 
     *del({ payload }, { call, put }) {
-      const response = yield call(sysaddressService.del, payload.id);
+      const response = yield call(orgPositionService.del, payload.id);
       const { code } = response;
       if (code === 0) {
         message.success('删除成功');
@@ -217,9 +217,9 @@ export default {
     *changeStatus({ payload }, { call, put, select }) {
       let response;
       if (payload.is_active === true) {
-        response = yield call(sysaddressService.enable, payload.id);
+        response = yield call(orgPositionService.enable, payload.id);
       } else {
-        response = yield call(sysaddressService.disable, payload.id);
+        response = yield call(orgPositionService.disable, payload.id);
       }
 
       const { code } = response;

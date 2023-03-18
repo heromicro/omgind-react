@@ -246,72 +246,54 @@ class StaffList extends PureComponent {
 
     const columns: ProColumns<OrgStaffItem>[] = [
       {
-        title: '国',
-        dataIndex: 'country',
-        fixed: 'left',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '省/市',
-        dataIndex: 'province',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '省/市',
-        dataIndex: 'province',
-        hideInTable: true,
-        renderFormItem: (item, config, form) => {
-          const { type, defaultRender } = config;
-          if (config.type === 'form') {
-            return null;
-          }
-
-          // console.log(' -------- ==== ----- === item    ', item);
-          // console.log(' -------- ==== ----- === config  ', config);
-
-          return defaultRender(item);
-        },
-      },
-      {
-        title: '市/区',
-        dataIndex: 'city',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '市/区',
-        dataIndex: 'city',
-        hideInTable: true,
-      },
-      {
-        title: '县/区',
-        dataIndex: 'county',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '县/区',
-        dataIndex: 'county',
-        hideInTable: true,
-      },
-      {
-        title: '详细地址',
-        dataIndex: 'daddr',
-        search: false,
-      },
-      {
         title: '姓名',
         dataIndex: 'name',
         hideInSearch: true,
-        render: (val, record, row) => {
-          return `${record.last_name} ${record.first_name}`;
+        render: (val, entity, row) => {
+          return `${entity.last_name} ${entity.first_name}`;
         },
       },
       {
         title: '电话',
         dataIndex: 'mobile',
+      },
+      {
+        title: '出生日期',
+        dataIndex: 'birth_date',
+        render: (_, entity, row) => <span>{formatDate(entity.birth_date, 'YYYY-MM-DD')}</span>,
+      },
+      {
+        title: '身份证号',
+        dataIndex: 'iden_no',
+      },
+      {
+        title: '性别',
+        dataIndex: 'gender',
+        valueEnum: {
+          M: { text: '男' },
+          F: { text: '女' },
+        },
+        render: (val, entity, row) => {
+          switch (entity.gender) {
+            case 'M':
+              return '男';
+            case 'F':
+              return '女';
+            default:
+              return '';
+          }
+          return '';
+        },
+      },
+      {
+        title: '入职日期',
+        dataIndex: 'entry_date',
+        render: (_, entity, row) => <span>{formatDate(entity.entry_date, 'YYYY-MM-DD')}</span>,
+      },
+      {
+        title: '转正日期',
+        dataIndex: 'regular_date',
+        render: (_, entity, row) => <span>{formatDate(entity.regular_date, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '状态',
@@ -334,10 +316,17 @@ class StaffList extends PureComponent {
         search: false,
       },
       {
+        title: '备注',
+        dataIndex: 'memo',
+        hideInSearch: true,
+      },
+      {
         title: '创建时间',
         dataIndex: 'created_at',
         search: false,
-        render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+        render: (_, entity, row) => (
+          <span>{formatDate(entity.created_at, 'YYYY-MM-DD HH:mm')}</span>
+        ),
       },
       {
         title: '操作',

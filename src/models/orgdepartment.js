@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as orgDepartmentService from '@/services/sysaddress';
+import * as orgDepartmentService from '@/services/orgdepartment';
 
 export default {
   namespace: 'orgdepartment',
