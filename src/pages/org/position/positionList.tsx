@@ -6,7 +6,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { SysAddressItem } from '@/scheme/sysaddress';
+import { OrgPositionItem } from '@/scheme/orgposition';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';
@@ -20,8 +20,8 @@ import PositionDrawerForm from './positionDrawerForm';
 import styles from './positionList.less';
 
 @connect((state) => ({
-  loading: state.loading.models.sysaddress,
-  sysaddress: state.sysaddress,
+  loading: state.loading.models.orgposition,
+  orgposition: state.orgposition,
 }))
 class PositionList extends PureComponent {
   formRef = React.createRef();
@@ -44,21 +44,21 @@ class PositionList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/changeStatus',
+      type: 'orgposition/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/changeStatus',
+      type: 'orgposition/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
   onItemEditClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/loadForm',
+      type: 'orgposition/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -70,7 +70,7 @@ class PositionList extends PureComponent {
     console.log(' ------ ======= ssss ');
 
     this.dispatch({
-      type: 'sysaddress/loadForm',
+      type: 'orgposition/loadForm',
       payload: {
         type: 'A',
       },
@@ -89,7 +89,7 @@ class PositionList extends PureComponent {
 
   onDelOKClick(id) {
     this.dispatch({
-      type: 'sysaddress/del',
+      type: 'orgposition/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -143,13 +143,13 @@ class PositionList extends PureComponent {
 
   onDataFormSubmit = (data) => {
     // this.dispatch({
-    //   type: 'sysaddress/submit',
+    //   type: 'orgposition/submit',
     //   payload: data,
     // });
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'sysaddress/submit',
+      type: 'orgposition/submit',
       payload: data,
       callback: (success, burden) => {
         if (success) {
@@ -174,7 +174,7 @@ class PositionList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'sysaddress/fetch',
+      type: 'orgposition/fetch',
       search,
       pagination,
     });
@@ -184,14 +184,14 @@ class PositionList extends PureComponent {
     console.log(' --- --- === == -- cancel');
 
     this.dispatch({
-      type: 'sysaddress/changeDetailDrawerOpen',
+      type: 'orgposition/changeDetailDrawerOpen',
       payload: false,
     });
   };
 
   onClickShowDetail = (item) => {
     this.dispatch({
-      type: 'sysaddress/loadDetail',
+      type: 'orgposition/loadDetail',
       payload: {
         record: item,
       },
@@ -235,7 +235,7 @@ class PositionList extends PureComponent {
   render() {
     const {
       loading,
-      sysaddress: {
+      orgposition: {
         data: { list, pagination },
       },
     } = this.props;
@@ -244,7 +244,7 @@ class PositionList extends PureComponent {
 
     const { selectedRows, selectedRowKeys } = this.state;
 
-    const columns: ProColumns<SysAddressItem>[] = [
+    const columns: ProColumns<OrgPositionItem>[] = [
       {
         title: '国',
         dataIndex: 'country',
@@ -375,7 +375,7 @@ class PositionList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>
-              <ProTable<SysAddressItem>
+              <ProTable<OrgPositionItem>
                 actionRef={this.actionRef}
                 formRef={this.searchFormRef}
                 scroll={{ x: 'max-content' }}

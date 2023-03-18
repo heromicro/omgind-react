@@ -14,7 +14,7 @@ import { collectionDistrictIDs } from '@/scheme/sysaddress';
 import styles from './positionDetail.less';
 
 @connect((state) => ({
-  sysaddress: state.sysaddress,
+  orgposition: state.orgposition,
 }))
 class PositionDrawerForm extends React.PureComponent {
   formRef = React.createRef<ProFormInstance>();
@@ -81,7 +81,7 @@ class PositionDrawerForm extends React.PureComponent {
     console.log(' ---- ====== ==== ', e);
 
     this.dispatch({
-      type: 'sysaddress/changeFormDrawerOpen',
+      type: 'orgposition/changeFormDrawerOpen',
       payload: false,
     });
   };
@@ -89,7 +89,7 @@ class PositionDrawerForm extends React.PureComponent {
   render() {
     const {
       onSubmit,
-      sysaddress: { formTitle, formVisible, formDrawerOpen, formData, submitting },
+      orgposition: { formTitle, formVisible, formDrawerOpen, formData, submitting },
       ...restProps
     } = this.props;
 

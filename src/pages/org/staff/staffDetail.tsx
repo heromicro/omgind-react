@@ -12,7 +12,7 @@ import { concatenateDistricts } from '@/scheme/sysaddress';
 import styles from './staffDetail.less';
 
 @connect((state) => ({
-  sysaddress: state.sysaddress,
+  orgstaff: state.orgstaff,
 }))
 class StaffDetail extends React.PureComponent {
   constructor(props) {
@@ -32,7 +32,7 @@ class StaffDetail extends React.PureComponent {
     console.log(' ---- ==== click edit eee ');
 
     this.dispatch({
-      type: 'sysaddress/loadForm',
+      type: 'orgstaff/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -45,15 +45,15 @@ class StaffDetail extends React.PureComponent {
     const { dispatch } = this.props;
     if (!visible) {
       dispatch({
-        type: 'sysaddress/changeDetailDrawerOpen',
+        type: 'orgstaff/changeDetailDrawerOpen',
         payload: false,
       });
     }
   };
 
   render(): React.ReactNode {
-    const { onClose, onAddClick, sysaddress, ...restProps } = this.props;
-    const { detailDrawerOpen, detailData } = sysaddress;
+    const { onClose, onAddClick, orgstaff, ...restProps } = this.props;
+    const { detailDrawerOpen, detailData } = orgstaff;
 
     console.log(' ----- === detailData == == ', detailDrawerOpen);
 

@@ -6,7 +6,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { SysAddressItem } from '@/scheme/sysaddress';
+import { OrgDepartmentItem } from '@/scheme/orgdepartment';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';
@@ -20,8 +20,8 @@ import DepartmentDrawerForm from './departmentDrawerForm';
 import styles from './departmentList.less';
 
 @connect((state) => ({
-  loading: state.loading.models.sysaddress,
-  sysaddress: state.sysaddress,
+  loading: state.loading.models.orgdepartment,
+  orgdepartment: state.orgdepartment,
 }))
 class DepartmentList extends PureComponent {
   formRef = React.createRef();
@@ -44,21 +44,21 @@ class DepartmentList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/changeStatus',
+      type: 'orgdepartment/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/changeStatus',
+      type: 'orgdepartment/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
   onItemEditClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/loadForm',
+      type: 'orgdepartment/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -70,7 +70,7 @@ class DepartmentList extends PureComponent {
     console.log(' ------ ======= ssss ');
 
     this.dispatch({
-      type: 'sysaddress/loadForm',
+      type: 'orgdepartment/loadForm',
       payload: {
         type: 'A',
       },
@@ -89,7 +89,7 @@ class DepartmentList extends PureComponent {
 
   onDelOKClick(id) {
     this.dispatch({
-      type: 'sysaddress/del',
+      type: 'orgdepartment/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -143,13 +143,13 @@ class DepartmentList extends PureComponent {
 
   onDataFormSubmit = (data) => {
     // this.dispatch({
-    //   type: 'sysaddress/submit',
+    //   type: 'orgdepartment/submit',
     //   payload: data,
     // });
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'sysaddress/submit',
+      type: 'orgdepartment/submit',
       payload: data,
       callback: (success, burden) => {
         if (success) {
@@ -174,7 +174,7 @@ class DepartmentList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'sysaddress/fetch',
+      type: 'orgdepartment/fetch',
       search,
       pagination,
     });
@@ -184,14 +184,14 @@ class DepartmentList extends PureComponent {
     console.log(' --- --- === == -- cancel');
 
     this.dispatch({
-      type: 'sysaddress/changeDetailDrawerOpen',
+      type: 'orgdepartment/changeDetailDrawerOpen',
       payload: false,
     });
   };
 
   onClickShowDetail = (item) => {
     this.dispatch({
-      type: 'sysaddress/loadDetail',
+      type: 'orgdepartment/loadDetail',
       payload: {
         record: item,
       },
@@ -239,16 +239,15 @@ class DepartmentList extends PureComponent {
   render() {
     const {
       loading,
-      sysaddress: {
+      orgdepartment: {
         data: { list, pagination },
       },
     } = this.props;
-
     // console.log(' -- --- == == = --- list: ', list);
 
     const { selectedRows, selectedRowKeys } = this.state;
 
-    const columns: ProColumns<SysAddressItem>[] = [
+    const columns: ProColumns<OrgDepartmentItem>[] = [
       {
         title: '国',
         dataIndex: 'country',
@@ -379,7 +378,7 @@ class DepartmentList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>
-              <ProTable<SysAddressItem>
+              <ProTable<OrgDepartmentItem>
                 actionRef={this.actionRef}
                 formRef={this.searchFormRef}
                 scroll={{ x: 'max-content' }}

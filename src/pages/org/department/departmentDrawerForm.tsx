@@ -14,7 +14,7 @@ import { collectionDistrictIDs } from '@/scheme/sysaddress';
 import styles from './departmentDetail.less';
 
 @connect((state) => ({
-  sysaddress: state.sysaddress,
+  orgdepartment: state.orgdepartment,
 }))
 class DepartmentDrawerForm extends React.PureComponent {
   formRef = React.createRef<ProFormInstance>();
@@ -81,7 +81,7 @@ class DepartmentDrawerForm extends React.PureComponent {
     console.log(' ---- ====== ==== ', e);
 
     this.dispatch({
-      type: 'sysaddress/changeFormDrawerOpen',
+      type: 'orgdepartment/changeFormDrawerOpen',
       payload: false,
     });
   };
@@ -89,7 +89,7 @@ class DepartmentDrawerForm extends React.PureComponent {
   render() {
     const {
       onSubmit,
-      sysaddress: { formTitle, formVisible, formDrawerOpen, formData, submitting },
+      orgdepartment: { formTitle, formVisible, formDrawerOpen, formData, submitting },
       ...restProps
     } = this.props;
 

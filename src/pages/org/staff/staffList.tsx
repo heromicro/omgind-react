@@ -6,7 +6,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { SysAddressItem } from '@/scheme/sysaddress';
+import { OrgStaffItem } from '@/scheme/orgstaff';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';
@@ -20,8 +20,8 @@ import StaffDrawerForm from './staffDrawerForm';
 import styles from './staffList.less';
 
 @connect((state) => ({
-  loading: state.loading.models.sysaddress,
-  sysaddress: state.sysaddress,
+  loading: state.loading.models.orgstaff,
+  orgstaff: state.orgstaff,
 }))
 class StaffList extends PureComponent {
   formRef = React.createRef();
@@ -44,21 +44,21 @@ class StaffList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/changeStatus',
+      type: 'orgstaff/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/changeStatus',
+      type: 'orgstaff/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
   onItemEditClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/loadForm',
+      type: 'orgstaff/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -70,7 +70,7 @@ class StaffList extends PureComponent {
     console.log(' ------ ======= ssss ');
 
     this.dispatch({
-      type: 'sysaddress/loadForm',
+      type: 'orgstaff/loadForm',
       payload: {
         type: 'A',
       },
@@ -89,7 +89,7 @@ class StaffList extends PureComponent {
 
   onDelOKClick(id) {
     this.dispatch({
-      type: 'sysaddress/del',
+      type: 'orgstaff/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -143,13 +143,13 @@ class StaffList extends PureComponent {
 
   onDataFormSubmit = (data) => {
     // this.dispatch({
-    //   type: 'sysaddress/submit',
+    //   type: 'orgstaff/submit',
     //   payload: data,
     // });
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'sysaddress/submit',
+      type: 'orgstaff/submit',
       payload: data,
       callback: (success, burden) => {
         if (success) {
@@ -174,7 +174,7 @@ class StaffList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'sysaddress/fetch',
+      type: 'orgstaff/fetch',
       search,
       pagination,
     });
@@ -184,14 +184,14 @@ class StaffList extends PureComponent {
     console.log(' --- --- === == -- cancel');
 
     this.dispatch({
-      type: 'sysaddress/changeDetailDrawerOpen',
+      type: 'orgstaff/changeDetailDrawerOpen',
       payload: false,
     });
   };
 
   onClickShowDetail = (item) => {
     this.dispatch({
-      type: 'sysaddress/loadDetail',
+      type: 'orgstaff/loadDetail',
       payload: {
         record: item,
       },
@@ -235,7 +235,7 @@ class StaffList extends PureComponent {
   render() {
     const {
       loading,
-      sysaddress: {
+      orgstaff: {
         data: { list, pagination },
       },
     } = this.props;
@@ -244,7 +244,7 @@ class StaffList extends PureComponent {
 
     const { selectedRows, selectedRowKeys } = this.state;
 
-    const columns: ProColumns<SysAddressItem>[] = [
+    const columns: ProColumns<OrgStaffItem>[] = [
       {
         title: '国',
         dataIndex: 'country',
@@ -375,7 +375,7 @@ class StaffList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>
-              <ProTable<SysAddressItem>
+              <ProTable<OrgStaffItem>
                 actionRef={this.actionRef}
                 formRef={this.searchFormRef}
                 scroll={{ x: 'max-content' }}
