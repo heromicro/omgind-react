@@ -28,9 +28,9 @@ class DistrctCard extends PureComponent {
       });
   };
 
-  onFinishFailed({ values, errorFields, outOfDate }) {
+  onFinishFailed = ({ values, errorFields, outOfDate }) => {
     this.formRef.current.scrollToField(errorFields[0].name);
-  }
+  };
 
   dispatch = (action) => {
     const { dispatch } = this.props;

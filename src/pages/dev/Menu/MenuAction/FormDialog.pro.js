@@ -26,9 +26,9 @@ class FormDialog extends PureComponent {
     };
   }
 
-  onFinishFailed({ values, errorFields, outOfDate }) {
+  onFinishFailed = ({ values, errorFields, outOfDate }) => {
     this.formRef.current.scrollToField(errorFields[0].name);
-  }
+  };
 
   handleOKClick = () => {
     const { onSubmit } = this.props;

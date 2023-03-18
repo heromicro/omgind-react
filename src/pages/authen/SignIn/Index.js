@@ -20,9 +20,9 @@ class SignIn extends PureComponent {
     });
   }
 
-  onFinishFailed({ values, errorFields, outOfDate }) {
+  onFinishFailed = ({ values, errorFields, outOfDate }) => {
     this.formRef.current.scrollToField(errorFields[0].name);
-  }
+  };
 
   reloadCaptcha = () => {
     console.log(' --- reload captcha ---');
@@ -32,12 +32,12 @@ class SignIn extends PureComponent {
     });
   };
 
-  handleSubmit = v => {
+  handleSubmit = (v) => {
     const { dispatch, signin } = this.props;
 
     this.formRef.current
       .validateFields()
-      .then(values => {
+      .then((values) => {
         dispatch({
           type: 'signin/submit',
           payload: {
@@ -48,10 +48,10 @@ class SignIn extends PureComponent {
           },
         });
       })
-      .catch(err => {});
+      .catch((err) => {});
   };
 
-  dispatch = action => {
+  dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
   };

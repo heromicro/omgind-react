@@ -24,9 +24,9 @@ import MenuAction from './MenuAction';
 class MenuCard extends PureComponent {
   formRef = React.createRef();
 
-  onFinishFailed({ values, errorFields, outOfDate }) {
+  onFinishFailed = ({ values, errorFields, outOfDate }) => {
     this.formRef.current.scrollToField(errorFields[0].name);
-  }
+  };
 
   onOKClick = () => {
     const { onSubmit } = this.props;

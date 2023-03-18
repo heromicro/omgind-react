@@ -4,7 +4,6 @@ import { Form, Input, Modal, Switch } from 'antd';
 
 import DistrictCascader from '@/components/DistrictCascader';
 
-
 @connect((state) => ({
   demo: state.demo,
 }))
@@ -28,9 +27,9 @@ class DemoCard extends PureComponent {
       });
   };
 
-  onFinishFailed({ values, errorFields, outOfDate }) {
+  onFinishFailed = ({ values, errorFields, outOfDate }) => {
     this.formRef.current.scrollToField(errorFields[0].name);
-  }
+  };
 
   dispatch = (action) => {
     const { dispatch } = this.props;
@@ -95,8 +94,7 @@ class DemoCard extends PureComponent {
             >
               <Input placeholder="请输入名称" />
             </Form.Item>
-            
-            
+
             <Form.Item {...formItemLayout} label="备注" name="memo">
               <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
             </Form.Item>

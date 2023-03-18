@@ -53,6 +53,9 @@ export function concatenateDistricts(
   if (addr.county) {
     darr.push(addr.county);
   }
+  if (addr.daddr) {
+    darr.push(addr.daddr);
+  }
   if (reverse) {
     darr = darr.reverse();
   }

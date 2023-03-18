@@ -4,9 +4,9 @@ import { Form, Modal, Input, Card, Col, Row, Radio, InputNumber, message, Switch
 class FormDialog extends PureComponent {
   formRef = React.createRef();
 
-  onFinishFailed({ values, errorFields, outOfDate }) {
+  onFinishFailed = ({ values, errorFields, outOfDate }) => {
     this.formRef.current.scrollToField(errorFields[0].name);
-  }
+  };
 
   handleCancel = () => {
     const { onCancel } = this.props;
@@ -22,13 +22,13 @@ class FormDialog extends PureComponent {
 
     this.formRef.current
       .validateFields()
-      .then(values => {
+      .then((values) => {
         console.log(' --- === --- values ', values);
         let val = { ...values };
         val.value = parseInt(values.value, 10);
         onSubmit({ ...val });
       })
-      .catch(err => {});
+      .catch((err) => {});
   };
 
   render() {

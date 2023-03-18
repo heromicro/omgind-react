@@ -6,7 +6,8 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { SysAddressItem } from '@/scheme/sysaddress';
+import { OrgOrganItem } from '@/scheme/orgorgan';
+import { concatenateDistricts } from '@/scheme/sysaddress';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';
@@ -14,16 +15,16 @@ import { makeupSortKey } from '@/utils/urlutil';
 
 import { formatDate } from '@/utils/datetime';
 
-import AddressDetail from './addressDetail';
-import AddressDrawerForm from './addressDrawerForm';
+import OrganDetail from './organDetail';
+import OranDrawerForm from './organDrawerForm';
 
-import styles from './addressList.less';
+import styles from './organList.less';
 
 @connect((state) => ({
-  loading: state.loading.models.sysaddress,
-  sysaddress: state.sysaddress,
+  loading: state.loading.models.orgorgan,
+  orgorgan: state.orgorgan,
 }))
-class AddressList extends PureComponent {
+class OrganList extends PureComponent {
   formRef = React.createRef();
 
   searchFormRef = React.createRef();
@@ -44,21 +45,21 @@ class AddressList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/changeStatus',
+      type: 'orgorgan/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/changeStatus',
+      type: 'orgorgan/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
   onItemEditClick = (item) => {
     this.dispatch({
-      type: 'sysaddress/loadForm',
+      type: 'orgorgan/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -70,7 +71,7 @@ class AddressList extends PureComponent {
     console.log(' ------ ======= ssss ');
 
     this.dispatch({
-      type: 'sysaddress/loadForm',
+      type: 'orgorgan/loadForm',
       payload: {
         type: 'A',
       },
@@ -89,7 +90,7 @@ class AddressList extends PureComponent {
 
   onDelOKClick(id) {
     this.dispatch({
-      type: 'sysaddress/del',
+      type: 'orgorgan/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -143,13 +144,13 @@ class AddressList extends PureComponent {
 
   onDataFormSubmit = (data) => {
     // this.dispatch({
-    //   type: 'sysaddress/submit',
+    //   type: 'orgorgan/submit',
     //   payload: data,
     // });
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'sysaddress/submit',
+      type: 'orgorgan/submit',
       payload: data,
       callback: (success, burden) => {
         if (success) {
@@ -174,7 +175,7 @@ class AddressList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'sysaddress/fetch',
+      type: 'orgorgan/fetch',
       search,
       pagination,
     });
@@ -184,14 +185,14 @@ class AddressList extends PureComponent {
     console.log(' --- --- === == -- cancel');
 
     this.dispatch({
-      type: 'sysaddress/changeDetailDrawerOpen',
+      type: 'orgorgan/changeDetailDrawerOpen',
       payload: false,
     });
   };
 
   onClickShowDetail = (item) => {
     this.dispatch({
-      type: 'sysaddress/loadDetail',
+      type: 'orgorgan/loadDetail',
       payload: {
         record: item,
       },
@@ -200,12 +201,12 @@ class AddressList extends PureComponent {
 
   renderItemDetail() {
     return (
-      <AddressDetail width={850} onClose={this.onDetailDrawerClose} onAddClick={this.onAddClick} />
+      <OrganDetail width={850} onClose={this.onDetailDrawerClose} onAddClick={this.onAddClick} />
     );
   }
 
   renderDrawerForm() {
-    return <AddressDrawerForm width={850} onSubmit={this.onDataFormSubmit} />;
+    return <OranDrawerForm width={850} onSubmit={this.onDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -235,7 +236,7 @@ class AddressList extends PureComponent {
   render() {
     const {
       loading,
-      sysaddress: {
+      orgorgan: {
         data: { list, pagination },
       },
     } = this.props;
@@ -244,74 +245,69 @@ class AddressList extends PureComponent {
 
     const { selectedRows, selectedRowKeys } = this.state;
 
-    const columns: ProColumns<SysAddressItem>[] = [
+    const columns: ProColumns<OrgOrganItem>[] = [
       {
-        title: '国',
-        dataIndex: 'country',
-        fixed: 'left',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '省/市',
-        dataIndex: 'province',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '省/市',
-        dataIndex: 'province',
-        hideInTable: true,
-        renderFormItem: (item, config, form) => {
-          const { type, defaultRender } = config;
-          if (config.type === 'form') {
-            return null;
-          }
-
-          // console.log(' -------- ==== ----- === item    ', item);
-          // console.log(' -------- ==== ----- === config  ', config);
-
-          return defaultRender(item);
-        },
-      },
-      {
-        title: '市/区',
-        dataIndex: 'city',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '市/区',
-        dataIndex: 'city',
-        hideInTable: true,
-      },
-      {
-        title: '县/区',
-        dataIndex: 'county',
-        hideInForm: true,
-        hideInSearch: true,
-      },
-      {
-        title: '县/区',
-        dataIndex: 'county',
-        hideInTable: true,
-      },
-      {
-        title: '详细地址',
-        dataIndex: 'daddr',
-        search: false,
-      },
-      {
-        title: '姓名',
+        title: '名称',
         dataIndex: 'name',
+      },
+      {
+        title: '简称',
+        dataIndex: 'sname',
+      },
+      {
+        title: '助记码',
+        dataIndex: 'code',
+      },
+      {
+        title: '执照号',
+        dataIndex: 'iden_no',
+      },
+      {
+        title: '地址',
+        dataIndex: 'addr',
+        search: false,
         hideInSearch: true,
-        render: (val, record, row) => {
-          return `${record.last_name} ${record.first_name}`;
+        render: (val, entity, row) => {
+          if (entity.haddr) {
+            return concatenateDistricts(entity.haddr, {});
+          }
+          return '';
         },
       },
       {
-        title: '电话',
-        dataIndex: 'mobile',
+        title: '联系人',
+        dataIndex: 'addr_name',
+        hideInSearch: true,
+        render: (val, entity, row) => {
+          if (entity.haddr) {
+            let names = [];
+            if (entity.haddr.last_name) {
+              names.push(entity.haddr.last_name);
+            }
+            if (entity.haddr.first_name) {
+              names.push(entity.haddr.first_name);
+            }
+            return names.join(' ');
+          }
+          return '';
+        },
+      },
+      {
+        title: '联系电话',
+        dataIndex: 'addr_mobile',
+        hideInSearch: true,
+        render: (val, entity, row) => {
+          const { haddr } = entity;
+          if (haddr) {
+            if (haddr.mobile) {
+              if (haddr.area_code) {
+                return `${haddr.area_code}-${haddr.mobile}`;
+              }
+              return haddr.area_code;
+            }
+          }
+          return '';
+        },
       },
       {
         title: '状态',
@@ -331,13 +327,18 @@ class AddressList extends PureComponent {
       {
         title: '排序',
         dataIndex: 'sort',
-        search: false,
+        hideInSearch: true,
       },
       {
         title: '创建时间',
         dataIndex: 'created_at',
-        search: false,
+        hideInSearch: true,
         render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
+      },
+      {
+        title: '备注',
+        dataIndex: 'memo',
+        hideInSearch: true,
       },
       {
         title: '操作',
@@ -368,14 +369,14 @@ class AddressList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '系统管理' }, { title: '地址管理', href: '/system/address' }];
+    const breadcrumbList = [{ title: '企业管理' }, { title: '企业信息', href: '/organ/orginfo' }];
 
     return (
-      <PageHeaderLayout title="地址管理" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="企业信息" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>
-              <ProTable<SysAddressItem>
+              <ProTable<OrgOrganItem>
                 actionRef={this.actionRef}
                 formRef={this.searchFormRef}
                 scroll={{ x: 'max-content' }}
@@ -420,4 +421,4 @@ class AddressList extends PureComponent {
   }
 }
 
-export default AddressList;
+export default OrganList;

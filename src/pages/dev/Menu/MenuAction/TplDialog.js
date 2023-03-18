@@ -5,9 +5,9 @@ import { Form, Modal, Input, Row, Col, Tooltip } from 'antd';
 class TplDialog extends PureComponent {
   formRef = React.createRef();
 
-  onFinishFailed({ values, errorFields, outOfDate }) {
+  onFinishFailed = ({ values, errorFields, outOfDate }) => {
     this.formRef.current.scrollToField(errorFields[0].name);
-  }
+  };
 
   handleCancel = () => {
     const { onCancel } = this.props;
@@ -20,10 +20,10 @@ class TplDialog extends PureComponent {
     const { onSubmit } = this.props;
     this.formRef.current
       .validateFields()
-      .then(values => {
+      .then((values) => {
         onSubmit({ ...values });
       })
-      .catch(err => {});
+      .catch((err) => {});
   };
 
   render() {

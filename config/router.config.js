@@ -25,6 +25,15 @@ export default [
         ],
       },
       {
+        path: '/organ',
+        routes: [
+          { path: '/organ/organ', component: './org/organ/organList' },
+          { path: '/organ/department', component: './org/organ/organList' },
+          { path: '/organ/staff', component: './org/organ/organList' },
+          { path: '/organ/position', component: './org/organ/organList' },
+        ],
+      },
+      {
         path: '/system',
         routes: [
           { path: '/system/role', component: './system/Role/RoleList' },

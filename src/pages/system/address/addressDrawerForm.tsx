@@ -28,9 +28,9 @@ class AddressDrawerForm extends React.PureComponent {
     dispatch(action);
   };
 
-  onFinishFailed({ values, errorFields, outOfDate }) {
+  onFinishFailed = ({ values, errorFields, outOfDate }) => {
     this.formRef.current.scrollToField(errorFields[0].name);
-  }
+  };
 
   onFinish = (data) => {
     // console.log(' ======== === 0000 data : ', data);
