@@ -1,3 +1,5 @@
+import { OrgOrganItem } from './orgorgan';
+
 export type OrgDepartmentItem = {
   id: string;
 
@@ -8,6 +10,8 @@ export type OrgDepartmentItem = {
   memo?: string;
   sort: number;
   is_active: boolean;
+
+  org?: OrgOrganItem;
 
   created_at: string;
   updated_at: string;

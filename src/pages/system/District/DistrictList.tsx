@@ -661,9 +661,9 @@ class DistrictList extends PureComponent {
                 // search={false}
                 pagination={paginationProps}
                 request={(params, sort, filter) => {
-                  // console.log(" ---- ==== ==== =");
-                  // console.log(" ---- ==== ==== =  params params ", params);
-                  // console.log(" ---- ==== ==== =");
+                  console.log(' ---- ==== ====  sort =', sort);
+                  console.log(' ---- ==== ==== =  params params ', params);
+                  console.log(' ---- ==== ==== =');
                   const nparams = params;
                   const { pid } = this.state;
                   if (pid) {

@@ -20,6 +20,7 @@ import StaffDrawerForm from './staffDrawerForm';
 import styles from './staffList.less';
 
 @connect((state) => ({
+  cuser: state.global.user,
   loading: state.loading.models.orgstaff,
   orgstaff: state.orgstaff,
 }))
@@ -325,6 +326,17 @@ class StaffList extends PureComponent {
             return <Tag color="#87d068">有效</Tag>;
           }
           return <Tag color="#f50">失效</Tag>;
+        },
+      },
+      {
+        title: '所属公司',
+        dataIndex: 'org_name',
+        hideInSearch: true,
+        render: (_, entity, row) => {
+          if (entity.org) {
+            return entity.org.name;
+          }
+          return '';
         },
       },
       {

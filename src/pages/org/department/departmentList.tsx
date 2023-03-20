@@ -20,6 +20,7 @@ import DepartmentDrawerForm from './departmentDrawerForm';
 import styles from './departmentList.less';
 
 @connect((state) => ({
+  cuser: state.global.user,
   loading: state.loading.models.orgdepartment,
   orgdepartment: state.orgdepartment,
 }))
@@ -272,9 +273,20 @@ class DepartmentList extends PureComponent {
         },
       },
       {
+        title: '所属公司',
+        dataIndex: 'org_name',
+        hideInSearch: true,
+        render: (_, entity, row) => {
+          if (entity.org) {
+            return entity.org.name;
+          }
+          return '';
+        },
+      },
+      {
         title: '排序',
         dataIndex: 'sort',
-        search: false,
+        hideInSearch: true,
       },
       {
         title: '备注',

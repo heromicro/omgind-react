@@ -20,6 +20,7 @@ import PositionDrawerForm from './positionDrawerForm';
 import styles from './positionList.less';
 
 @connect((state) => ({
+  cuser: state.global.user,
   loading: state.loading.models.orgposition,
   orgposition: state.orgposition,
 }))
@@ -269,6 +270,17 @@ class PositionList extends PureComponent {
         },
       },
       {
+        title: '所属公司',
+        dataIndex: 'org_name',
+        hideInSearch: true,
+        render: (_, entity, row) => {
+          if (entity.org) {
+            return entity.org.name;
+          }
+          return '';
+        },
+      },
+      {
         title: '排序',
         dataIndex: 'sort',
         search: false,
@@ -292,13 +304,13 @@ class PositionList extends PureComponent {
         hideInSearch: true,
         fixed: 'right',
         width: '60px',
-        render: (val, entity, row) => {
+        render: (val, record, row) => {
           return (
             <PButton
               type="link"
               code="view"
               onClick={() => {
-                this.onClickShowDetail(entity);
+                this.onClickShowDetail(record);
               }}
             >
               查看
@@ -315,10 +327,10 @@ class PositionList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '企业管理' }, { title: '职位管理', href: '/organ/position' }];
+    const breadcrumbList = [{ title: '系统管理' }, { title: '地址管理', href: '/system/address' }];
 
     return (
-      <PageHeaderLayout title="职位管理" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="地址管理" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>

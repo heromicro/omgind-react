@@ -166,16 +166,16 @@ class StaffDetail extends React.PureComponent {
                 </ProDescriptions.Item>
               ) : null}
             </ProDescriptions>
-            {isRootUser(cuser) ? (
-              <>
-                &nbsp;
-                <ProDescriptions column={2} title="企业信息">
-                  {/* <ProDescriptions.Item label="地址" key="org_addr">
-                              {concatenateDistricts(detailData.org.addr, { reverse: false })}
-                      </ProDescriptions.Item> */}
-                </ProDescriptions>
-              </>
-            ) : null}
+            &nbsp;
+            <ProDescriptions column={2} title="所属公司">
+              <ProDescriptions.Item label="名称" key="org_name">
+                {detailData.org.name}
+              </ProDescriptions.Item>
+
+              <ProDescriptions.Item label="执照号" key="org_iden_no">
+                {detailData.org.iden_no}
+              </ProDescriptions.Item>
+            </ProDescriptions>
           </div>
         )}
       </Drawer>

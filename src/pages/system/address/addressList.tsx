@@ -390,6 +390,8 @@ class AddressList extends PureComponent {
                 columns={columns}
                 pagination={paginationProps}
                 request={(params, sort, filter) => {
+                  console.log(' ---------- -- ', sort);
+
                   let nsort = makeupSortKey(sort);
 
                   this.refetch({

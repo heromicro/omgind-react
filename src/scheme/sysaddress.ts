@@ -40,6 +40,9 @@ export function concatenateDistricts(
 ): string {
   let darr = [];
   let rst = '';
+  if (!addr) {
+    return '';
+  }
 
   if (addr.country) {
     darr.push(addr.country);
