@@ -21,6 +21,9 @@ export function parseDate(val) {
 
 // 格式化日期
 export function formatDate(val, format) {
+  if (!val) {
+    return '';
+  }
   let f = 'YYYY-MM-DD HH:mm:ss';
   if (format) {
     f = format;
@@ -29,6 +32,6 @@ export function formatDate(val, format) {
 }
 
 export const minutesToMilliseconds = (minutes = 10) => {
-	const parseMinutes = minutes < 1 ? 5 : minutes;
-	return parseMinutes * 60000;
+  const parseMinutes = minutes < 1 ? 5 : minutes;
+  return parseMinutes * 60000;
 };

@@ -53,3 +53,6 @@ export function genTreeNode(dataArr, parentId = null, isLeaf = false) {
 }
 
 // export function con
+export function isRootUser(cuser) {
+  return cuser.user_name === 'root';
+}

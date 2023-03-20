@@ -369,7 +369,7 @@ class OrganList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '企业管理' }, { title: '企业信息', href: '/organ/orginfo' }];
+    const breadcrumbList = [{ title: '企业管理' }, { title: '企业信息', href: '/organ/organ' }];
 
     return (
       <PageHeaderLayout title="企业信息" breadcrumbList={breadcrumbList}>

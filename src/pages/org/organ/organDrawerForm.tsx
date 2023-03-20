@@ -14,6 +14,7 @@ import { collectionDistrictIDs } from '@/scheme/sysaddress';
 import styles from './organDetail.less';
 
 @connect((state) => ({
+  cuser: state.global.user,
   orgorgan: state.orgorgan,
 }))
 class OrganDrawerForm extends React.PureComponent {

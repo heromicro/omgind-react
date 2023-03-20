@@ -112,6 +112,20 @@ class AddressDetail extends React.PureComponent {
               <ProDescriptions.Item label="地址" key="mobile">
                 {concatenateDistricts(detailData, { reverse: false })}
               </ProDescriptions.Item>
+
+              <ProDescriptions.Item span={1} label="有效否" key="is_active">
+                {detailData.is_active === true ? (
+                  <span style={{ color: 'darkGreen' }}>
+                    <Badge status="success" />
+                    有效
+                  </span>
+                ) : (
+                  <span style={{ color: 'red' }}>
+                    <Badge status="error" />
+                    失效
+                  </span>
+                )}
+              </ProDescriptions.Item>
             </ProDescriptions>
             &nbsp;
             <ProDescriptions column={2} title="所有者">

@@ -318,10 +318,13 @@ class DepartmentList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '系统管理' }, { title: '地址管理', href: '/system/address' }];
+    const breadcrumbList = [
+      { title: '企业管理' },
+      { title: '部门管理', href: '/organ/department' },
+    ];
 
     return (
-      <PageHeaderLayout title="地址管理" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="部门管理" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>

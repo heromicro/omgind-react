@@ -8,10 +8,12 @@ import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
 import { concatenateDistricts } from '@/scheme/sysaddress';
+import { isRootUser } from '@/utils/utils';
 
 import styles from './departmentDetail.less';
 
 @connect((state) => ({
+  cuser: state.global.user,
   orgdepartment: state.orgdepartment,
 }))
 class DepartmentDetail extends React.PureComponent {
@@ -52,7 +54,7 @@ class DepartmentDetail extends React.PureComponent {
   };
 
   render(): React.ReactNode {
-    const { onClose, onAddClick, orgdepartment, ...restProps } = this.props;
+    const { onClose, onAddClick, orgdepartment, cuser, ...restProps } = this.props;
     const { detailDrawerOpen, detailData } = orgdepartment;
 
     console.log(' ----- === detailData == == ', detailDrawerOpen);
@@ -60,7 +62,7 @@ class DepartmentDetail extends React.PureComponent {
     return (
       <Drawer
         {...restProps}
-        title={_.isEmpty(detailData) ? '' : `地址--${detailData.name}`}
+        title={_.isEmpty(detailData) ? '' : `部门--${detailData.name}`}
         onClose={onClose}
         open={detailDrawerOpen}
         destroyOnClose
@@ -102,23 +104,44 @@ class DepartmentDetail extends React.PureComponent {
         {!_.isEmpty(detailData) && (
           <div>
             <ProDescriptions column={2} title="基本信息">
-              <ProDescriptions.Item label="联系人" key="name">
-                {`${detailData.last_name} ${detailData.first_name} `}
+              <ProDescriptions.Item label="名称" key="name">
+                {detailData.name}
               </ProDescriptions.Item>
-              <ProDescriptions.Item label="联系电话" key="mobile">
-                {detailData.mobile}
+              <ProDescriptions.Item label="助记码" key="code">
+                {detailData.code}
               </ProDescriptions.Item>
 
-              <ProDescriptions.Item label="地址" key="mobile">
-                {concatenateDistricts(detailData, { reverse: false })}
+              <ProDescriptions.Item span={1} label="有效否" key="is_active">
+                {detailData.is_active === true ? (
+                  <span style={{ color: 'darkGreen' }}>
+                    <Badge status="success" />
+                    有效
+                  </span>
+                ) : (
+                  <span style={{ color: 'red' }}>
+                    <Badge status="error" />
+                    失效
+                  </span>
+                )}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item label="排序" key="sort">
+                {detailData.sort}
+              </ProDescriptions.Item>
+
+              <ProDescriptions.Item label="备注" key="memo">
+                {detailData.memo}
               </ProDescriptions.Item>
             </ProDescriptions>
-            &nbsp;
-            <ProDescriptions column={2} title="所有者">
-              {/* <ProDescriptions.Item label="地址" key="mobile">
-                {detailData.mobile}
-              </ProDescriptions.Item> */}
-            </ProDescriptions>
+            {isRootUser(cuser) ? (
+              <>
+                &nbsp;
+                <ProDescriptions column={2} title="企业信息">
+                  <ProDescriptions.Item label="地址" key="org_addr">
+                    {/* {concatenateDistricts(detailData.org.addr, { reverse: false })} */}
+                  </ProDescriptions.Item>
+                </ProDescriptions>
+              </>
+            ) : null}
           </div>
         )}
       </Drawer>

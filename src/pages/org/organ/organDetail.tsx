@@ -8,10 +8,12 @@ import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
 import { concatenateDistricts } from '@/scheme/sysaddress';
+import { isRootUser } from '@/utils/utils';
 
 import styles from './organDetail.less';
 
 @connect((state) => ({
+  cuser: state.global.user,
   orgorgan: state.orgorgan,
 }))
 class OrganDetail extends React.PureComponent {
@@ -52,7 +54,7 @@ class OrganDetail extends React.PureComponent {
   };
 
   render(): React.ReactNode {
-    const { onClose, onAddClick, orgorgan, ...restProps } = this.props;
+    const { onClose, onAddClick, orgorgan, cuser, ...restProps } = this.props;
     const { detailDrawerOpen, detailData } = orgorgan;
 
     console.log(' ----- === detailData == == ', detailData);
@@ -112,6 +114,10 @@ class OrganDetail extends React.PureComponent {
                 {detailData.iden_no}
               </ProDescriptions.Item>
 
+              <ProDescriptions.Item label="排序" key="sort">
+                {detailData.sort}
+              </ProDescriptions.Item>
+
               <ProDescriptions.Item label="" key="blank1" />
 
               <ProDescriptions.Item label="总部地址" key="haddr">
@@ -124,12 +130,16 @@ class OrganDetail extends React.PureComponent {
                 {detailData.mobile}
               </ProDescriptions.Item> */}
             </ProDescriptions>
-            &nbsp;
-            <ProDescriptions column={2} title="所有者">
-              {/* <ProDescriptions.Item label="地址" key="mobile">
-                {detailData.mobile}
-              </ProDescriptions.Item> */}
-            </ProDescriptions>
+            {isRootUser(cuser) ? (
+              <>
+                &nbsp;
+                <ProDescriptions column={2} title="所有者">
+                  {/* <ProDescriptions.Item label="地址" key="mobile">
+                        {detailData.mobile}
+                    </ProDescriptions.Item> */}
+                </ProDescriptions>
+              </>
+            ) : null}
           </div>
         )}
       </Drawer>

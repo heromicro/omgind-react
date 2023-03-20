@@ -14,6 +14,7 @@ import { collectionDistrictIDs } from '@/scheme/sysaddress';
 import styles from './staffDetail.less';
 
 @connect((state) => ({
+  cuser: state.global.user,
   orgstaff: state.orgstaff,
 }))
 class StaffDrawerForm extends React.PureComponent {

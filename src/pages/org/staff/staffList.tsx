@@ -286,6 +286,14 @@ class StaffList extends PureComponent {
         },
       },
       {
+        title: '工号',
+        dataIndex: 'worker_no',
+      },
+      {
+        title: '工位',
+        dataIndex: 'cubicle',
+      },
+      {
         title: '入职日期',
         dataIndex: 'entry_date',
         render: (_, entity, row) => <span>{formatDate(entity.entry_date, 'YYYY-MM-DD')}</span>,
@@ -294,6 +302,15 @@ class StaffList extends PureComponent {
         title: '转正日期',
         dataIndex: 'regular_date',
         render: (_, entity, row) => <span>{formatDate(entity.regular_date, 'YYYY-MM-DD')}</span>,
+      },
+      {
+        title: '离职日期',
+        dataIndex: 'resign_date',
+        render: (_, entity, row) => <span>{formatDate(entity.resign_date, 'YYYY-MM-DD')}</span>,
+      },
+      {
+        title: '在职否',
+        dataIndex: 'incumbency',
       },
       {
         title: '状态',
@@ -357,10 +374,10 @@ class StaffList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '系统管理' }, { title: '地址管理', href: '/system/address' }];
+    const breadcrumbList = [{ title: '企业管理' }, { title: '员工管理', href: '/organ/staff' }];
 
     return (
-      <PageHeaderLayout title="地址管理" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="员工管理" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>

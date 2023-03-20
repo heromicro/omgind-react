@@ -292,13 +292,13 @@ class PositionList extends PureComponent {
         hideInSearch: true,
         fixed: 'right',
         width: '60px',
-        render: (val, record, row) => {
+        render: (val, entity, row) => {
           return (
             <PButton
               type="link"
               code="view"
               onClick={() => {
-                this.onClickShowDetail(record);
+                this.onClickShowDetail(entity);
               }}
             >
               查看
@@ -315,10 +315,10 @@ class PositionList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '系统管理' }, { title: '地址管理', href: '/system/address' }];
+    const breadcrumbList = [{ title: '企业管理' }, { title: '职位管理', href: '/organ/position' }];
 
     return (
-      <PageHeaderLayout title="地址管理" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="职位管理" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>
