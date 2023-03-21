@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
+import OrganSelector from '@/components/OrganSelector';
 
 import styles from './departmentDetail.less';
 
@@ -140,6 +141,17 @@ class DepartmentDrawerForm extends React.PureComponent {
                   rules={[{ max: 16, message: '最多 16 字符' }]}
                 >
                   <Input placeholder="请输入助记码" allowClear style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  label="所属企业"
+                  name="org_id"
+                  rules={[{ required: true, message: '名称必填' }]}
+                >
+                  <OrganSelector mode="combobox" />
                 </Form.Item>
               </Col>
             </Row>

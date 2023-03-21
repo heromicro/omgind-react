@@ -147,13 +147,7 @@ class PositionDrawerForm extends React.PureComponent {
                   name="org_id"
                   rules={[{ required: true, message: '名称必填' }]}
                 >
-                  <OrganSelector
-                    mode="combobox"
-                    // defaultValue={{
-                    //   label: formData.org ? formData.org.name : '',
-                    //   value: formData.org ? formData.org.id : "",
-                    // }}
-                  />
+                  <OrganSelector mode="combobox" />
                 </Form.Item>
               </Col>
             </Row>
