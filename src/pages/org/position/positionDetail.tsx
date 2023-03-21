@@ -62,7 +62,7 @@ class PositionDetail extends React.PureComponent {
     return (
       <Drawer
         {...restProps}
-        title={_.isEmpty(detailData) ? '' : `职位--${detailData.name}`}
+        title={_.isEmpty(detailData) ? '' : `职务--${detailData.name}`}
         onClose={onClose}
         open={detailDrawerOpen}
         destroyOnClose

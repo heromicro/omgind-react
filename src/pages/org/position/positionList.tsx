@@ -4,6 +4,7 @@ import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Tag } from 'a
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
+import debounce from 'lodash/debounce';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { OrgPositionItem } from '@/scheme/orgposition';
@@ -39,6 +40,8 @@ class PositionList extends PureComponent {
       selectedRowKeys: [],
       selectedRows: [],
     };
+
+    this.refetch = debounce(this.refetch.bind(this), 500);
   }
 
   componentDidMount() {
@@ -161,7 +164,8 @@ class PositionList extends PureComponent {
             pathname: location.pathname,
             search: `created_at__order=desc&after=${burden.id}`,
           });
-          this.refetch();
+
+          this.refetch({});
         }
       },
     });
@@ -329,10 +333,10 @@ class PositionList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [{ title: '系统管理' }, { title: '地址管理', href: '/system/address' }];
+    const breadcrumbList = [{ title: '系统管理' }, { title: '职务管理', href: '/system/address' }];
 
     return (
-      <PageHeaderLayout title="地址管理" breadcrumbList={breadcrumbList}>
+      <PageHeaderLayout title="职务管理" breadcrumbList={breadcrumbList}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>

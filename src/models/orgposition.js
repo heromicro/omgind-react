@@ -83,7 +83,7 @@ export default {
         }),
         put({
           type: 'saveFormTitle',
-          payload: '新建职位信息',
+          payload: '新建职务信息',
         }),
         put({
           type: 'saveFormID',
