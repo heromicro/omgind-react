@@ -48,34 +48,6 @@ class DepartmentDrawerForm extends React.PureComponent {
     return true;
   };
 
-  onDistrictChange = (value, selectedOptions) => {
-    console.log(' ------ = === -- == === value ', value);
-    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
-
-    if (selectedOptions) {
-      switch (selectedOptions.length) {
-        case 4:
-          this.formRef.current.setFieldValue('county_id', selectedOptions[3].id);
-          this.formRef.current.setFieldValue('county', selectedOptions[3].name);
-        /* falls through */
-        case 3:
-          this.formRef.current.setFieldValue('city_id', selectedOptions[2].id);
-          this.formRef.current.setFieldValue('city', selectedOptions[2].name);
-        /* falls through */
-        case 2:
-          this.formRef.current.setFieldValue('province_id', selectedOptions[1].id);
-          this.formRef.current.setFieldValue('province', selectedOptions[1].name);
-        /* falls through */
-        case 1:
-          this.formRef.current.setFieldValue('country_id', selectedOptions[0].id);
-          this.formRef.current.setFieldValue('country', selectedOptions[0].name);
-          break;
-        default:
-          break;
-      }
-    }
-  };
-
   onClose = (e) => {
     console.log(' ---- ====== ==== ', e);
 
@@ -150,7 +122,14 @@ class DepartmentDrawerForm extends React.PureComponent {
           >
             <Row>
               <Col span={12}>
-                <Form.Item label="名称" name="name" rules={[{ max: 64, message: '最多 64 字符' }]}>
+                <Form.Item
+                  label="名称"
+                  name="name"
+                  rules={[
+                    { max: 64, message: '最多 64 字符' },
+                    { required: true, message: '名称必填' },
+                  ]}
+                >
                   <Input placeholder="请输入请输入名称" allowClear />
                 </Form.Item>
               </Col>

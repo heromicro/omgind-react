@@ -7,6 +7,10 @@ export async function query(params = {}) {
   return request(`/${version}/${router}`, { params });
 }
 
+export async function querySelect(params = {}) {
+  return request(`/${version}/${router}.select`, { params });
+}
+
 export async function get(id, params = {}) {
   return request(`/${version}/${router}/${id}`, { params });
 }

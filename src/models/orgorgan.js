@@ -25,6 +25,7 @@ export default {
     formVisible: false,
     formData: {},
     detailData: {},
+    selectData: [],
   },
   effects: {
     *fetch({ search, pagination }, { call, put, select }) {
@@ -215,6 +216,17 @@ export default {
         yield put({ type: 'fetch' });
       }
     },
+
+    *fetchSelect(_, { call, put }) {
+      const response = yield call(organService.querySelect);
+      const { code, burden } = response;
+      if (code === 0) {
+        yield put({
+          type: 'saveSelectData',
+          payload: burden.list || [],
+        });
+      }
+    },
     *changeStatus({ payload }, { call, put, select }) {
       let response;
       if (payload.is_active === true) {
@@ -296,6 +308,10 @@ export default {
     },
     saveDetailData(state, { payload }) {
       return { ...state, detailData: payload };
+    },
+
+    saveSelectData(state, { payload }) {
+      return { ...state, selectData: payload };
     },
   },
 };

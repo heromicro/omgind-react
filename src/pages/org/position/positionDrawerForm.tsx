@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
+import OrganSelector from '@/components/OrganSelector';
 
 import styles from './positionDetail.less';
 
@@ -118,7 +119,14 @@ class PositionDrawerForm extends React.PureComponent {
           >
             <Row>
               <Col span={12}>
-                <Form.Item label="名称" name="name" rules={[{ max: 64, message: '最多 64 字符' }]}>
+                <Form.Item
+                  label="名称"
+                  name="name"
+                  rules={[
+                    { max: 64, message: '最多 64 字符' },
+                    { required: true, message: '名称必填' },
+                  ]}
+                >
                   <Input placeholder="请输入请输入名称" allowClear />
                 </Form.Item>
               </Col>
@@ -129,6 +137,23 @@ class PositionDrawerForm extends React.PureComponent {
                   rules={[{ max: 16, message: '最多 16 字符' }]}
                 >
                   <Input placeholder="请输入助记码" allowClear style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  label="所属企业"
+                  name="org_id"
+                  rules={[{ required: true, message: '名称必填' }]}
+                >
+                  <OrganSelector
+                    mode="combobox"
+                    // defaultValue={{
+                    //   label: formData.org ? formData.org.name : '',
+                    //   value: formData.org ? formData.org.id : "",
+                    // }}
+                  />
                 </Form.Item>
               </Col>
             </Row>
