@@ -47,7 +47,7 @@ class OrganSelector extends React.Component<OrganSelectorProps, OrganSelectorSta
 
   onSearch = (value) => {
     console.log(' --- --- ===== === value: ', value);
-    orgService.querySelect({ q: value }).then((res) => {
+    orgService.querySelect({ queryValue: value }).then((res) => {
       const { burden } = res;
       if (burden && burden.list) {
         console.log(' --- --- ===== === burden: ', burden.list);
