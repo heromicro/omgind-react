@@ -110,7 +110,7 @@ class AddressDetail extends React.PureComponent {
               </ProDescriptions.Item>
 
               <ProDescriptions.Item label="地址" key="mobile">
-                {concatenateDistricts(detailData, { reverse: false })}
+                {concatenateDistricts(detailData, { withDaddr: true })}
               </ProDescriptions.Item>
 
               <ProDescriptions.Item span={1} label="有效否" key="is_active">

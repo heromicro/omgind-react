@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Cascader } from 'antd';
 import * as _ from 'lodash';
 
@@ -6,14 +6,95 @@ import * as districtService from '@/services/sysdistrict';
 
 import { listToTree } from '@/utils/uiutil';
 
-const DistrictCascader = (props) => {
-  const [options, setOptions] = useState([]);
-  const [pid] = useState('-');
+type onChangeFunc = (value, selectedOptions) => void;
 
-  // 编辑页面默认要展示，所以要设置value
-  // const [defaultValue, setDefaultValue] = useState([]);
+class DistrictCascader extends React.PureComponent<
+  { value: string[]; onChange: onChangeFunc },
+  { options: string[]; defaultValue: string[]; svalue: string[] }
+> {
+  //
+  constructor(props) {
+    super(props);
 
-  const getOptions = async (idStr: string) => {
+    this.state = {
+      options: [],
+      defaultValue: [],
+      svalue: props.value || [],
+    };
+  }
+
+  static getDerivedStateFromProps(nextProps, state) {
+    if ('value' in nextProps) {
+      return {
+        ...state,
+        // dataSource: fillFormKey(nextProps.value),
+        value: nextProps.value,
+      };
+    }
+    return state;
+  }
+
+  queryOptions = async (id, dvalue) => {
+    const {
+      burden: { top, subs },
+    } = await districtService.queryTree(id);
+
+    console.log(' ------- qqq top  ------ top ', top);
+    console.log(' ------- qqq subs  ------ subs ', subs);
+
+    let alloptions = [];
+    alloptions = alloptions.concat(top);
+    alloptions = alloptions.concat(subs);
+    console.log(' ------- qqq alloptions  ------ alloptions ', alloptions);
+
+    let nd = [];
+    alloptions.map((item) => {
+      return nd.push({
+        ...item,
+        label: item.name,
+        value: item.id,
+        isLeaf: item.is_leaf,
+      });
+    });
+
+    let opts = listToTree(nd, { idKey: 'id', childrenKey: 'children', parentKey: 'pid' });
+
+    this.setState({
+      options: opts,
+      svalue: dvalue,
+    });
+
+    console.log(' ------- qqq os  ------ opts ', opts);
+  };
+
+  componentDidMount() {
+    const { svalue } = this.state;
+
+    if (_.isEmpty(svalue)) {
+      this.getOptions('-');
+      return;
+    }
+
+    console.log(' ------- qqq qqqq  ------ value ', svalue);
+
+    if (Array.isArray(svalue)) {
+      console.log(' ------- ------ cascader value is array ');
+      if (svalue.length > 0) {
+        this.queryOptions(svalue[0], svalue);
+      }
+      this.setState({
+        defaultValue: svalue,
+      });
+    } else {
+      console.log(' ------- ------ cascader value is not array ');
+      // let pids = value.split('/');
+      // this.setState({
+      //   defaultValue: pids,
+      // });
+    }
+  }
+
+  getOptions = async (idStr: string) => {
     const params = { is_real: true, pid: idStr };
     const {
       burden: { list },
@@ -27,89 +108,51 @@ const DistrictCascader = (props) => {
         isLeaf: item.is_leaf,
       });
     });
-    setOptions(newData);
-  };
 
-  const queryOptions = async (id: string) => {
-    const {
-      burden: { top, subs },
-    } = await districtService.queryTree(id);
-    setOptions([]);
-
-    console.log(' ------- qqq top  ------ top ', top);
-    console.log(' ------- qqq subs  ------ subs ', subs);
-
-    let alloptions = [];
-    alloptions = alloptions.concat(top);
-    alloptions = alloptions.concat(subs);
-    console.log(' ------- qqq alloptions  ------ alloptions ', alloptions);
-
-    let opts = listToTree(alloptions, { idKey: 'id', childrenKey: 'children', parentKey: 'pid' });
-
-    // setOptions([...opts])
-    let nd = [];
-    opts.map((item) => {
-      return nd.push({
-        ...item,
-        label: item.name,
-        value: item.id,
-        isLeaf: item.is_leaf,
-      });
+    this.setState({
+      options: newData,
     });
-    setOptions(nd);
-    console.log(' ------- qqq os  ------ opts ', nd);
   };
-
-  // 页面初始化请求一级目录
-  useEffect(() => {
-    const { value } = props;
-    if (_.isEmpty(value)) {
-      // getOptions('-');
-      return;
-    }
-
-    // setDefaultValue(value)
-    // getOptions('-');
-    console.log(' ------- qqq qqqq  ------ value ', value);
-
-    if (Array.isArray(value)) {
-      console.log(' ------- ------ cascader value is array ');
-      if (value.length > 0) {
-        queryOptions(value[0]);
-      }
-    } else {
-      console.log(' ------- ------ cascader value is not array ');
-      if (value.includes('/')) {
-        console.log(' ------- ------ cascader include / ');
-      }
-    }
-  }, []);
 
   // 显示/隐藏浮层的回调
-  const onDropdownVisibleChange = (open) => {
-    const { value } = props;
-    if (!value || open) {
-      console.log(' ======= -- OOOOOOOO ', options);
-      // getOptions(pid);
+  onDropdownVisibleChange = (open) => {
+    const { value } = this.props;
+    console.log(' ======= -- OOOOOOO value O ', value);
+
+    if (!value && open) {
+      // const { options } = this.state;
+      // console.log(' ======= -- OOOOOOOO ', options);
+      this.getOptions('-');
     }
   };
 
   // 点击目录事件
-  const onCascaderChange = (value, selectedOptions) => {
-    // setDefaultValue(value);
-    const { onChange } = props;
-    if (onChange) {
-      console.log(' ----- ===== uuuuuuu ===== ');
+  onCascaderChange = (value, selectedOptions) => {
+    console.log(' ----- === ----- ==== value: ', value);
+    console.log(' ----- === ----- ==== selectedOptions: ', selectedOptions);
+    this.setState({
+      svalue: value,
+    });
+    this.triggerChange(value, selectedOptions);
+  };
 
-      onChange({
-        value,
-        selectedOptions,
-      });
+  onCascaderClear = () => {
+    this.setState({
+      svalue: [],
+    });
+    this.triggerChange([], []);
+  };
+
+  triggerChange = (value, selectedOptions) => {
+    const { onChange } = this.props;
+    if (onChange) {
+      onChange(value, selectedOptions);
     }
   };
 
   // 动态加载事件
-  const loadData = async (selectedOptions) => {
+  loadData = async (selectedOptions) => {
+    const { options } = this.state;
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
 
@@ -132,23 +175,30 @@ const DistrictCascader = (props) => {
 
     targetOption.children = newData;
 
-    setOptions([...options]);
+    // setOptions([...options]);
+    this.setState({
+      options: [...options],
+    });
   };
 
-  // console.log(' ------- qqq qqqq  ------ defaultValue ', defaultValue);
+  render() {
+    const { svalue, options, defaultValue } = this.state;
 
-  return (
-    <Cascader
-      options={options}
-      loadData={loadData}
-      onChange={onCascaderChange}
-      changeOnSelect
-      allowClear
-      placeholder="请选择"
-      onDropdownVisibleChange={onDropdownVisibleChange}
-      // defaultValue={props.defaultValue}
-    />
-  );
-};
+    return (
+      <Cascader
+        options={options}
+        loadData={this.loadData}
+        onChange={this.onCascaderChange}
+        changeOnSelect
+        allowClear
+        placeholder="请选择"
+        onDropdownVisibleChange={this.onDropdownVisibleChange}
+        value={svalue}
+        defaultValue={defaultValue}
+        onClear={this.onCascaderClear}
+      />
+    );
+  }
+}
 
 export default DistrictCascader;

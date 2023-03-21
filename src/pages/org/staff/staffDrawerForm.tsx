@@ -1,17 +1,33 @@
 import React from 'react';
 
 import type { ProFormInstance } from '@ant-design/pro-components';
-import { Form, Button, Switch, message, Drawer, Input, Space, Row, Col, InputNumber } from 'antd';
+import {
+  Form,
+  Divider,
+  Button,
+  Switch,
+  message,
+  Drawer,
+  Input,
+  Space,
+  Row,
+  Col,
+  InputNumber,
+  Select,
+  DatePicker,
+} from 'antd';
 import { SaveFilled } from '@ant-design/icons';
 
 import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import DistrictTree from '@/components/DistrictTree';
+import DistrictCascader from '@/components/DistrictCascader';
 import { collectionDistrictIDs } from '@/scheme/sysaddress';
 
 import styles from './staffDetail.less';
+
+const { Option } = Select;
 
 @connect((state) => ({
   cuser: state.global.user,
@@ -39,38 +55,83 @@ class StaffDrawerForm extends React.PureComponent {
     // console.log(' ======== === this.formRef.current : ', this.formRef.current);
     let formData = data;
     const { onSubmit } = this.props;
-    if (formData.district_ids) {
-      delete formData.district_ids;
+    if (formData.iden_addr_district_ids) {
+      delete formData.iden_addr_district_ids;
+    }
+    if (formData.resi_addr_district_ids) {
+      delete formData.resi_addr_district_ids;
     }
 
     console.log(' ======== === 1111 formData : ', formData);
 
-    onSubmit(formData);
+    // onSubmit(formData);
 
     return true;
   };
 
-  onDistrictChange = (value, selectedOptions) => {
+  onIdenAddrDistrictChange = (value, selectedOptions) => {
     console.log(' ------ = === -- == === value ', value);
     console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
 
     if (selectedOptions) {
       switch (selectedOptions.length) {
         case 4:
-          this.formRef.current.setFieldValue('county_id', selectedOptions[3].id);
-          this.formRef.current.setFieldValue('county', selectedOptions[3].name);
+          this.formRef.current.setFieldsValue({
+            iden_addr: { county_id: selectedOptions[3].id, county: selectedOptions[3].name },
+          });
+
         /* falls through */
         case 3:
-          this.formRef.current.setFieldValue('city_id', selectedOptions[2].id);
-          this.formRef.current.setFieldValue('city', selectedOptions[2].name);
+          this.formRef.current.setFieldsValue({
+            iden_addr: { city_id: selectedOptions[2].id, city: selectedOptions[2].name },
+          });
+
         /* falls through */
         case 2:
-          this.formRef.current.setFieldValue('province_id', selectedOptions[1].id);
-          this.formRef.current.setFieldValue('province', selectedOptions[1].name);
+          this.formRef.current.setFieldsValue({
+            iden_addr: { province_id: selectedOptions[1].id, province: selectedOptions[1].name },
+          });
+
         /* falls through */
         case 1:
-          this.formRef.current.setFieldValue('country_id', selectedOptions[0].id);
-          this.formRef.current.setFieldValue('country', selectedOptions[0].name);
+          this.formRef.current.setFieldsValue({
+            iden_addr: { country_id: selectedOptions[0].id, country: selectedOptions[0].name },
+          });
+
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+  onResiAddrDistrictChange = (value, selectedOptions) => {
+    console.log(' ------ = === -- == === value ', value);
+    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
+
+    if (selectedOptions) {
+      switch (selectedOptions.length) {
+        case 4:
+          this.formRef.current.setFieldsValue({
+            resi_addr: { county_id: selectedOptions[3].id, county: selectedOptions[3].name },
+          });
+
+        /* falls through */
+        case 3:
+          this.formRef.current.setFieldsValue({
+            resi_addr: { city_id: selectedOptions[2].id, city: selectedOptions[2].name },
+          });
+
+        /* falls through */
+        case 2:
+          this.formRef.current.setFieldsValue({
+            resi_addr: { province_id: selectedOptions[1].id, province: selectedOptions[1].name },
+          });
+        /* falls through */
+        case 1:
+          this.formRef.current.setFieldsValue({
+            resi_addr: { country_id: selectedOptions[0].id, country: selectedOptions[0].name },
+          });
           break;
         default:
           break;
@@ -146,16 +207,20 @@ class StaffDrawerForm extends React.PureComponent {
             onFinishFailed={this.onFinishFailed}
             initialValues={{
               ...formData,
-              district_ids: collectionDistrictIDs(formData),
+              iden_addr_district_ids: collectionDistrictIDs(formData.iden_addr),
+              resi_addr_district_ids: collectionDistrictIDs(formData.resi_addr),
               area_code: _.isEmpty(formData.area_code) ? '+86' : formData.area_code,
               is_active: _.isEmpty(formData.is_active) ? true : formData.is_active,
               sort: formData.sort ? formData.sort : 9999,
             }}
           >
+            <Divider orientation="left" plain>
+              基本信息
+            </Divider>
             <Row>
               <Col span={12}>
                 <Form.Item
-                  label="联系人"
+                  label="姓名"
                   name="first_name"
                   rules={[{ max: 64, message: '最多 64 字符' }]}
                 >
@@ -203,69 +268,178 @@ class StaffDrawerForm extends React.PureComponent {
             <Row>
               <Col span={12}>
                 <Form.Item
-                  label="行政区"
-                  name="district_ids"
-                  rules={[{ required: true, message: '行政区域必填' }]}
+                  label="性别"
+                  name="gender"
+                  rules={[{ required: true, message: '性别必填' }]}
                 >
-                  <DistrictTree onChange={this.onDistrictChange} allowClear />
-                </Form.Item>
-
-                <Form.Item label="国id" name="country_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="国" name="country" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-
-                <Form.Item label="省/市id" name="province_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="省/市" name="province" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-
-                <Form.Item label="市/区id" name="city_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="市/区" name="city" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-
-                <Form.Item label="县/区id" name="county_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="县/区" name="county" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
+                  <Select placeholder="选择性别" allowClear>
+                    <Option value="M">男</Option>
+                    <Option value="F">女</Option>
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item
-                  label="邮政编码"
-                  name="zip_code"
-                  rules={[{ max: 128, message: '最多 128 字符' }]}
+                  label="出生日期"
+                  name="birth_date"
+                  rules={[{ required: true, message: '出生日期必填' }]}
                 >
-                  <Input placeholder="请输入邮政编码" allowClear />
+                  <DatePicker style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col span={12}>
                 <Form.Item
-                  label="详细地址"
-                  name="daddr"
+                  label="身份证号"
+                  name="iden_no"
+                  rules={[
+                    { max: 20, message: '最多 20 字符' },
+                    { required: true, message: '身份证号必填' },
+                  ]}
+                >
+                  <Input placeholder="身份证号" allowClear />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  label="身份证地址"
+                  name="iden_addr_district_ids"
+                  rules={[{ required: true, message: '身份证地址必填' }]}
+                >
+                  <DistrictCascader onChange={this.onIdenAddrDistrictChange} allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="国id"
+                  name={['iden_addr', 'country_id']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item label="国" name={['iden_addr', 'country']} style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="省/市id"
+                  name={['iden_addr', 'province_id']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item
+                  label="省/市"
+                  name={['iden_addr', 'province']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="市/区id"
+                  name={['iden_addr', 'city_id']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item label="市/区" name={['iden_addr', 'city']} style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="县/区id"
+                  name={['iden_addr', 'county_id']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item label="县/区" name={['iden_addr', 'county']} style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item
+                  label="身份证详细地址"
+                  name={['iden_addr', 'daddr']}
                   rules={[{ max: 256, message: '最多 256 字符' }]}
                 >
-                  <Input.TextArea rows={3} placeholder="请输入邮政编码" allowClear />
+                  <Input.TextArea rows={2} placeholder="请输入身份证详细地址" allowClear />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={12}>
-                <Form.Item label="状态" name="is_active">
-                  <Switch defaultChecked />
+                <Form.Item
+                  label="现居地址"
+                  name="resi_addr_district_ids"
+                  rules={[{ required: true, message: '现居地址必填' }]}
+                >
+                  <DistrictCascader onChange={this.onResiAddrDistrictChange} allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="国id"
+                  name={['resi_addr', 'country_id']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item label="国" name={['resi_addr', 'country']} style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="省/市id"
+                  name={['resi_addr', 'province_id']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item
+                  label="省/市"
+                  name={['resi_addr', 'province']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="市/区id"
+                  name={['resi_addr', 'city_id']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item label="市/区" name={['resi_addr', 'city']} style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="县/区id"
+                  name={['resi_addr', 'county_id']}
+                  style={{ display: 'none' }}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item label="县/区" name={['resi_addr', 'county']} style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="现居详细地址"
+                  name={['resi_addr', 'daddr']}
+                  rules={[{ max: 256, message: '最多 256 字符' }]}
+                >
+                  <Input.TextArea rows={2} placeholder="现居详细地址" allowClear />
                 </Form.Item>
               </Col>
             </Row>
+
             <Row>
               <Col span={12}>
                 <Form.Item label="状态" name="is_active">
@@ -280,6 +454,68 @@ class StaffDrawerForm extends React.PureComponent {
                   rules={[{ type: 'number', required: true, message: '请输入排序' }]}
                 >
                   <InputNumber min={1} style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Divider orientation="left" plain>
+              职场信息
+            </Divider>
+
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  label="在职否"
+                  name="gender"
+                  rules={[{ required: true, message: '性别必填' }]}
+                >
+                  <Select placeholder="选择性别" allowClear>
+                    <Option value="M">男</Option>
+                    <Option value="F">女</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="工号"
+                  name="worker_no"
+                  rules={[{ max: 16, message: '最多 16 字符' }]}
+                >
+                  <Input placeholder="请输入工号" allowClear />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  label="工位编号"
+                  name="cubicle"
+                  rules={[{ max: 32, message: '最多 32 字符' }]}
+                >
+                  <InputNumber min={1} style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item
+                  label="入职日期"
+                  name="entry_date"
+                  rules={[{ required: true, message: '入职日期必填' }]}
+                >
+                  <DatePicker style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={12}>
+                <Form.Item label="转正日期" name="regular_date">
+                  <DatePicker style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="离职日期" name="resign_date">
+                  <DatePicker style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
             </Row>

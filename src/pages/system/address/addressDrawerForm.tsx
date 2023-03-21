@@ -8,7 +8,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import DistrictTree from '@/components/DistrictTree';
+import DistrictCascader from '@/components/DistrictCascader';
 import { collectionDistrictIDs } from '@/scheme/sysaddress';
 
 import styles from './addressDetail.less';
@@ -206,7 +206,7 @@ class AddressDrawerForm extends React.PureComponent {
                   name="district_ids"
                   rules={[{ required: true, message: '行政区域必填' }]}
                 >
-                  <DistrictTree onChange={this.onDistrictChange} allowClear />
+                  <DistrictCascader onChange={this.onDistrictChange} allowClear />
                 </Form.Item>
 
                 <Form.Item label="国id" name="country_id" style={{ display: 'none' }}>
@@ -254,14 +254,7 @@ class AddressDrawerForm extends React.PureComponent {
                   name="daddr"
                   rules={[{ max: 256, message: '最多 256 字符' }]}
                 >
-                  <Input.TextArea rows={3} placeholder="请输入邮政编码" allowClear />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>
-                <Form.Item label="状态" name="is_active">
-                  <Switch defaultChecked />
+                  <Input.TextArea rows={3} placeholder="详细地址" allowClear />
                 </Form.Item>
               </Col>
             </Row>

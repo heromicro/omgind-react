@@ -8,8 +8,6 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import DistrictTree from '@/components/DistrictTree';
-import { collectionDistrictIDs } from '@/scheme/sysaddress';
 
 import styles from './departmentDetail.less';
 
@@ -146,123 +144,34 @@ class DepartmentDrawerForm extends React.PureComponent {
             onFinishFailed={this.onFinishFailed}
             initialValues={{
               ...formData,
-              district_ids: collectionDistrictIDs(formData),
-              area_code: _.isEmpty(formData.area_code) ? '+86' : formData.area_code,
               is_active: _.isEmpty(formData.is_active) ? true : formData.is_active,
               sort: formData.sort ? formData.sort : 9999,
             }}
           >
             <Row>
               <Col span={12}>
-                <Form.Item
-                  label="联系人"
-                  name="first_name"
-                  rules={[{ max: 64, message: '最多 64 字符' }]}
-                >
-                  <Input
-                    addonBefore={
-                      <Form.Item
-                        name="last_name"
-                        noStyle
-                        rules={[
-                          { max: 64, message: '最多 64 字符' },
-                          { required: true, message: '姓必填' },
-                        ]}
-                      >
-                        <Input style={{ width: 120 }} bordered={false} placeholder="姓" />
-                      </Form.Item>
-                    }
-                    placeholder="名"
-                    allowClear
-                  />
+                <Form.Item label="名称" name="name" rules={[{ max: 64, message: '最多 64 字符' }]}>
+                  <Input placeholder="请输入请输入名称" allowClear />
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item
-                  label="联系电话"
-                  name="mobile"
-                  rules={[{ max: 64, message: '最多 64 字符' }]}
+                  label="助记码"
+                  name="code"
+                  rules={[{ max: 16, message: '最多 16 字符' }]}
                 >
-                  <Input
-                    addonBefore={
-                      <Form.Item
-                        name="area_code"
-                        noStyle
-                        rules={[{ max: 8, message: '最多 8 字符' }]}
-                      >
-                        <Input style={{ width: 80 }} bordered={false} />
-                      </Form.Item>
-                    }
-                    placeholder="请输入联系电话"
-                    allowClear
-                    style={{ width: '100%' }}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>
-                <Form.Item
-                  label="行政区"
-                  name="district_ids"
-                  rules={[{ required: true, message: '行政区域必填' }]}
-                >
-                  <DistrictTree onChange={this.onDistrictChange} allowClear />
-                </Form.Item>
-
-                <Form.Item label="国id" name="country_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="国" name="country" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-
-                <Form.Item label="省/市id" name="province_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="省/市" name="province" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-
-                <Form.Item label="市/区id" name="city_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="市/区" name="city" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-
-                <Form.Item label="县/区id" name="county_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="县/区" name="county" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label="邮政编码"
-                  name="zip_code"
-                  rules={[{ max: 128, message: '最多 128 字符' }]}
-                >
-                  <Input placeholder="请输入邮政编码" allowClear />
+                  <Input placeholder="请输入助记码" allowClear style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
             </Row>
             <Row>
               <Col span={24}>
                 <Form.Item
-                  label="详细地址"
-                  name="daddr"
-                  rules={[{ max: 256, message: '最多 256 字符' }]}
+                  label="备注"
+                  name="memo"
+                  rules={[{ max: 1024, message: '最多 1024 字符' }]}
                 >
-                  <Input.TextArea rows={3} placeholder="请输入邮政编码" allowClear />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>
-                <Form.Item label="状态" name="is_active">
-                  <Switch defaultChecked />
+                  <Input.TextArea rows={3} placeholder="请输入备注" allowClear />
                 </Form.Item>
               </Col>
             </Row>

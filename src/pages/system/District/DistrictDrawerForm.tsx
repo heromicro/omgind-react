@@ -8,7 +8,6 @@ import * as _ from 'lodash';
 import PButton from '@/components/PermButton';
 
 import DistrictCascader from '@/components/DistrictCascader';
-import DistrictTree from '@/components/DistrictTree';
 
 import { SysDistrctItem } from '@/scheme/sysdistrict';
 
@@ -192,7 +191,7 @@ class DistrictDrawerForm extends React.PureComponent {
             <Row>
               <Col span={12}>
                 <Form.Item label="上级" name="pids">
-                  <DistrictTree onChange={this.onDistrictChange} allowClear />
+                  <DistrictCascader onChange={this.onDistrictChange} allowClear />
                 </Form.Item>
                 <Form.Item label="上级" name="pid" style={{ display: 'none' }}>
                   <Input type="hidden" allowClear />
@@ -309,7 +308,6 @@ class DistrictDrawerForm extends React.PureComponent {
                   <Switch />
                 </Form.Item>
               </Col>
-              {/* <Col span={6}></Col> */}
             </Row>
           </Form>
         )}

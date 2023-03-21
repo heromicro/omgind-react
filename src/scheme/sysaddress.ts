@@ -36,6 +36,7 @@ export function concatenateDistricts(
     withzip = false,
     withmoible = false,
     reverse = false,
+    withDaddr = false,
   }
 ): string {
   let darr = [];
@@ -56,7 +57,7 @@ export function concatenateDistricts(
   if (addr.county) {
     darr.push(addr.county);
   }
-  if (addr.daddr) {
+  if (withDaddr && addr.daddr) {
     darr.push(addr.daddr);
   }
   if (reverse) {
@@ -96,7 +97,9 @@ export function concatenateDistricts(
 
 export function collectionDistrictIDs(addr: SysAddressItem): string[] {
   let ids = [];
-
+  if (!addr) {
+    return ids;
+  }
   if (addr.country_id) {
     ids.push(addr.country_id);
   }

@@ -269,7 +269,7 @@ class OrganList extends PureComponent {
         hideInSearch: true,
         render: (val, entity, row) => {
           if (entity.haddr) {
-            return concatenateDistricts(entity.haddr, {});
+            return concatenateDistricts(entity.haddr, { withDaddr: true });
           }
           return '';
         },

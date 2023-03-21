@@ -8,7 +8,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import DistrictTree from '@/components/DistrictTree';
+import DistrictCascader from '@/components/DistrictCascader';
 import { collectionDistrictIDs } from '@/scheme/sysaddress';
 
 import styles from './organDetail.less';
@@ -268,7 +268,7 @@ class OrganDrawerForm extends React.PureComponent {
                     name="district_ids"
                     rules={[{ required: true, message: '总部地址必填' }]}
                   >
-                    <DistrictTree onChange={this.onDistrictChange} allowClear />
+                    <DistrictCascader onChange={this.onDistrictChange} allowClear />
                   </Form.Item>
 
                   <Form.Item

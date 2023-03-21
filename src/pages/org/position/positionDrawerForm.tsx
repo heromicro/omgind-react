@@ -8,8 +8,6 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import DistrictTree from '@/components/DistrictTree';
-import { collectionDistrictIDs } from '@/scheme/sysaddress';
 
 import styles from './positionDetail.less';
 
@@ -141,7 +139,7 @@ class PositionDrawerForm extends React.PureComponent {
                   name="memo"
                   rules={[{ max: 1024, message: '最多 1024 字符' }]}
                 >
-                  <Input.TextArea rows={3} placeholder="请输入memo" allowClear />
+                  <Input.TextArea rows={3} placeholder="请输入备注" allowClear />
                 </Form.Item>
               </Col>
             </Row>

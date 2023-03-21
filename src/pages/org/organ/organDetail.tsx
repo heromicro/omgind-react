@@ -121,7 +121,9 @@ class OrganDetail extends React.PureComponent {
               <ProDescriptions.Item label="" key="blank1" />
 
               <ProDescriptions.Item label="总部地址" key="haddr">
-                {detailData.haddr ? concatenateDistricts(detailData.haddr, {}) : ''}
+                {detailData.haddr
+                  ? concatenateDistricts(detailData.haddr, { withDaddr: true })
+                  : ''}
               </ProDescriptions.Item>
             </ProDescriptions>
             &nbsp;

@@ -1,4 +1,5 @@
 import { OrgOrganItem } from './orgorgan';
+import { SysAddressItem } from './sysaddress';
 
 export type OrgStaffItem = {
   id: string;
@@ -24,6 +25,8 @@ export type OrgStaffItem = {
   memo?: string;
 
   org?: OrgOrganItem;
+  iden_addr?: SysAddressItem;
+  resi_addr?: SysAddressItem;
 
   created_at: string;
   updated_at: string;

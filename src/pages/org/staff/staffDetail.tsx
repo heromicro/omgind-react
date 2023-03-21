@@ -135,8 +135,23 @@ class StaffDetail extends React.PureComponent {
                   </span>
                 )}
               </ProDescriptions.Item>
+
               <ProDescriptions.Item label="排序" key="sort">
                 {detailData.sort}
+              </ProDescriptions.Item>
+
+              <ProDescriptions.Item label="" key="blank1" />
+
+              <ProDescriptions.Item label="身份证地址" key="resi_addr">
+                {detailData.iden_addr
+                  ? concatenateDistricts(detailData.iden_addr, { withDaddr: true })
+                  : ''}
+              </ProDescriptions.Item>
+
+              <ProDescriptions.Item label="现居地址" key="resi_addr">
+                {detailData.resi_addr
+                  ? concatenateDistricts(detailData.resi_addr, { withDaddr: true })
+                  : ''}
               </ProDescriptions.Item>
 
               <ProDescriptions.Item label="备注" key="memo">

@@ -18,6 +18,7 @@ import StaffDetail from './staffDetail';
 import StaffDrawerForm from './staffDrawerForm';
 
 import styles from './staffList.less';
+import { concatenateDistricts } from '@/scheme/sysaddress';
 
 @connect((state) => ({
   cuser: state.global.user,
@@ -337,6 +338,29 @@ class StaffList extends PureComponent {
             return entity.org.name;
           }
           return '';
+        },
+      },
+      {
+        title: '身份证地址',
+        dataIndex: 'iden_addr',
+        hideInSearch: true,
+        render: (_, entity, row) => {
+          if (entity.iden_addr) {
+            return concatenateDistricts(entity.iden_addr, { withDaddr: true });
+          }
+          return '-';
+        },
+      },
+      {
+        title: '现居地址',
+        dataIndex: 'resi_addr',
+        hideInSearch: true,
+        render: (_, entity, row) => {
+          if (entity.iden_addr) {
+            return concatenateDistricts(entity.resi_addr, { withDaddr: true });
+          }
+
+          return '-';
         },
       },
       {
