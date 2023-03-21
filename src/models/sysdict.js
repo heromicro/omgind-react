@@ -164,7 +164,7 @@ export default {
       if (success) {
         message.success('保存成功');
         yield put({
-          type: 'changeModalFormVisibresponse =le',
+          type: 'changeModalFormVisible',
           payload: false,
         });
         yield put({ type: 'fetch' });

@@ -23,6 +23,8 @@ import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
 import DistrictCascader from '@/components/DistrictCascader';
+import OrganSelector from '@/components/OrganSelector';
+
 import { collectionDistrictIDs } from '@/scheme/sysaddress';
 
 import styles from './staffDetail.less';
@@ -464,16 +466,23 @@ class StaffDrawerForm extends React.PureComponent {
             <Row>
               <Col span={12}>
                 <Form.Item
-                  label="在职否"
-                  name="gender"
-                  rules={[{ required: true, message: '性别必填' }]}
+                  label="所属企业"
+                  name="org_id"
+                  rules={[{ required: true, message: '名称必填' }]}
                 >
-                  <Select placeholder="选择性别" allowClear>
+                  <OrganSelector mode="combobox" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item label="在职状态" name="gender">
+                  <Select placeholder="选择在职状态" allowClear>
                     <Option value="M">男</Option>
                     <Option value="F">女</Option>
                   </Select>
                 </Form.Item>
               </Col>
+            </Row>
+            <Row>
               <Col span={12}>
                 <Form.Item
                   label="工号"
@@ -483,9 +492,6 @@ class StaffDrawerForm extends React.PureComponent {
                   <Input placeholder="请输入工号" allowClear />
                 </Form.Item>
               </Col>
-            </Row>
-
-            <Row>
               <Col span={12}>
                 <Form.Item
                   label="工位编号"
@@ -495,7 +501,9 @@ class StaffDrawerForm extends React.PureComponent {
                   <InputNumber min={1} style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
+            </Row>
 
+            <Row>
               <Col span={12}>
                 <Form.Item
                   label="入职日期"
@@ -505,14 +513,14 @@ class StaffDrawerForm extends React.PureComponent {
                   <DatePicker style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
-            </Row>
-
-            <Row>
               <Col span={12}>
                 <Form.Item label="转正日期" name="regular_date">
                   <DatePicker style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
+            </Row>
+
+            <Row>
               <Col span={12}>
                 <Form.Item label="离职日期" name="resign_date">
                   <DatePicker style={{ width: '100%' }} />

@@ -29,6 +29,7 @@ const defaultProps: OrganSelectorProps = { debounceTimeOut: 800 };
 
 class OrganSelector extends React.Component<OrganSelectorProps, OrganSelectorState> {
   //
+  // static defaultProps: OrganSelectorProps = { debounceTimeOut: 800 };
 
   constructor(props: OrganSelectorProps) {
     super(props);
