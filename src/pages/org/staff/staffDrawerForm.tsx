@@ -153,7 +153,7 @@ class StaffDrawerForm extends React.PureComponent {
     console.log(' ------- ==  === ------ ', value);
     console.log(' ------- === oooo yyyy == ------ ', options);
     if (options.dict_id) {
-      this.formRef.current.setFieldValue('gndr_dict_id', options.dict_id);
+      this.formRef.current.setFieldValue('gender_dict_id', options.dict_id);
     }
   };
 
@@ -161,7 +161,7 @@ class StaffDrawerForm extends React.PureComponent {
     console.log(' ------- ==  === ------ ', value);
     console.log(' ------- === ooo0 uuuu == ------ ', options);
     if (options.dict_id) {
-      this.formRef.current.setFieldValue('empst_dict_id', options.dict_id);
+      this.formRef.current.setFieldValue('empyst_dict_id', options.dict_id);
     }
   };
 
@@ -516,13 +516,13 @@ class StaffDrawerForm extends React.PureComponent {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="在职状态" name="gender">
+                <Form.Item label="在职状态" name="empy_stat">
                   <EmployeStatSelector
                     placeholder="请选择在职状态"
                     onChange={this.onEmployeStatSelectorChange}
                   />
                 </Form.Item>
-                <Form.Item name="empst_dict_id" style={{ display: 'none' }}>
+                <Form.Item name="empyst_dict_id" style={{ display: 'none' }}>
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>

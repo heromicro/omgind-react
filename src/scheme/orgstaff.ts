@@ -15,9 +15,9 @@ export type OrgStaffItem = {
   gender_dict?: SysDictItem;
   birth_date: string;
 
-  emp_stat: number;
-  empst_dict_id: string;
-  empst_dict: SysDictItem;
+  empy_stat: number;
+  empyst_dict_id: string;
+  empyst_dict: SysDictItem;
 
   worker_no: string;
   cubicle: string;

@@ -162,8 +162,8 @@ class StaffDetail extends React.PureComponent {
             </ProDescriptions>
             &nbsp;
             <ProDescriptions column={2} title="职场信息">
-              <ProDescriptions.Item label="在职状态" key="emp_stat">
-                {calculateEmployeStatShow(detailData.emp_stat)}
+              <ProDescriptions.Item label="在职状态" key="empy_stat">
+                {calculateEmployeStatShow(detailData.empy_stat)}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="工号" key="worker_no">
                 {detailData.worker_no}
