@@ -98,7 +98,7 @@ class DistrictCascader extends React.PureComponent<
     const params = { is_real: true, pid: idStr };
     const {
       burden: { list },
-    } = await districtService.getSubstricts(idStr, params);
+    } = await districtService.getSubs(idStr, params);
     const newData = [];
     list.map((item) => {
       return newData.push({
@@ -160,7 +160,7 @@ class DistrictCascader extends React.PureComponent<
     const params = { is_real: true, pid: id };
     const {
       burden: { list },
-    } = await districtService.getSubstricts(id, params);
+    } = await districtService.getSubs(id, params);
 
     targetOption.loading = false;
     const newData = [];

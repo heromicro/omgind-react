@@ -19,11 +19,11 @@ export async function queryTree(id, params = {}) {
   return request(`/${version}/${router}/${id}/tree`, { params });
 }
 
-export async function getSubstricts(pid = '', params = {}) {
-  return request(`/${version}/${router}/${pid}/substricts`, { params });
+export async function getSubs(pid = '', params = {}) {
+  return request(`/${version}/${router}/${pid}/subs`, { params });
 }
 
-// export async function getSubstricts(params = {}, usecache=false) {
+// export async function getSubs(params = {}, usecache=false) {
 //   let skey = qs.stringify(nparams)
 //   if (usecache) {
 //     let reponse = store.getExpirableItem(skey)

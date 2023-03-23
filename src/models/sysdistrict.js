@@ -272,7 +272,7 @@ export default {
 
       let list = store.getExpirableItem(skey);
       if (!list || list.length === 0) {
-        let response = yield call(districtService.getSubstricts, nparams.pid, nparams);
+        let response = yield call(districtService.getSubs, nparams.pid, nparams);
         const { code, burden } = response;
         if (code === 0) {
           list = burden.list || [];
