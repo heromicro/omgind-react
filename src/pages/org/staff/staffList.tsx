@@ -271,7 +271,7 @@ class StaffList extends PureComponent {
       {
         title: '出生日期',
         dataIndex: 'birth_date',
-        sorter: { compare: (a, b) => a.birth_date - b.birth_date, multiple: 2 },
+        sorter: { compare: (a, b) => a.birth_date - b.birth_date, multiple: 3 },
         render: (_, entity, row) => <span>{formatDate(entity.birth_date, 'YYYY-MM-DD')}</span>,
       },
       {
@@ -285,6 +285,7 @@ class StaffList extends PureComponent {
           1: { text: '男' },
           2: { text: '女' },
         },
+        sorter: { compare: (a, b) => a.gender - b.gender, multiple: 4 },
         render: (val, entity, row) => {
           return calculateGenderShow(entity.gender);
         },
@@ -302,19 +303,19 @@ class StaffList extends PureComponent {
       {
         title: '入职日期',
         dataIndex: 'entry_date',
-        sorter: { compare: (a, b) => a.entry_date - b.entry_date, multiple: 6 },
+        sorter: { multiple: 6 },
         render: (_, entity, row) => <span>{formatDate(entity.entry_date, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '转正日期',
         dataIndex: 'regular_date',
-        sorter: { compare: (a, b) => a.regular_date - b.regular_date, multiple: 7 },
+        sorter: { multiple: 7 },
         render: (_, entity, row) => <span>{formatDate(entity.regular_date, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '离职日期',
         dataIndex: 'resign_date',
-        sorter: { compare: (a, b) => a.resign_date - b.resign_date, multiple: 8 },
+        sorter: { multiple: 8 },
         render: (_, entity, row) => <span>{formatDate(entity.resign_date, 'YYYY-MM-DD')}</span>,
       },
       {
@@ -390,7 +391,7 @@ class StaffList extends PureComponent {
         title: '创建时间',
         dataIndex: 'created_at',
         search: false,
-        sorter: { compare: (a, b) => a.created_at - b.created_at, multiple: 2 },
+        sorter: { multiple: 2 },
         render: (_, entity, row) => (
           <span>{formatDate(entity.created_at, 'YYYY-MM-DD HH:mm')}</span>
         ),
