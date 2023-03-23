@@ -1,6 +1,6 @@
 import { OrgOrganItem } from './orgorgan';
 
-export type OrgDepartmentItem = {
+export type OrgDeptItem = {
   id: string;
 
   name: string;

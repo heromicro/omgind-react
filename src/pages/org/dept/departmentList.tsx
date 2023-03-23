@@ -6,7 +6,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { OrgDepartmentItem } from '@/scheme/orgdepartment';
+import { OrgDeptItem } from '@/scheme/orgdept';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';
@@ -248,7 +248,7 @@ class DepartmentList extends PureComponent {
 
     const { selectedRows, selectedRowKeys } = this.state;
 
-    const columns: ProColumns<OrgDepartmentItem>[] = [
+    const columns: ProColumns<OrgDeptItem>[] = [
       {
         title: '名称',
         dataIndex: 'name',
@@ -344,7 +344,7 @@ class DepartmentList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div>
-              <ProTable<OrgDepartmentItem>
+              <ProTable<OrgDeptItem>
                 actionRef={this.actionRef}
                 formRef={this.searchFormRef}
                 scroll={{ x: 'max-content' }}
