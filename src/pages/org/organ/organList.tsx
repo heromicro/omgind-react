@@ -317,6 +317,7 @@ class OrganList extends PureComponent {
           true: { text: '有效', status: 'Default' },
           false: { text: '失效', status: 'Error' },
         },
+        sorter: { multiple: 3 },
         render: (_, entity, row) => {
           if (entity.is_active) {
             return <Tag color="#87d068">有效</Tag>;
@@ -328,11 +329,13 @@ class OrganList extends PureComponent {
         title: '排序',
         dataIndex: 'sort',
         hideInSearch: true,
+        sorter: { multiple: 2 },
       },
       {
         title: '创建时间',
         dataIndex: 'created_at',
         hideInSearch: true,
+        sorter: { multiple: 1 },
         render: (val) => <span>{formatDate(val, 'YYYY-MM-DD HH:mm')}</span>,
       },
       {

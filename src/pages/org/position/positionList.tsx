@@ -264,6 +264,7 @@ class PositionList extends PureComponent {
         title: '状态',
         dataIndex: 'is_active',
         valueType: 'select',
+        sorter: { multiple: 3 },
         valueEnum: {
           true: { text: '有效', status: 'Default' },
           false: { text: '失效', status: 'Error' },
@@ -289,7 +290,8 @@ class PositionList extends PureComponent {
       {
         title: '排序',
         dataIndex: 'sort',
-        search: false,
+        hideInSearch: true,
+        sorter: { compare: (a, b) => a.sort - b.sort, multiple: 2 },
       },
       {
         title: '备注',
@@ -299,7 +301,9 @@ class PositionList extends PureComponent {
       {
         title: '创建时间',
         dataIndex: 'created_at',
-        search: false,
+        hideInSearch: true,
+        sorter: { multiple: 1 },
+
         render: (_, entity, row) => (
           <span>{formatDate(entity.created_at, 'YYYY-MM-DD HH:mm')}</span>
         ),

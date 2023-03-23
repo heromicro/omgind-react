@@ -287,6 +287,7 @@ class DepartmentList extends PureComponent {
         title: '排序',
         dataIndex: 'sort',
         hideInSearch: true,
+        sorter: { multiple: 2 },
       },
       {
         title: '备注',
@@ -296,7 +297,10 @@ class DepartmentList extends PureComponent {
       {
         title: '创建时间',
         dataIndex: 'created_at',
-        search: false,
+        hideInSearch: true,
+
+        sorter: { multiple: 1 },
+
         render: (_, entity, row) => (
           <span>{formatDate(entity.created_at, 'YYYY-MM-DD HH:mm')}</span>
         ),
