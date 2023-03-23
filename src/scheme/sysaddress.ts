@@ -1,4 +1,6 @@
-export type SysAddressItem = {
+import { timeparts } from './common';
+
+export type SysAddressItem = timeparts & {
   id: string;
   country: string;
   province: string;
@@ -22,8 +24,6 @@ export type SysAddressItem = {
   sort: number;
   is_active: boolean;
 
-  created_at: string;
-  updated_at: string;
   creator?: string;
 };
 

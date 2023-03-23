@@ -1,6 +1,8 @@
+import { timeparts } from './common';
+
 import { SysAddressItem } from './sysaddress';
 
-export type OrgOrganItem = {
+export type OrgOrganItem = timeparts & {
   id: string;
 
   name: string;
@@ -14,7 +16,5 @@ export type OrgOrganItem = {
   is_active: boolean;
   memo?: string;
 
-  created_at: string;
-  updated_at: string;
   creator?: string;
 };

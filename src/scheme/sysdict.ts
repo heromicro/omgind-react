@@ -1,4 +1,6 @@
-export type SysDictItemItem = {
+import { timeparts } from './common';
+
+export type SysDictItemItem = timeparts & {
   id: string;
   label: string;
   value: string;

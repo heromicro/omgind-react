@@ -1,6 +1,8 @@
+import { timeparts } from './common';
+
 import { OrgOrganItem } from './orgorgan';
 
-export type OrgPositionItem = {
+export type OrgPositionItem = timeparts & {
   id: string;
 
   name: string;
@@ -14,7 +16,5 @@ export type OrgPositionItem = {
 
   org?: OrgOrganItem;
 
-  created_at: string;
-  updated_at: string;
   creator?: string;
 };

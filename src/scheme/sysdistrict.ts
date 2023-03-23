@@ -1,4 +1,6 @@
-export type SysDistrctItem = {
+import { timeparts } from './common';
+
+export type SysDistrctItem = timeparts & {
   id: string;
   pid?: string;
   parent?: SysDistrctItem;
@@ -34,8 +36,6 @@ export type SysDistrctItem = {
   tree_right: number;
   tree_path: string;
 
-  created_at: string;
-  updated_at: string;
   creator?: string;
 
   children?: SysDistrctItem[];

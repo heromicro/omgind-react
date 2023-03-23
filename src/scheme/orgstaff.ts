@@ -1,8 +1,9 @@
+import { timeparts } from './common';
 import { OrgOrganItem } from './orgorgan';
 import { SysAddressItem } from './sysaddress';
 import { SysDictItem } from './sysdict';
 
-export type OrgStaffItem = {
+export type OrgStaffItem = timeparts & {
   id: string;
 
   first_name: string;
@@ -35,8 +36,8 @@ export type OrgStaffItem = {
   iden_addr?: SysAddressItem;
   resi_addr?: SysAddressItem;
 
-  created_at: string;
-  updated_at: string;
+  // created_at: Date;
+  // updated_at: string;
   creator?: string;
 };
 
