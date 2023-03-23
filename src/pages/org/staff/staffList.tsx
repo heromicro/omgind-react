@@ -10,7 +10,7 @@ import { OrgStaffItem } from '@/scheme/orgstaff';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';
-import { makeupSortKey } from '@/utils/urlutil';
+import { makeupSortKey, makeupSorters } from '@/utils/urlutil';
 
 import { formatDate } from '@/utils/datetime';
 
@@ -118,8 +118,14 @@ class StaffList extends PureComponent {
     });
   };
 
-  onMainTableChange = (pagination) => {
-    this.refetch({ pagination });
+  onMainTableChange = (pagination, filters, sorters, extra) => {
+    let nsort = makeupSorters(sorters);
+
+    this.refetch({
+      pagination: { current: pagination.current, pageSize: pagination.pageSize },
+      search: { ...nsort },
+    });
+
     this.clearSelectRows();
   };
 
@@ -174,7 +180,7 @@ class StaffList extends PureComponent {
   };
 
   refetch = ({ search = {}, pagination = {} } = {}) => {
-    console.log(' --------- ===== 9999 == ');
+    console.log(' ---- ----- == === 9999 == ');
     this.dispatch({
       type: 'orgstaff/fetch',
       search,
@@ -263,6 +269,8 @@ class StaffList extends PureComponent {
       {
         title: '出生日期',
         dataIndex: 'birth_date',
+        sorter: true,
+        sorter: { compare: (a, b) => a.birth_date - b.birth_date, multiple: 2 },
         render: (_, entity, row) => <span>{formatDate(entity.birth_date, 'YYYY-MM-DD')}</span>,
       },
       {
@@ -291,24 +299,29 @@ class StaffList extends PureComponent {
       {
         title: '工号',
         dataIndex: 'worker_no',
+        sorter: true,
       },
       {
         title: '工位',
         dataIndex: 'cubicle',
+        sorter: true,
       },
       {
         title: '入职日期',
         dataIndex: 'entry_date',
+        sorter: { compare: (a, b) => a.entry_date - b.entry_date, multiple: 3 },
         render: (_, entity, row) => <span>{formatDate(entity.entry_date, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '转正日期',
         dataIndex: 'regular_date',
+        sorter: { compare: (a, b) => a.regular_date - b.regular_date, multiple: 4 },
         render: (_, entity, row) => <span>{formatDate(entity.regular_date, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '离职日期',
         dataIndex: 'resign_date',
+        sorter: { compare: (a, b) => a.resign_date - b.resign_date, multiple: 5 },
         render: (_, entity, row) => <span>{formatDate(entity.resign_date, 'YYYY-MM-DD')}</span>,
       },
       {
@@ -323,6 +336,7 @@ class StaffList extends PureComponent {
           true: { text: '有效', status: 'Default' },
           false: { text: '失效', status: 'Error' },
         },
+        sorter: true,
         render: (_, entity, row) => {
           if (entity.is_active) {
             return <Tag color="#87d068">有效</Tag>;
@@ -368,6 +382,7 @@ class StaffList extends PureComponent {
         title: '排序',
         dataIndex: 'sort',
         search: false,
+        sorter: { compare: (a, b) => a.sort - b.sort, multiple: 1 },
       },
       {
         title: '备注',
@@ -378,6 +393,7 @@ class StaffList extends PureComponent {
         title: '创建时间',
         dataIndex: 'created_at',
         search: false,
+        sorter: { compare: (a, b) => a.created_at - b.created_at, multiple: 1 },
         render: (_, entity, row) => (
           <span>{formatDate(entity.created_at, 'YYYY-MM-DD HH:mm')}</span>
         ),
@@ -433,6 +449,9 @@ class StaffList extends PureComponent {
                 columns={columns}
                 pagination={paginationProps}
                 request={(params, sort, filter) => {
+                  // console.log(' ---- ====== --- sort ', sort);
+                  // console.log(' ---- ====== --- params ', params);
+
                   let nsort = makeupSortKey(sort);
 
                   this.refetch({
