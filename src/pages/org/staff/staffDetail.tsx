@@ -8,7 +8,8 @@ import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
 import { concatenateDistricts } from '@/scheme/sysaddress';
-import { calculateGenderShow, calculateEmployeStatShow } from '@/scheme/orgstaff';
+import { calculateEmployeStatShow } from '@/scheme/orgstaff';
+import { calculateGenderShow } from '@/scheme/common';
 
 import { formatDate } from '@/utils/datetime';
 

@@ -6,11 +6,13 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { OrgStaffItem } from '@/scheme/orgstaff';
+import { OrgStaffItem, calculateEmployeStatShow } from '@/scheme/orgstaff';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';
 import { makeupSortKey, makeupSorters } from '@/utils/urlutil';
+
+import { calculateGenderShow } from '@/scheme/common';
 
 import { formatDate } from '@/utils/datetime';
 
@@ -269,7 +271,6 @@ class StaffList extends PureComponent {
       {
         title: '出生日期',
         dataIndex: 'birth_date',
-        sorter: true,
         sorter: { compare: (a, b) => a.birth_date - b.birth_date, multiple: 2 },
         render: (_, entity, row) => <span>{formatDate(entity.birth_date, 'YYYY-MM-DD')}</span>,
       },
@@ -285,15 +286,7 @@ class StaffList extends PureComponent {
           2: { text: '女' },
         },
         render: (val, entity, row) => {
-          switch (entity.gender) {
-            case 1:
-              return '男';
-            case 2:
-              return '女';
-            default:
-              return '';
-          }
-          return '';
+          return calculateGenderShow(entity.gender);
         },
       },
       {
@@ -309,24 +302,28 @@ class StaffList extends PureComponent {
       {
         title: '入职日期',
         dataIndex: 'entry_date',
-        sorter: { compare: (a, b) => a.entry_date - b.entry_date, multiple: 3 },
+        sorter: { compare: (a, b) => a.entry_date - b.entry_date, multiple: 6 },
         render: (_, entity, row) => <span>{formatDate(entity.entry_date, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '转正日期',
         dataIndex: 'regular_date',
-        sorter: { compare: (a, b) => a.regular_date - b.regular_date, multiple: 4 },
+        sorter: { compare: (a, b) => a.regular_date - b.regular_date, multiple: 7 },
         render: (_, entity, row) => <span>{formatDate(entity.regular_date, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '离职日期',
         dataIndex: 'resign_date',
-        sorter: { compare: (a, b) => a.resign_date - b.resign_date, multiple: 5 },
+        sorter: { compare: (a, b) => a.resign_date - b.resign_date, multiple: 8 },
         render: (_, entity, row) => <span>{formatDate(entity.resign_date, 'YYYY-MM-DD')}</span>,
       },
       {
         title: '在职否',
-        dataIndex: 'incumbency',
+        dataIndex: 'empy_stat',
+        sorter: { compare: (a, b) => a.empy_stat - b.empy_stat, multiple: 1 },
+        render: (_, entity, row) => {
+          return calculateEmployeStatShow(entity.empy_stat);
+        },
       },
       {
         title: '状态',
@@ -393,7 +390,7 @@ class StaffList extends PureComponent {
         title: '创建时间',
         dataIndex: 'created_at',
         search: false,
-        sorter: { compare: (a, b) => a.created_at - b.created_at, multiple: 1 },
+        sorter: { compare: (a, b) => a.created_at - b.created_at, multiple: 2 },
         render: (_, entity, row) => (
           <span>{formatDate(entity.created_at, 'YYYY-MM-DD HH:mm')}</span>
         ),
