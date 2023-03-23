@@ -14,17 +14,17 @@ import { makeupSortKey } from '@/utils/urlutil';
 
 import { formatDate } from '@/utils/datetime';
 
-import DepartmentDetail from './departmentDetail';
-import DepartmentDrawerForm from './departmentDrawerForm';
+import DeptDetail from './deptDetail';
+import DeptDrawerForm from './deptDrawerForm';
 
-import styles from './departmentList.less';
+import styles from './deptList.less';
 
 @connect((state) => ({
   cuser: state.global.user,
-  loading: state.loading.models.orgdepartment,
-  orgdepartment: state.orgdepartment,
+  loading: state.loading.models.orgdept,
+  orgdept: state.orgdept,
 }))
-class DepartmentList extends PureComponent {
+class DeptList extends PureComponent {
   formRef = React.createRef();
 
   searchFormRef = React.createRef();
@@ -45,21 +45,21 @@ class DepartmentList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'orgdepartment/changeStatus',
+      type: 'orgdept/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'orgdepartment/changeStatus',
+      type: 'orgdept/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
   onItemEditClick = (item) => {
     this.dispatch({
-      type: 'orgdepartment/loadForm',
+      type: 'orgdept/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -71,7 +71,7 @@ class DepartmentList extends PureComponent {
     console.log(' ------ ======= ssss ');
 
     this.dispatch({
-      type: 'orgdepartment/loadForm',
+      type: 'orgdept/loadForm',
       payload: {
         type: 'A',
       },
@@ -90,7 +90,7 @@ class DepartmentList extends PureComponent {
 
   onDelOKClick(id) {
     this.dispatch({
-      type: 'orgdepartment/del',
+      type: 'orgdept/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -144,13 +144,13 @@ class DepartmentList extends PureComponent {
 
   onDataFormSubmit = (data) => {
     // this.dispatch({
-    //   type: 'orgdepartment/submit',
+    //   type: 'orgdept/submit',
     //   payload: data,
     // });
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'orgdepartment/submit',
+      type: 'orgdept/submit',
       payload: data,
       callback: (success, burden) => {
         if (success) {
@@ -175,7 +175,7 @@ class DepartmentList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'orgdepartment/fetch',
+      type: 'orgdept/fetch',
       search,
       pagination,
     });
@@ -185,14 +185,14 @@ class DepartmentList extends PureComponent {
     console.log(' --- --- === == -- cancel');
 
     this.dispatch({
-      type: 'orgdepartment/changeDetailDrawerOpen',
+      type: 'orgdept/changeDetailDrawerOpen',
       payload: false,
     });
   };
 
   onClickShowDetail = (item) => {
     this.dispatch({
-      type: 'orgdepartment/loadDetail',
+      type: 'orgdept/loadDetail',
       payload: {
         record: item,
       },
@@ -201,16 +201,12 @@ class DepartmentList extends PureComponent {
 
   renderItemDetail() {
     return (
-      <DepartmentDetail
-        width={850}
-        onClose={this.onDetailDrawerClose}
-        onAddClick={this.onAddClick}
-      />
+      <DeptDetail width={850} onClose={this.onDetailDrawerClose} onAddClick={this.onAddClick} />
     );
   }
 
   renderDrawerForm() {
-    return <DepartmentDrawerForm width={850} onSubmit={this.onDataFormSubmit} />;
+    return <DeptDrawerForm width={850} onSubmit={this.onDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -240,7 +236,7 @@ class DepartmentList extends PureComponent {
   render() {
     const {
       loading,
-      orgdepartment: {
+      orgdept: {
         data: { list, pagination },
       },
     } = this.props;
@@ -334,10 +330,7 @@ class DepartmentList extends PureComponent {
       ...pagination,
     };
 
-    const breadcrumbList = [
-      { title: '企业管理' },
-      { title: '部门管理', href: '/organ/department' },
-    ];
+    const breadcrumbList = [{ title: '企业管理' }, { title: '部门管理', href: '/organ/dept' }];
 
     return (
       <PageHeaderLayout title="部门管理" breadcrumbList={breadcrumbList}>
@@ -389,4 +382,4 @@ class DepartmentList extends PureComponent {
   }
 }
 
-export default DepartmentList;
+export default DeptList;

@@ -1,8 +1,8 @@
 import { message } from 'antd';
-import * as orgDepartmentService from '@/services/orgdept';
+import * as orgdeptService from '@/services/orgdept';
 
 export default {
-  namespace: 'orgdepartment',
+  namespace: 'orgdept',
   state: {
     search: {},
     pagination: {
@@ -36,7 +36,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.orgdepartment.search);
+        const s = yield select((state) => state.orgdept.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -49,13 +49,13 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.orgdepartment.pagination);
+        const p = yield select((state) => state.orgdept.pagination);
         if (p) {
           params = { ...params, ...p };
         }
       }
 
-      const response = yield call(orgDepartmentService.query, params);
+      const response = yield call(orgdeptService.query, params);
       const { code, burden } = response;
       if (code === 0) {
         yield put({
@@ -120,7 +120,7 @@ export default {
       }
     },
     *fetchForm({ payload }, { call, put }) {
-      const response = yield call(orgDepartmentService.get, payload.id);
+      const response = yield call(orgdeptService.get, payload.id);
       const { code, burden } = response;
       if (code === 0) {
         yield [
@@ -146,7 +146,7 @@ export default {
       //   payload: record,
       // });
 
-      const response = yield call(orgDepartmentService.view, record.id);
+      const response = yield call(orgdeptService.view, record.id);
       console.log(' -- ---- == === ', response);
 
       const { code, burden } = response;
@@ -167,17 +167,17 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select((state) => state.orgdepartment.formType);
+      const formType = yield select((state) => state.orgdept.formType);
       let success = false;
       if (formType === 'E') {
-        const id = yield select((state) => state.orgdepartment.formID);
-        const response = yield call(orgDepartmentService.update, id, params);
+        const id = yield select((state) => state.orgdept.formID);
+        const response = yield call(orgdeptService.update, id, params);
         const { code } = response;
         if (code === 0) {
           success = true;
         }
       } else {
-        const response = yield call(orgDepartmentService.create, params);
+        const response = yield call(orgdeptService.create, params);
         const { code, burden } = response;
         if (code === 0) {
           success = true;
@@ -207,7 +207,7 @@ export default {
     },
 
     *del({ payload }, { call, put }) {
-      const response = yield call(orgDepartmentService.del, payload.id);
+      const response = yield call(orgdeptService.del, payload.id);
       const { code } = response;
       if (code === 0) {
         message.success('删除成功');
@@ -217,9 +217,9 @@ export default {
     *changeStatus({ payload }, { call, put, select }) {
       let response;
       if (payload.is_active === true) {
-        response = yield call(orgDepartmentService.enable, payload.id);
+        response = yield call(orgdeptService.enable, payload.id);
       } else {
-        response = yield call(orgDepartmentService.disable, payload.id);
+        response = yield call(orgdeptService.disable, payload.id);
       }
 
       const { code } = response;
@@ -229,7 +229,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.orgdepartment.data);
+        const data = yield select((state) => state.orgdept.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {

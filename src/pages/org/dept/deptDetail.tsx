@@ -10,13 +10,13 @@ import PButton from '@/components/PermButton';
 import { concatenateDistricts } from '@/scheme/sysaddress';
 import { isRootUser } from '@/utils/utils';
 
-import styles from './departmentDetail.less';
+import styles from './deptDetail.less';
 
 @connect((state) => ({
   cuser: state.global.user,
-  orgdepartment: state.orgdepartment,
+  orgdept: state.orgdept,
 }))
-class DepartmentDetail extends React.PureComponent {
+class DeptDetail extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -34,7 +34,7 @@ class DepartmentDetail extends React.PureComponent {
     console.log(' ---- ==== click edit eee ');
 
     this.dispatch({
-      type: 'orgdepartment/loadForm',
+      type: 'orgdept/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -47,15 +47,15 @@ class DepartmentDetail extends React.PureComponent {
     const { dispatch } = this.props;
     if (!visible) {
       dispatch({
-        type: 'orgdepartment/changeDetailDrawerOpen',
+        type: 'orgdept/changeDetailDrawerOpen',
         payload: false,
       });
     }
   };
 
   render(): React.ReactNode {
-    const { onClose, onAddClick, orgdepartment, cuser, ...restProps } = this.props;
-    const { detailDrawerOpen, detailData } = orgdepartment;
+    const { onClose, onAddClick, orgdept, cuser, ...restProps } = this.props;
+    const { detailDrawerOpen, detailData } = orgdept;
 
     console.log(' ----- === detailData == == ', detailDrawerOpen);
 
@@ -148,4 +148,4 @@ class DepartmentDetail extends React.PureComponent {
   }
 }
 
-export default DepartmentDetail;
+export default DeptDetail;

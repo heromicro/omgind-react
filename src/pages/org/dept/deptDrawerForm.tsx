@@ -10,13 +10,13 @@ import * as _ from 'lodash';
 import PButton from '@/components/PermButton';
 import OrganSelector from '@/components/selectors/OrganSelector';
 
-import styles from './departmentDetail.less';
+import styles from './deptDetail.less';
 
 @connect((state) => ({
   cuser: state.global.user,
-  orgdepartment: state.orgdepartment,
+  orgdept: state.orgdept,
 }))
-class DepartmentDrawerForm extends React.PureComponent {
+class DeptDrawerForm extends React.PureComponent {
   formRef = React.createRef<ProFormInstance>();
 
   constructor(props) {
@@ -53,7 +53,7 @@ class DepartmentDrawerForm extends React.PureComponent {
     console.log(' ---- ====== ==== ', e);
 
     this.dispatch({
-      type: 'orgdepartment/changeFormDrawerOpen',
+      type: 'orgdept/changeFormDrawerOpen',
       payload: false,
     });
   };
@@ -61,7 +61,7 @@ class DepartmentDrawerForm extends React.PureComponent {
   render() {
     const {
       onSubmit,
-      orgdepartment: { formTitle, formVisible, formDrawerOpen, formData, submitting },
+      orgdept: { formTitle, formVisible, formDrawerOpen, formData, submitting },
       ...restProps
     } = this.props;
 
@@ -190,4 +190,4 @@ class DepartmentDrawerForm extends React.PureComponent {
   }
 }
 
-export default DepartmentDrawerForm;
+export default DeptDrawerForm;

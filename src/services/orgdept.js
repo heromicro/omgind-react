@@ -1,6 +1,6 @@
 import request, { methods } from '@/utils/request';
 
-const router = 'org-departments';
+const router = 'org-depts';
 const version = 'v2';
 
 export async function query(params = {}) {
