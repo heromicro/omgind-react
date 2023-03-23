@@ -18,6 +18,8 @@ import {
 } from 'antd';
 import { SaveFilled } from '@ant-design/icons';
 
+import dayjs from 'dayjs';
+
 import { connect } from 'dva';
 import * as _ from 'lodash';
 
@@ -238,6 +240,10 @@ class StaffDrawerForm extends React.PureComponent {
               area_code: _.isEmpty(formData.area_code) ? '+86' : formData.area_code,
               is_active: _.isEmpty(formData.is_active) ? true : formData.is_active,
               sort: formData.sort ? formData.sort : 9999,
+              birth_date: formData.birth_date ? dayjs(formData.birth_date, dateFormat) : null,
+              entry_date: formData.entry_date ? dayjs(formData.entry_date, dateFormat) : null,
+              regular_date: formData.regular_date ? dayjs(formData.regular_date, dateFormat) : null,
+              resign_date: formData.resign_date ? dayjs(formData.resign_date, dateFormat) : null,
             }}
           >
             <Divider orientation="left" plain>
@@ -313,7 +319,7 @@ class StaffDrawerForm extends React.PureComponent {
                   name="birth_date"
                   rules={[{ required: true, message: '出生日期必填' }]}
                 >
-                  <DatePicker style={{ width: '100%' }} />
+                  <DatePicker style={{ width: '100%' }} format={dateFormat} />
                 </Form.Item>
               </Col>
             </Row>
@@ -540,12 +546,12 @@ class StaffDrawerForm extends React.PureComponent {
                   name="entry_date"
                   rules={[{ required: true, message: '入职日期必填' }]}
                 >
-                  <DatePicker style={{ width: '100%' }} />
+                  <DatePicker style={{ width: '100%' }} format={dateFormat} />
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item label="转正日期" name="regular_date">
-                  <DatePicker style={{ width: '100%' }} />
+                  <DatePicker style={{ width: '100%' }} format={dateFormat} />
                 </Form.Item>
               </Col>
             </Row>
@@ -553,7 +559,7 @@ class StaffDrawerForm extends React.PureComponent {
             <Row>
               <Col span={12}>
                 <Form.Item label="离职日期" name="resign_date">
-                  <DatePicker style={{ width: '100%' }} />
+                  <DatePicker style={{ width: '100%' }} format={dateFormat} />
                 </Form.Item>
               </Col>
             </Row>

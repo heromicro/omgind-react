@@ -21,9 +21,9 @@ export type OrgStaffItem = {
 
   worker_no: string;
   cubicle: string;
-  entry_date: string;
-  regular_date: string;
-  resign_date: string;
+  entry_date: Date;
+  regular_date: Date;
+  resign_date: Date;
 
   org_id: string;
   org?: OrgOrganItem;
