@@ -10,7 +10,7 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { OrgPositionItem } from '@/scheme/orgposition';
 
 import PButton from '@/components/PermButton';
-import OrganSelector from '@/components/OrganSelector';
+import OrganSelector from '@/components/selectors/OrganSelector';
 
 import { showPButtons } from '@/utils/uiutil';
 import { makeupSortKey } from '@/utils/urlutil';

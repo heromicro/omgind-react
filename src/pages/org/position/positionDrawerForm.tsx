@@ -8,7 +8,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import OrganSelector from '@/components/OrganSelector';
+import OrganSelector from '@/components/selectors/OrganSelector';
 
 import styles from './positionDetail.less';
 

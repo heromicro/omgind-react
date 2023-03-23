@@ -251,6 +251,7 @@ class StaffList extends PureComponent {
         title: '姓名',
         dataIndex: 'name',
         hideInSearch: true,
+        fixed: 'left',
         render: (val, entity, row) => {
           return `${entity.last_name} ${entity.first_name}`;
         },
@@ -272,14 +273,14 @@ class StaffList extends PureComponent {
         title: '性别',
         dataIndex: 'gender',
         valueEnum: {
-          M: { text: '男' },
-          F: { text: '女' },
+          1: { text: '男' },
+          2: { text: '女' },
         },
         render: (val, entity, row) => {
           switch (entity.gender) {
-            case 'M':
+            case 1:
               return '男';
-            case 'F':
+            case 2:
               return '女';
             default:
               return '';

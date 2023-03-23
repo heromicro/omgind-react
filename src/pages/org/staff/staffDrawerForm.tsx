@@ -23,13 +23,18 @@ import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
 import DistrictCascader from '@/components/DistrictCascader';
-import OrganSelector from '@/components/OrganSelector';
+
+import OrganSelector from '@/components/selectors/OrganSelector';
+import GenderSelector from '@/components/selectors/GenderSelector';
+import EmployeStatSelector from '@/components/selectors/EmployeStatSelector';
 
 import { collectionDistrictIDs } from '@/scheme/sysaddress';
 
 import styles from './staffDetail.less';
 
 const { Option } = Select;
+
+const dateFormat = 'YYYY-MM-DD';
 
 @connect((state) => ({
   cuser: state.global.user,
@@ -40,6 +45,7 @@ class StaffDrawerForm extends React.PureComponent {
 
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   dispatch = (action) => {
@@ -52,7 +58,7 @@ class StaffDrawerForm extends React.PureComponent {
   };
 
   onFinish = (data) => {
-    // console.log(' ======== === 0000 data : ', data);
+    console.log(' ======== === 0000 data : ', data);
     // console.log(' ======== === 0000 data : ', data.pids);
     // console.log(' ======== === this.formRef.current : ', this.formRef.current);
     let formData = data;
@@ -66,7 +72,7 @@ class StaffDrawerForm extends React.PureComponent {
 
     console.log(' ======== === 1111 formData : ', formData);
 
-    // onSubmit(formData);
+    onSubmit(formData);
 
     return true;
   };
@@ -141,6 +147,22 @@ class StaffDrawerForm extends React.PureComponent {
     }
   };
 
+  onGenderSelectorChange = (value, options) => {
+    console.log(' ------- ==  === ------ ', value);
+    console.log(' ------- === oooo yyyy == ------ ', options);
+    if (options.dict_id) {
+      this.formRef.current.setFieldValue('gndr_dict_id', options.dict_id);
+    }
+  };
+
+  onEmployeStatSelectorChange = (value, options) => {
+    console.log(' ------- ==  === ------ ', value);
+    console.log(' ------- === ooo0 uuuu == ------ ', options);
+    if (options.dict_id) {
+      this.formRef.current.setFieldValue('empst_dict_id', options.dict_id);
+    }
+  };
+
   onClose = (e) => {
     console.log(' ---- ====== ==== ', e);
 
@@ -167,6 +189,8 @@ class StaffDrawerForm extends React.PureComponent {
         sm: { span: 23 },
       },
     };
+
+    console.log(' ------ ===== -- form data ', formData);
 
     return (
       <Drawer
@@ -224,7 +248,10 @@ class StaffDrawerForm extends React.PureComponent {
                 <Form.Item
                   label="姓名"
                   name="first_name"
-                  rules={[{ max: 64, message: '最多 64 字符' }]}
+                  rules={[
+                    { max: 64, message: '最多 64 字符' },
+                    { required: true, message: '姓名必填' },
+                  ]}
                 >
                   <Input
                     addonBefore={
@@ -274,10 +301,10 @@ class StaffDrawerForm extends React.PureComponent {
                   name="gender"
                   rules={[{ required: true, message: '性别必填' }]}
                 >
-                  <Select placeholder="选择性别" allowClear>
-                    <Option value="M">男</Option>
-                    <Option value="F">女</Option>
-                  </Select>
+                  <GenderSelector placeholder="选择性别" onChange={this.onGenderSelectorChange} />
+                </Form.Item>
+                <Form.Item name="gender_dict_id" style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -475,10 +502,13 @@ class StaffDrawerForm extends React.PureComponent {
               </Col>
               <Col span={12}>
                 <Form.Item label="在职状态" name="gender">
-                  <Select placeholder="选择在职状态" allowClear>
-                    <Option value="M">男</Option>
-                    <Option value="F">女</Option>
-                  </Select>
+                  <EmployeStatSelector
+                    placeholder="请选择在职状态"
+                    onChange={this.onEmployeStatSelectorChange}
+                  />
+                </Form.Item>
+                <Form.Item name="empst_dict_id" style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
             </Row>
