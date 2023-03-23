@@ -319,7 +319,16 @@ class StaffDrawerForm extends React.PureComponent {
                   name="birth_date"
                   rules={[{ required: true, message: '出生日期必填' }]}
                 >
-                  <DatePicker style={{ width: '100%' }} format={dateFormat} />
+                  <DatePicker
+                    presets={[
+                      { label: '五年前', value: dayjs().add(-5, 'y') },
+                      { label: '十年前', value: dayjs().add(-10, 'y') },
+                      { label: '十五年前', value: dayjs().add(-15, 'y') },
+                      { label: '二十年前', value: dayjs().add(-20, 'y') },
+                    ]}
+                    style={{ width: '100%' }}
+                    format={dateFormat}
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -551,7 +560,15 @@ class StaffDrawerForm extends React.PureComponent {
               </Col>
               <Col span={12}>
                 <Form.Item label="转正日期" name="regular_date">
-                  <DatePicker style={{ width: '100%' }} format={dateFormat} />
+                  <DatePicker
+                    presets={[
+                      { label: '一月后', value: dayjs().add(1, 'm') },
+                      { label: '两月后', value: dayjs().add(2, 'm') },
+                      { label: '三月后', value: dayjs().add(3, 'm') },
+                    ]}
+                    style={{ width: '100%' }}
+                    format={dateFormat}
+                  />
                 </Form.Item>
               </Col>
             </Row>
