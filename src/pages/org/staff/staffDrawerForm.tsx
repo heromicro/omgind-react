@@ -486,18 +486,18 @@ class StaffDrawerForm extends React.PureComponent {
 
             <Row>
               <Col span={12}>
-                <Form.Item label="状态" name="is_active">
-                  <Switch defaultChecked />
-                </Form.Item>
-              </Col>
-
-              <Col span={12}>
                 <Form.Item
                   label="排序值"
                   name="sort"
                   rules={[{ type: 'number', required: true, message: '请输入排序' }]}
                 >
                   <InputNumber min={1} style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item label="状态" name="is_active">
+                  <Switch defaultChecked />
                 </Form.Item>
               </Col>
             </Row>
