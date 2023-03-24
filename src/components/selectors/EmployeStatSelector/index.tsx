@@ -14,7 +14,7 @@ interface EmployeStatSelectorState {
   options: [];
   dictId?: string;
 }
-const defaultProps: EmployeStatSelectorProps = { debounceTimeOut: 800, dictId: '-' };
+const defaultProps: EmployeStatSelectorProps = { debounceTimeOut: 400, dictId: '-' };
 
 class EmployeStatSelector extends PureComponent<
   EmployeStatSelectorProps,
@@ -31,7 +31,7 @@ class EmployeStatSelector extends PureComponent<
     };
 
     this.fetchDictItems = _.debounce(this.fetchDictItems.bind(this), props.debounceTimeOut);
-    this.triggerChange = _.debounce(this.triggerChange.bind(this), 200);
+    this.triggerChange = _.debounce(this.triggerChange.bind(this), 300);
   }
 
   static getDerivedStateFromProps(nextProps, state) {

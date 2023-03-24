@@ -1,17 +1,28 @@
 import React from 'react';
-import { Cascader } from 'antd';
+import { Cascader, CascaderProps } from 'antd';
 import * as _ from 'lodash';
 
-import * as districtService from '@/services/sysdistrict';
+import * as deptService from '@/services/orgdept';
 
 import { listToTree } from '@/utils/uiutil';
 
-type onChangeFunc = (value, selectedOptions) => void;
+// type onChangeFunc = (value, selectedOptions) => void;
 
-class DistrictCascader extends React.PureComponent<
-  { value: string[]; onChange: onChangeFunc },
-  { options: string[]; defaultValue: string[]; svalue: string[] }
-> {
+type DeptCascaderProps = CascaderProps & {
+  orgId?: string;
+  // debounceTimeOut?: number;
+};
+
+interface DeptCascaderState {
+  options: string[];
+  defaultValue: string[];
+  svalue: string[];
+  orgId: string;
+}
+
+const defaultProps: DeptCascaderProps = { orgId: null };
+
+class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderState> {
   //
   constructor(props) {
     super(props);
@@ -20,7 +31,10 @@ class DistrictCascader extends React.PureComponent<
       options: [],
       defaultValue: [],
       svalue: props.value || [],
+      orgId: props.orgId || '',
     };
+
+    this.triggerChange = _.debounce(this.triggerChange.bind(this), 300);
   }
 
   static getDerivedStateFromProps(nextProps, state) {
@@ -31,13 +45,24 @@ class DistrictCascader extends React.PureComponent<
         value: nextProps.value,
       };
     }
+    if ('orgId' in nextProps) {
+      return {
+        ...state,
+        orgId: nextProps.orgId,
+      };
+    }
+
     return state;
   }
 
-  queryOptions = async (id, dvalue) => {
-    const {
-      burden: { top, subs },
-    } = await districtService.queryTree(id);
+  queryOptions = async (id, orgId, dvalue) => {
+    const params = { org_id: orgId };
+
+    const { burden } = await deptService.queryTree(id, params);
+    if (!burden) {
+      return;
+    }
+    const { top, subs } = burden;
 
     console.log(' ------- qqq top  ------ top ', top);
     console.log(' ------- qqq subs  ------ subs ', subs);
@@ -69,9 +94,13 @@ class DistrictCascader extends React.PureComponent<
 
   componentDidMount() {
     const { svalue } = this.state;
+    const { orgId } = this.props;
+    if (!orgId) {
+      return;
+    }
 
     if (_.isEmpty(svalue)) {
-      this.getOptions('-');
+      this.getOptions('-', orgId);
       return;
     }
 
@@ -79,8 +108,9 @@ class DistrictCascader extends React.PureComponent<
 
     if (Array.isArray(svalue)) {
       console.log(' ------- ------ cascader value is array ');
+
       if (svalue.length > 0) {
-        this.queryOptions(svalue[0], svalue);
+        this.queryOptions(svalue[0], orgId, svalue);
       }
       this.setState({
         defaultValue: svalue,
@@ -94,11 +124,38 @@ class DistrictCascader extends React.PureComponent<
     }
   }
 
-  getOptions = async (idStr: string) => {
-    const params = { is_real: true, pid: idStr };
-    const {
-      burden: { list },
-    } = await districtService.getSubs(idStr, params);
+  componentDidUpdate(prevProps, prevState) {
+    console.log(' -- --- - = ---- ===prevProps= ', prevProps);
+    console.log(' -- --- - = ---- ===prevState= ', prevState);
+    const { orgId } = this.props;
+    if (prevProps.orgId !== orgId) {
+      console.log(' ------ = ---- wwww ==== ', prevProps.orgId);
+      console.log(' ------ = ---- wwww ==== ', orgId);
+
+      this.setState({
+        options: [],
+        svalue: [],
+        defaultValue: [],
+        orgId,
+      });
+      if (orgId) {
+        this.getOptions('-', orgId);
+      }
+    }
+  }
+
+  getOptions = async (idStr: string, orgId: string) => {
+    if (!orgId) {
+      return;
+    }
+
+    const params = { pid: idStr, org_id: orgId };
+
+    const { burden } = await deptService.getSubs(idStr, params);
+    if (!burden) {
+      return;
+    }
+    const { list } = burden;
     const newData = [];
     list.map((item) => {
       return newData.push({
@@ -116,13 +173,14 @@ class DistrictCascader extends React.PureComponent<
 
   // 显示/隐藏浮层的回调
   onDropdownVisibleChange = (open) => {
-    const { value } = this.props;
+    const { value, orgId } = this.props;
     console.log(' ======= -- OOOOOOO value O ', value);
 
-    if (!value && open) {
+    if (!value && !orgId && open) {
       // const { options } = this.state;
       // console.log(' ======= -- OOOOOOOO ', options);
-      this.getOptions('-');
+      this.getOptions('-', orgId);
+      //
     }
   };
 
@@ -152,15 +210,20 @@ class DistrictCascader extends React.PureComponent<
 
   // 动态加载事件
   loadData = async (selectedOptions) => {
+    const { orgId } = this.props;
+    if (orgId) {
+      return;
+    }
     const { options } = this.state;
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
 
     let id = selectedOptions[selectedOptions.length - 1].value;
-    const params = { is_real: true, pid: id };
+    // const params = { is_real: true, pid: id, org_id: orgId };
+    const params = { is_real: true, org_id: orgId };
     const {
       burden: { list },
-    } = await districtService.getSubs(id, params);
+    } = await deptService.getSubs(id, params);
 
     targetOption.loading = false;
     const newData = [];
@@ -201,4 +264,6 @@ class DistrictCascader extends React.PureComponent<
   }
 }
 
-export default DistrictCascader;
+DeptCascader.defaultProps = defaultProps;
+
+export default DeptCascader;

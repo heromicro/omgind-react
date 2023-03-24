@@ -6,7 +6,7 @@ import * as dictService from '@/services/sysdict';
 interface GenderSelectorProps extends SelectProps {
   dictId?: string;
   debounceTimeOut?: number;
-  onChange?: (value, option) => void;
+  // onChange?: (value, option) => void;
 }
 
 interface GenderSelectorState {
@@ -14,7 +14,7 @@ interface GenderSelectorState {
   options: [];
   dictId?: string;
 }
-const defaultProps: GenderSelectorProps = { debounceTimeOut: 800, dictId: '-' };
+const defaultProps: GenderSelectorProps = { debounceTimeOut: 400, dictId: '-' };
 
 class GenderSelector extends PureComponent<GenderSelectorProps, GenderSelectorState> {
   //
@@ -28,7 +28,7 @@ class GenderSelector extends PureComponent<GenderSelectorProps, GenderSelectorSt
     };
 
     this.fetchDictItems = _.debounce(this.fetchDictItems.bind(this), props.debounceTimeOut);
-    this.triggerChange = _.debounce(this.triggerChange.bind(this), 200);
+    this.triggerChange = _.debounce(this.triggerChange.bind(this), 300);
   }
 
   static getDerivedStateFromProps(nextProps, state) {

@@ -1,15 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Select } from 'antd';
+import { Select, SelectProps } from 'antd';
 import * as _ from 'lodash';
 
 import * as orgService from '@/services/orgorgan';
 
-interface OrganSelectorProps {
-  mode?: 'combobox' | 'multiple' | 'tags';
+interface OrganSelectorProps extends SelectProps {
   debounceTimeOut?: number;
-  value?: string;
-  onChange?: (value, option) => void;
-  defaultValue?: any;
+  // onChange?: (value, option) => void;
 }
 
 interface OrganSelectorState {
@@ -17,7 +14,7 @@ interface OrganSelectorState {
   options: [];
 }
 
-const defaultProps: OrganSelectorProps = { debounceTimeOut: 800 };
+const defaultProps: OrganSelectorProps = { debounceTimeOut: 400 };
 
 class OrganSelector extends PureComponent<OrganSelectorProps, OrganSelectorState> {
   //
@@ -32,6 +29,8 @@ class OrganSelector extends PureComponent<OrganSelectorProps, OrganSelectorState
     console.log(' ---------- 0s s  debounceTimeOut   ', props.debounceTimeOut);
 
     this.onSearch = _.debounce(this.onSearch.bind(this), props.debounceTimeOut);
+
+    this.triggerChange = _.debounce(this.triggerChange.bind(this), 300);
   }
 
   componentDidMount(): void {
