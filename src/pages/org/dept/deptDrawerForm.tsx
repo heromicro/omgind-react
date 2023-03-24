@@ -75,8 +75,9 @@ class DeptDrawerForm extends React.Component {
   };
 
   onDeptParentChange = (value, selectedOptions) => {
-    console.log(' ------ = === -- == === value ', value);
-    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
+    // console.log(' ------ = === -- == === value ', value);
+    // console.log(' ----- - ==== -- === == selectedOptions ', selectedOptions);
+
     if (value && value.length > 0) {
       this.formRef.current.setFieldValue('pid', value[value.length - 1]);
     } else {

@@ -53,7 +53,7 @@ class OrganDrawerForm extends React.PureComponent {
 
   onDistrictChange = (value, selectedOptions) => {
     console.log(' ------ = === -- == === value ', value);
-    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
+    console.log(' --- --- === = -- ===== selectedOptions ', selectedOptions);
 
     if (selectedOptions) {
       switch (selectedOptions.length) {

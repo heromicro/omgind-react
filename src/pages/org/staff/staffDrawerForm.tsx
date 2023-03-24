@@ -81,7 +81,7 @@ class StaffDrawerForm extends React.PureComponent {
 
   onIdenAddrDistrictChange = (value, selectedOptions) => {
     console.log(' ------ = === -- == === value ', value);
-    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
+    console.log(' ----- - ==== -- ==== = selectedOptions ', selectedOptions);
 
     if (selectedOptions) {
       switch (selectedOptions.length) {
@@ -116,8 +116,8 @@ class StaffDrawerForm extends React.PureComponent {
   };
 
   onResiAddrDistrictChange = (value, selectedOptions) => {
-    console.log(' ------ = === -- == === value ', value);
-    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
+    // console.log(' ------ = === -- == === value ', value);
+    // console.log(' - ----- ==== -- === == selectedOptions ', selectedOptions);
 
     if (selectedOptions) {
       switch (selectedOptions.length) {

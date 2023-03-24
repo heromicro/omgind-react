@@ -125,12 +125,12 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(' -- --- - = ---- ===prevProps= ', prevProps);
-    console.log(' -- --- - = ---- ===prevState= ', prevState);
+    // console.log(' -- --- - = ---- ===prevProps= ', prevProps);
+    // console.log(' -- --- - = ---- ===prevState= ', prevState);
     const { orgId } = this.props;
     if (prevProps.orgId !== orgId) {
-      console.log(' ------ = ---- wwww ==== ', prevProps.orgId);
-      console.log(' ------ = ---- wwww ==== ', orgId);
+      // console.log(' ------ = ---- wwww ==== ', prevProps.orgId);
+      // console.log(' ------ = ---- wwww ==== ', orgId);
 
       this.setState({
         options: [],
@@ -145,6 +145,9 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
   }
 
   getOptions = async (idStr: string, orgId: string) => {
+    console.log(' ------ ===== orgId ', orgId);
+    console.log(' ------ ===== idStr ', idStr);
+
     if (!orgId) {
       return;
     }
@@ -173,10 +176,16 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
 
   // 显示/隐藏浮层的回调
   onDropdownVisibleChange = (open) => {
+    if (!open) {
+      return;
+    }
     const { value, orgId } = this.props;
-    console.log(' ======= -- OOOOOOO value O ', value);
-
-    if (!value && !orgId && open) {
+    if (!orgId) {
+      return;
+    }
+    if (!value) {
+      // console.log(' ======= -- OOOOOOO value O value ', value);
+      // console.log(' ======= -- OOOOOOO value O orgId ', orgId);
       // const { options } = this.state;
       // console.log(' ======= -- OOOOOOOO ', options);
       this.getOptions('-', orgId);
@@ -211,21 +220,26 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
   // 动态加载事件
   loadData = async (selectedOptions) => {
     const { orgId } = this.props;
-    if (orgId) {
+
+    if (!orgId) {
       return;
     }
     const { options } = this.state;
     const targetOption = selectedOptions[selectedOptions.length - 1];
+
     targetOption.loading = true;
 
     let id = selectedOptions[selectedOptions.length - 1].value;
     // const params = { is_real: true, pid: id, org_id: orgId };
     const params = { is_real: true, org_id: orgId };
-    const {
-      burden: { list },
-    } = await deptService.getSubs(id, params);
+    const { burden } = await deptService.getSubs(id, params);
 
     targetOption.loading = false;
+
+    if (!burden) {
+      return;
+    }
+    const { list } = burden;
     const newData = [];
     list.map((item) => {
       return newData.push({

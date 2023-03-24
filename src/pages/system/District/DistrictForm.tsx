@@ -26,7 +26,7 @@ class DistrictForm extends React.PureComponent {
 
   onDistrictChange = (value, selectedOptions) => {
     console.log(' ------ ==== -- ===== value ', value);
-    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
+    console.log(' --- --- === = -- === == selectedOptions ', selectedOptions);
   };
 
   render() {
