@@ -14,7 +14,7 @@ type DeptCascaderProps = CascaderProps & {
 };
 
 interface DeptCascaderState {
-  options: string[];
+  options: [];
   defaultValue: string[];
   svalue: string[];
   orgId: string;
