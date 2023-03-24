@@ -24,7 +24,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import DistrictCascader from '@/components/DistrictCascader';
+import DistrictCascader from '@/components/cascader/DistrictCascader';
 
 import OrganSelector from '@/components/selectors/OrganSelector';
 import GenderSelector from '@/components/selectors/GenderSelector';

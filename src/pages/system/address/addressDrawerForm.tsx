@@ -8,7 +8,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import DistrictCascader from '@/components/DistrictCascader';
+import DistrictCascader from '@/components/cascader/DistrictCascader';
 import { collectionDistrictIDs } from '@/scheme/sysaddress';
 
 import styles from './addressDetail.less';

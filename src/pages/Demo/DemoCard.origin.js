@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Form, Input, Modal, Switch } from 'antd';
 
-import DistrictCascader from '@/components/DistrictCascader';
+import DistrictCascader from '@/components/cascader/DistrictCascader';
 
 @connect((state) => ({
   demo: state.demo,

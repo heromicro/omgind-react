@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
 import OrganSelector from '@/components/selectors/OrganSelector';
+import DeptCascader from '@/components/cascader/DeptCascader';
 
 import styles from './deptDetail.less';
 
@@ -16,11 +17,14 @@ import styles from './deptDetail.less';
   cuser: state.global.user,
   orgdept: state.orgdept,
 }))
-class DeptDrawerForm extends React.PureComponent {
+class DeptDrawerForm extends React.Component {
   formRef = React.createRef<ProFormInstance>();
 
   constructor(props) {
     super(props);
+    this.state = {
+      sorgId: '',
+    };
   }
 
   dispatch = (action) => {
@@ -41,6 +45,9 @@ class DeptDrawerForm extends React.PureComponent {
     if (formData.district_ids) {
       delete formData.district_ids;
     }
+    if (formData.pids) {
+      delete formData.pids;
+    }
 
     console.log(' ======== === 1111 formData : ', formData);
 
@@ -58,12 +65,33 @@ class DeptDrawerForm extends React.PureComponent {
     });
   };
 
+  onOrganSelectorChange = (value, option) => {
+    console.log(' ------ = = onOrganSelectorChange == -- == === value ', value);
+    console.log(' ------ = = onOrganSelectorChange == -- == === option ', option);
+
+    this.setState({
+      sorgId: value,
+    });
+  };
+
+  onDeptParentChange = (value, selectedOptions) => {
+    console.log(' ------ = === -- == === value ', value);
+    console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
+    if (value && value.length > 0) {
+      this.formRef.current.setFieldValue('pid', value[value.length - 1]);
+    } else {
+      this.formRef.current.setFieldValue('pid', '');
+    }
+  };
+
   render() {
     const {
       onSubmit,
       orgdept: { formTitle, formVisible, formDrawerOpen, formData, submitting },
       ...restProps
     } = this.props;
+
+    const { sorgId } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -151,7 +179,21 @@ class DeptDrawerForm extends React.PureComponent {
                   name="org_id"
                   rules={[{ required: true, message: '名称必填' }]}
                 >
-                  <OrganSelector mode="combobox" />
+                  <OrganSelector mode="combobox" onChange={this.onOrganSelectorChange} />
+                </Form.Item>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item label="上级" name="pids">
+                  <DeptCascader
+                    onChange={this.onDeptParentChange}
+                    orgId={sorgId}
+                    disabled={sorgId === '' || sorgId === undefined || sorgId === null}
+                    allowClear
+                  />
+                </Form.Item>
+                <Form.Item label="上级" name="pid" style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
             </Row>

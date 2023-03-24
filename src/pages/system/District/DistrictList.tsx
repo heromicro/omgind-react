@@ -25,7 +25,7 @@ import PButton from '@/components/PermButton';
 
 import { formatDate } from '@/utils/datetime';
 import { SysDistrctItem } from '@/scheme/sysdistrict';
-import DistrictCascader from '@/components/DistrictCascader';
+import DistrictCascader from '@/components/cascader/DistrictCascader';
 
 import { makeupSortKey } from '@/utils/urlutil';
 

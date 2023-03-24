@@ -15,6 +15,14 @@ export async function view(id, params = {}) {
   return request(`/${version}/${router}/${id}/view`, { params });
 }
 
+export async function queryTree(id, params = {}) {
+  return request(`/${version}/${router}/${id}/tree`, { params });
+}
+
+export async function getSubs(pid = '', params = {}) {
+  return request(`/${version}/${router}/${pid}/subs`, { params });
+}
+
 export async function create(data) {
   return request(`/${version}/${router}`, {
     method: methods.POST,

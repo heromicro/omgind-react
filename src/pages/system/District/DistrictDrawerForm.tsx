@@ -7,7 +7,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 import PButton from '@/components/PermButton';
 
-import DistrictCascader from '@/components/DistrictCascader';
+import DistrictCascader from '@/components/cascader/DistrictCascader';
 
 import { SysDistrctItem } from '@/scheme/sysdistrict';
 
@@ -58,7 +58,7 @@ class DistrictDrawerForm extends React.PureComponent {
     });
   };
 
-  onDistrictChange = (value, selectedOptions) => {
+  onDistrictParentChange = (value, selectedOptions) => {
     console.log(' ------ = === -- == === value ', value);
     console.log(' ------ ==== -- ===== selectedOptions ', selectedOptions);
     if (value && value.length > 0) {
@@ -191,7 +191,7 @@ class DistrictDrawerForm extends React.PureComponent {
             <Row>
               <Col span={12}>
                 <Form.Item label="上级" name="pids">
-                  <DistrictCascader onChange={this.onDistrictChange} allowClear />
+                  <DistrictCascader onChange={this.onDistrictParentChange} allowClear />
                 </Form.Item>
                 <Form.Item label="上级" name="pid" style={{ display: 'none' }}>
                   <Input type="hidden" allowClear />

@@ -5,7 +5,7 @@ import { Form, Input, Switch, Row, Col } from 'antd';
 import { ProForm, ProFormGroup, ProFormDatePicker, ProFormText } from '@ant-design/pro-components';
 
 import { SysDistrctItem } from '@/scheme/sysdistrict';
-import DistrictCascader from '@/components/DistrictCascader';
+import DistrictCascader from '@/components/cascader/DistrictCascader';
 
 @connect((state) => ({
   sysdistrict: state.sysdistrict,
