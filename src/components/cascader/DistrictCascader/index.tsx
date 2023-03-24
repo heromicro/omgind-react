@@ -10,7 +10,7 @@ type onChangeFunc = (value, selectedOptions) => void;
 
 class DistrictCascader extends React.PureComponent<
   { value: string[]; onChange: onChangeFunc },
-  { options: string[]; defaultValue: string[]; svalue: string[] }
+  { options: []; defaultValue: string[]; svalue: string[] }
 > {
   //
   constructor(props) {
