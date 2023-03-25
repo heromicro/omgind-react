@@ -87,10 +87,13 @@ class DemoList extends PureComponent {
       type: 'demo/del',
       payload: { id },
     });
+    
+    console.log(" ---- ===== sss clearSelectR ows wwwwww ")
     this.clearSelectRows();
   }
 
   clearSelectRows = () => {
+    console.log(" ---- ===== sss clearSelect Rows ")
     const { selectedRowKeys } = this.state;
     if (selectedRowKeys.length === 0) {
       return;
@@ -126,6 +129,9 @@ class DemoList extends PureComponent {
 
   onMainTableChange = (pagination) => {
     this.refetch({ pagination });
+
+    console.log(" ---- ===== sss clearSelectRows 333333 ")
+
     this.clearSelectRows();
   };
 
@@ -143,6 +149,9 @@ class DemoList extends PureComponent {
       search: values,
       pagination: {},
     });
+
+    console.log(" ---- ===== sss clearSelect Rows 33333 ")
+
     this.clearSelectRows();
   };
 
@@ -151,6 +160,8 @@ class DemoList extends PureComponent {
       type: 'demo/submit',
       payload: data,
     });
+
+    console.log(" ---- ===== sss clearSelect Rows 22222 ")
     this.clearSelectRows();
   };
 
@@ -329,6 +340,7 @@ class DemoList extends PureComponent {
                 bordered
                 // cardProps={{title:"基础示例", bordered: true, }}
                 rowSelection={{
+                  fixed: 'left',
                   selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
                   onChange: this.onMainTableSelectChange,
                   selectedRowKeys,

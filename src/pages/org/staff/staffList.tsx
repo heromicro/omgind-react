@@ -107,6 +107,19 @@ class StaffList extends PureComponent {
     this.setState({ selectedRowKeys: [], selectedRows: [] });
   };
 
+  onMainTableSelectChange = (
+    newSelectedRowKeys: React.Key[],
+    newSelectedRows: OrgStaffItem[],
+    info
+  ) => {
+    // console.log(' ======== ======== === newSelectedRowKeys ', newSelectedRowKeys);
+    // console.log(' ======== ======== === newSelectedRows ', newSelectedRows);
+    // console.log(' ======== ======== === info ', info);
+    // console.log(' ======== ======== === info.type ', info.type);
+
+    this.setState({ selectedRowKeys: newSelectedRowKeys, selectedRows: newSelectedRows });
+  };
+
   onMainTableSelectRow = (record, selected) => {
     const keys = [];
     const rows = [];
@@ -440,6 +453,7 @@ class StaffList extends PureComponent {
                   fixed: 'left',
                   selectedRowKeys,
                   onSelect: this.onMainTableSelectRow,
+                  onChange: this.onMainTableSelectChange,
                 }}
                 loading={loading}
                 rowKey={(record) => record.id}
