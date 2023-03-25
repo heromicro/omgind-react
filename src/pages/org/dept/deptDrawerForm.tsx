@@ -102,10 +102,10 @@ class DeptDrawerForm extends React.Component {
       },
     };
 
-    console.log(' ---- === ----- = formData === ', formData);
-    console.log(' ---- === ----- = formData.org_id === ', formData.org_id);
-    console.log(' ---- === ----- = sorgId === ', sorgId);
-    console.log(' ---- === ----- = formType === ', formType);
+    // console.log(' ---- === ----- = formData === ', formData);
+    // console.log(' ---- === ----- = formData.org_id === ', formData.org_id);
+    // console.log(' ---- === ----- = sorgId === ', sorgId);
+    // console.log(' ---- === ----- = formType === ', formType);
 
     return (
       <Drawer

@@ -57,7 +57,7 @@ class DeptDetail extends React.PureComponent {
     const { onClose, onAddClick, orgdept, cuser, ...restProps } = this.props;
     const { detailDrawerOpen, detailData } = orgdept;
 
-    console.log(' ----- === detailData == == ', detailDrawerOpen);
+    console.log(' ----- === detailData == == ', detailData);
 
     return (
       <Drawer
@@ -107,6 +107,11 @@ class DeptDetail extends React.PureComponent {
               <ProDescriptions.Item label="名称" key="name">
                 {detailData.name}
               </ProDescriptions.Item>
+
+              <ProDescriptions.Item label="全名称" key="name">
+                {detailData.merge_name}
+              </ProDescriptions.Item>
+
               <ProDescriptions.Item label="助记码" key="code">
                 {detailData.code}
               </ProDescriptions.Item>
@@ -130,6 +135,13 @@ class DeptDetail extends React.PureComponent {
                 {detailData.memo}
               </ProDescriptions.Item>
             </ProDescriptions>
+
+            <ProDescriptions column={2} title="上级">
+              <ProDescriptions.Item label="名称" key="parent_name">
+                {detailData.parent.name}
+              </ProDescriptions.Item>
+            </ProDescriptions>
+
             <ProDescriptions column={2} title="所属公司">
               <ProDescriptions.Item label="名称" key="org_name">
                 {detailData.org.name}

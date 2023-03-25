@@ -1,5 +1,4 @@
 import { timeparts, orgmixin } from './common';
-import { OrgOrganItem } from './orgorgan';
 import { SysAddressItem } from './sysaddress';
 import { SysDictItem } from './sysdict';
 import { OrgDeptItem } from './orgdept';

@@ -197,6 +197,12 @@ class StaffDetail extends React.PureComponent {
                 {detailData.org.iden_no}
               </ProDescriptions.Item>
             </ProDescriptions>
+            &nbsp;
+            <ProDescriptions column={2} title="所属部门">
+              <ProDescriptions.Item label="名称" key="dept_name">
+                {detailData.dept.merge_name}
+              </ProDescriptions.Item>
+            </ProDescriptions>
           </div>
         )}
       </Drawer>
