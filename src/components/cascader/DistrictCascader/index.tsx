@@ -40,8 +40,8 @@ class DistrictCascader extends React.PureComponent<
       burden: { top, subs },
     } = await districtService.queryTree(id);
 
-    console.log(' ------- qqq top  ------ top ', top);
-    console.log(' ------- qqq subs  ------ subs ', subs);
+    // console.log(' ------- qqq top  ------ top ', top);
+    // console.log(' ------- qqq subs  ------ subs ', subs);
 
     let alloptions = [];
     alloptions = alloptions.concat(top);

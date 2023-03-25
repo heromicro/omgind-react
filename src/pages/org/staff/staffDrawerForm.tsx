@@ -214,7 +214,7 @@ class StaffDrawerForm extends React.PureComponent {
       },
     };
 
-    console.log(' ------ ===== -- form data ', formData);
+    console.log(' -- -- -- = ==== -- form data ', formData);
 
     return (
       <Drawer
@@ -266,6 +266,11 @@ class StaffDrawerForm extends React.PureComponent {
               entry_date: formData.entry_date ? dayjs(formData.entry_date, dateFormat) : null,
               regular_date: formData.regular_date ? dayjs(formData.regular_date, dateFormat) : null,
               resign_date: formData.resign_date ? dayjs(formData.resign_date, dateFormat) : null,
+              dept_ids: formData.dept
+                ? formData.dept.tree_path
+                  ? formData.dept.tree_path.split('/')
+                  : null
+                : null,
             }}
           >
             <Divider orientation="left" plain>

@@ -119,8 +119,8 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
     }
     const { top, subs } = burden;
 
-    console.log(' ------- qqq top  ------ top ', top);
-    console.log(' ------- qqq subs  ------ subs ', subs);
+    // console.log(' ------- qqq top  ------ top ', top);
+    // console.log(' ------- qqq subs  ------ subs ', subs);
 
     let alloptions = [];
     alloptions = alloptions.concat(top);
@@ -146,7 +146,7 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
 
     console.log(' ------- qqq os  ------ opts ', opts);
   };
-  
+
   getOptions = async (idStr: string, orgId: string) => {
     console.log(' ------ ===== orgId ', orgId);
     console.log(' ------ ===== idStr ', idStr);
