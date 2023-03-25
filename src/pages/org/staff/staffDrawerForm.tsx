@@ -556,7 +556,7 @@ class StaffDrawerForm extends React.PureComponent {
 
             <Row>
               <Col span={12}>
-                <Form.Item label="上级" name="pids">
+                <Form.Item label="部门" name="dept_ids">
                   <DeptCascader
                     onChange={this.onDeptParentChange}
                     orgId={formType === 'E' ? (formData.org_id ? formData.org_id : null) : sorgId}
@@ -566,7 +566,7 @@ class StaffDrawerForm extends React.PureComponent {
                     allowClear
                   />
                 </Form.Item>
-                <Form.Item label="上级" name="pid" style={{ display: 'none' }}>
+                <Form.Item label="部门" name="dept_id" style={{ display: 'none' }}>
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
