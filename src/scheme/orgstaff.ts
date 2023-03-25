@@ -1,9 +1,10 @@
-import { timeparts } from './common';
+import { timeparts, orgmixin } from './common';
 import { OrgOrganItem } from './orgorgan';
 import { SysAddressItem } from './sysaddress';
 import { SysDictItem } from './sysdict';
+import { OrgDeptItem } from './orgdept';
 
-export type OrgStaffItem = timeparts & {
+export type OrgStaffItem = {
   id: string;
 
   first_name: string;
@@ -26,8 +27,8 @@ export type OrgStaffItem = timeparts & {
   regular_date: Date;
   resign_date: Date;
 
-  org_id: string;
-  org?: OrgOrganItem;
+  dept_id: string;
+  dept: OrgDeptItem;
 
   sort: number;
   is_active: boolean;
@@ -36,10 +37,9 @@ export type OrgStaffItem = timeparts & {
   iden_addr?: SysAddressItem;
   resi_addr?: SysAddressItem;
 
-  // created_at: Date;
-  // updated_at: string;
   creator?: string;
-};
+} & orgmixin &
+  timeparts;
 
 export function calculateEmployeStatShow(stat: number): string {
   if (stat === undefined || stat === null) {

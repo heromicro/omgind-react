@@ -1,5 +1,5 @@
 import { OrgOrganItem } from './orgorgan';
-import { timeparts, treemixin } from './common';
+import { timeparts, treemixin, orgmixin } from './common';
 
 export type OrgDeptItem = {
   id: string;
@@ -12,8 +12,6 @@ export type OrgDeptItem = {
   sort: number;
   is_active: boolean;
 
-  org?: OrgOrganItem;
-
   creator?: string;
-} & treemixin &
+} & orgmixin & treemixin &
   timeparts;

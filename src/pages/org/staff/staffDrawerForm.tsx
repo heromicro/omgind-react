@@ -25,6 +25,7 @@ import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
 import DistrictCascader from '@/components/cascader/DistrictCascader';
+import DeptCascader from '@/components/cascader/DeptCascader';
 
 import OrganSelector from '@/components/selectors/OrganSelector';
 import GenderSelector from '@/components/selectors/GenderSelector';
@@ -47,7 +48,10 @@ class StaffDrawerForm extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    this.state = {};
+
+    this.state = {
+      sorgId: '',
+    };
   }
 
   dispatch = (action) => {
@@ -174,12 +178,30 @@ class StaffDrawerForm extends React.PureComponent {
     });
   };
 
+  onOrganSelectorChange = (value, option) => {
+    console.log(' ------ = = onOrganSelectorChange == -- == === value ', value);
+    console.log(' ------ = = onOrganSelectorChange == -- == === option ', option);
+
+    this.setState({
+      sorgId: value,
+    });
+  };
+
+  onDeptParentChange = (value, selectedOptions) => {
+    if (value && value.length > 0) {
+      this.formRef.current.setFieldValue('pid', value[value.length - 1]);
+    } else {
+      this.formRef.current.setFieldValue('pid', '');
+    }
+  };
+
   render() {
     const {
       onSubmit,
-      orgstaff: { formTitle, formVisible, formDrawerOpen, formData, submitting },
+      orgstaff: { formTitle, formVisible, formDrawerOpen, formData, submitting, formType },
       ...restProps
     } = this.props;
+    const { sorgId } = this.state;
 
     const formItemLayout = {
       labelCol: {
@@ -512,7 +534,11 @@ class StaffDrawerForm extends React.PureComponent {
                   name="org_id"
                   rules={[{ required: true, message: '名称必填' }]}
                 >
-                  <OrganSelector mode="combobox" />
+                  <OrganSelector
+                    mode="combobox"
+                    onChange={this.onOrganSelectorChange}
+                    // disabled={formType === 'E'}
+                  />
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -523,6 +549,24 @@ class StaffDrawerForm extends React.PureComponent {
                   />
                 </Form.Item>
                 <Form.Item name="empyst_dict_id" style={{ display: 'none' }}>
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={12}>
+                <Form.Item label="上级" name="pids">
+                  <DeptCascader
+                    onChange={this.onDeptParentChange}
+                    orgId={formType === 'E' ? (formData.org_id ? formData.org_id : null) : sorgId}
+                    disabled={
+                      (formType === 'E' && !formData.org_id) || (formType === 'A' && !sorgId)
+                    }
+                    allowClear
+                  />
+                </Form.Item>
+                <Form.Item label="上级" name="pid" style={{ display: 'none' }}>
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>

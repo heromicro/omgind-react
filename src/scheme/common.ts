@@ -1,3 +1,10 @@
+import { OrgOrganItem } from './orgorgan';
+
+export type orgmixin = {
+  org_id: string;
+  org?: OrgOrganItem;
+};
+
 export type treemixin = {
   is_leaf: boolean;
 

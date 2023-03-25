@@ -1,8 +1,8 @@
-import { timeparts } from './common';
+import { timeparts, orgmixin } from './common';
 
 import { OrgOrganItem } from './orgorgan';
 
-export type OrgPositionItem = timeparts & {
+export type OrgPositionItem = {
   id: string;
 
   name: string;
@@ -17,4 +17,5 @@ export type OrgPositionItem = timeparts & {
   org?: OrgOrganItem;
 
   creator?: string;
-};
+} & orgmixin &
+  timeparts;
