@@ -189,9 +189,9 @@ class StaffDrawerForm extends React.PureComponent {
 
   onDeptParentChange = (value, selectedOptions) => {
     if (value && value.length > 0) {
-      this.formRef.current.setFieldValue('pid', value[value.length - 1]);
+      this.formRef.current.setFieldValue('dept_id', value[value.length - 1]);
     } else {
-      this.formRef.current.setFieldValue('pid', '');
+      this.formRef.current.setFieldValue('dept_id', '');
     }
   };
 
@@ -347,6 +347,11 @@ class StaffDrawerForm extends React.PureComponent {
                       { label: '十年前', value: dayjs().add(-10, 'y') },
                       { label: '十五年前', value: dayjs().add(-15, 'y') },
                       { label: '二十年前', value: dayjs().add(-20, 'y') },
+                      { label: '二十五年前', value: dayjs().add(-25, 'y') },
+                      { label: '三十年前', value: dayjs().add(-30, 'y') },
+                      { label: '三十五年前', value: dayjs().add(-35, 'y') },
+                      { label: '四十年前', value: dayjs().add(-40, 'y') },
+                      { label: '四十五年前', value: dayjs().add(-45, 'y') },
                     ]}
                     style={{ width: '100%' }}
                     format={dateFormat}
@@ -532,7 +537,7 @@ class StaffDrawerForm extends React.PureComponent {
                 <Form.Item
                   label="所属企业"
                   name="org_id"
-                  rules={[{ required: true, message: '名称必填' }]}
+                  rules={[{ required: true, message: '所属企业必填' }]}
                 >
                   <OrganSelector
                     mode="combobox"
@@ -542,7 +547,11 @@ class StaffDrawerForm extends React.PureComponent {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="在职状态" name="empy_stat">
+                <Form.Item
+                  label="在职状态"
+                  name="empy_stat"
+                  rules={[{ required: true, message: '在职状态必填' }]}
+                >
                   <EmployeStatSelector
                     placeholder="请选择在职状态"
                     onChange={this.onEmployeStatSelectorChange}
@@ -556,7 +565,11 @@ class StaffDrawerForm extends React.PureComponent {
 
             <Row>
               <Col span={12}>
-                <Form.Item label="部门" name="dept_ids">
+                <Form.Item
+                  label="所属部门"
+                  name="dept_ids"
+                  rules={[{ required: true, message: '所属部门必填' }]}
+                >
                   <DeptCascader
                     onChange={this.onDeptParentChange}
                     orgId={formType === 'E' ? (formData.org_id ? formData.org_id : null) : sorgId}
