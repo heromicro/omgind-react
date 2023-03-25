@@ -46,6 +46,7 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
       };
     }
     if ('orgId' in nextProps) {
+      // console.log(' ---- ===== ----- ==== nextProps.orgId ', nextProps.orgId);
       return {
         ...state,
         orgId: nextProps.orgId,
@@ -53,6 +54,60 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
     }
 
     return state;
+  }
+
+  componentDidMount() {
+    const { svalue } = this.state;
+    const { orgId } = this.props;
+
+    if (!orgId) {
+      return;
+    }
+
+    if (_.isEmpty(svalue)) {
+      this.getOptions('-', orgId);
+      return;
+    }
+
+    console.log(' ------- aaaaaaa  ------ value ', svalue);
+
+    if (Array.isArray(svalue)) {
+      console.log(' ------- ------ cascader value is array ');
+
+      if (svalue.length > 0) {
+        this.queryOptions(svalue[0], orgId, svalue);
+      }
+      this.setState({
+        defaultValue: svalue,
+      });
+    } else {
+      console.log(' ------- ------ cascader value is not array ');
+      // let pids = value.split('/');
+      // this.setState({
+      //   defaultValue: pids,
+      // });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // console.log(' -- --- - = ---- ===prevProps= ', prevProps);
+    // console.log(' -- --- - = ---- ===prevState= ', prevState);
+    const { orgId } = this.props;
+
+    if (prevProps.orgId !== orgId) {
+      // console.log(' ------ = ---- wwww ==== ', prevProps.orgId);
+      // console.log(' ------ = ---- wwww ==== ', orgId);
+
+      this.setState({
+        options: [],
+        svalue: [],
+        defaultValue: [],
+        orgId,
+      });
+      if (orgId) {
+        this.getOptions('-', orgId);
+      }
+    }
   }
 
   queryOptions = async (id, orgId, dvalue) => {
@@ -91,59 +146,7 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
 
     console.log(' ------- qqq os  ------ opts ', opts);
   };
-
-  componentDidMount() {
-    const { svalue } = this.state;
-    const { orgId } = this.props;
-    if (!orgId) {
-      return;
-    }
-
-    if (_.isEmpty(svalue)) {
-      this.getOptions('-', orgId);
-      return;
-    }
-
-    console.log(' ------- qqq qqqq  ------ value ', svalue);
-
-    if (Array.isArray(svalue)) {
-      console.log(' ------- ------ cascader value is array ');
-
-      if (svalue.length > 0) {
-        this.queryOptions(svalue[0], orgId, svalue);
-      }
-      this.setState({
-        defaultValue: svalue,
-      });
-    } else {
-      console.log(' ------- ------ cascader value is not array ');
-      // let pids = value.split('/');
-      // this.setState({
-      //   defaultValue: pids,
-      // });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    // console.log(' -- --- - = ---- ===prevProps= ', prevProps);
-    // console.log(' -- --- - = ---- ===prevState= ', prevState);
-    const { orgId } = this.props;
-    if (prevProps.orgId !== orgId) {
-      // console.log(' ------ = ---- wwww ==== ', prevProps.orgId);
-      // console.log(' ------ = ---- wwww ==== ', orgId);
-
-      this.setState({
-        options: [],
-        svalue: [],
-        defaultValue: [],
-        orgId,
-      });
-      if (orgId) {
-        this.getOptions('-', orgId);
-      }
-    }
-  }
-
+  
   getOptions = async (idStr: string, orgId: string) => {
     console.log(' ------ ===== orgId ', orgId);
     console.log(' ------ ===== idStr ', idStr);
@@ -195,8 +198,8 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
 
   // 点击目录事件
   onCascaderChange = (value, selectedOptions) => {
-    console.log(' ----- === ----- ==== value: ', value);
-    console.log(' ----- === ----- ==== selectedOptions: ', selectedOptions);
+    // console.log(' ----- === ----- ==== value: ', value);
+    // console.log(' ----- === ----- ==== selectedOptions: ', selectedOptions);
     this.setState({
       svalue: value,
     });
@@ -259,10 +262,12 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
   };
 
   render() {
+    const { ...restProps } = this.props;
     const { svalue, options, defaultValue } = this.state;
 
     return (
       <Cascader
+        {...restProps}
         options={options}
         loadData={this.loadData}
         onChange={this.onCascaderChange}

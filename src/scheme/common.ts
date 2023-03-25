@@ -1,3 +1,12 @@
+export type treemixin = {
+  is_leaf: boolean;
+
+  tree_id: number;
+  tree_left: number;
+  tree_right: number;
+  tree_path: string;
+};
+
 export type timeparts = {
   created_at: Date;
   updated_at: Date;

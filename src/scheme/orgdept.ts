@@ -1,4 +1,5 @@
 import { OrgOrganItem } from './orgorgan';
+import { timeparts, treemixin } from './common';
 
 export type OrgDeptItem = {
   id: string;
@@ -13,7 +14,6 @@ export type OrgDeptItem = {
 
   org?: OrgOrganItem;
 
-  created_at: Date;
-  updated_at: Date;
   creator?: string;
-};
+} & treemixin &
+  timeparts;

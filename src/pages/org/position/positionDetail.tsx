@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Drawer, Space, Badge } from 'antd';
+import { Button, Drawer, Space, Tag } from 'antd';
 import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -114,13 +114,11 @@ class PositionDetail extends React.PureComponent {
               <ProDescriptions.Item span={1} label="有效否" key="is_active">
                 {detailData.is_active === true ? (
                   <span style={{ color: 'darkGreen' }}>
-                    <Badge status="success" />
-                    有效
+                    <Tag color="#87d068">有效</Tag>
                   </span>
                 ) : (
                   <span style={{ color: 'red' }}>
-                    <Badge status="error" />
-                    失效
+                    <Tag color="#f50">失效</Tag>
                   </span>
                 )}
               </ProDescriptions.Item>

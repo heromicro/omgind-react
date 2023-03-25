@@ -75,9 +75,6 @@ class DeptDrawerForm extends React.Component {
   };
 
   onDeptParentChange = (value, selectedOptions) => {
-    // console.log(' ------ = === -- == === value ', value);
-    // console.log(' ----- - ==== -- === == selectedOptions ', selectedOptions);
-
     if (value && value.length > 0) {
       this.formRef.current.setFieldValue('pid', value[value.length - 1]);
     } else {
@@ -88,7 +85,7 @@ class DeptDrawerForm extends React.Component {
   render() {
     const {
       onSubmit,
-      orgdept: { formTitle, formVisible, formDrawerOpen, formData, submitting },
+      orgdept: { formTitle, formVisible, formDrawerOpen, formData, submitting, formType },
       ...restProps
     } = this.props;
 
@@ -104,6 +101,11 @@ class DeptDrawerForm extends React.Component {
         sm: { span: 23 },
       },
     };
+
+    console.log(' ---- === ----- = formData === ', formData);
+    console.log(' ---- === ----- = formData.org_id === ', formData.org_id);
+    console.log(' ---- === ----- = sorgId === ', sorgId);
+    console.log(' ---- === ----- = formType === ', formType);
 
     return (
       <Drawer
@@ -137,6 +139,7 @@ class DeptDrawerForm extends React.Component {
           </Space>
         }
       >
+        {/* {((formData.org_id && formType == 'E') || (formType == 'A' && formVisible)) && ( */}
         {formVisible && (
           <Form
             ref={this.formRef}
@@ -148,6 +151,7 @@ class DeptDrawerForm extends React.Component {
               ...formData,
               is_active: _.isEmpty(formData.is_active) ? true : formData.is_active,
               sort: formData.sort ? formData.sort : 9999,
+              pids: formData.tree_path ? formData.tree_path.split('/') : null,
             }}
           >
             <Row>
@@ -180,7 +184,11 @@ class DeptDrawerForm extends React.Component {
                   name="org_id"
                   rules={[{ required: true, message: '名称必填' }]}
                 >
-                  <OrganSelector mode="combobox" onChange={this.onOrganSelectorChange} />
+                  <OrganSelector
+                    mode="combobox"
+                    onChange={this.onOrganSelectorChange}
+                    disabled={formType === 'E'}
+                  />
                 </Form.Item>
               </Col>
 
@@ -188,8 +196,10 @@ class DeptDrawerForm extends React.Component {
                 <Form.Item label="上级" name="pids">
                   <DeptCascader
                     onChange={this.onDeptParentChange}
-                    orgId={sorgId}
-                    disabled={sorgId === '' || sorgId === undefined || sorgId === null}
+                    orgId={formType === 'E' ? (formData.org_id ? formData.org_id : null) : sorgId}
+                    disabled={
+                      (formType === 'E' && !formData.org_id) || (formType === 'A' && !sorgId)
+                    }
                     allowClear
                   />
                 </Form.Item>

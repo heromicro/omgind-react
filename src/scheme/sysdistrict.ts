@@ -1,6 +1,6 @@
-import { timeparts } from './common';
+import { timeparts, treemixin } from './common';
 
-export type SysDistrctItem = timeparts & {
+export type SysDistrctItem = {
   id: string;
   pid?: string;
   parent?: SysDistrctItem;
@@ -29,15 +29,9 @@ export type SysDistrctItem = timeparts & {
   is_real?: boolean;
   is_direct?: boolean;
 
-  is_leaf: boolean;
-
-  tree_id: number;
-  tree_left: number;
-  tree_right: number;
-  tree_path: string;
-
   creator?: string;
 
   children?: SysDistrctItem[];
   loading?: boolean;
-};
+} & treemixin &
+  timeparts;
