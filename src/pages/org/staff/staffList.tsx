@@ -298,6 +298,16 @@ class StaffList extends PureComponent {
         },
       },
       {
+        title: '岗位',
+        dataIndex: 'posi_name',
+        render: (val, entity, row) => {
+          if (entity.position) {
+            return entity.position.name;
+          }
+          return '';
+        },
+      },
+      {
         title: '工号',
         dataIndex: 'worker_no',
         sorter: true,

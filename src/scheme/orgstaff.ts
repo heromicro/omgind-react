@@ -2,6 +2,7 @@ import { timeparts, orgmixin } from './common';
 import { SysAddressItem } from './sysaddress';
 import { SysDictItem } from './sysdict';
 import { OrgDeptItem } from './orgdept';
+import { OrgPositionItem } from './orgposition';
 
 export type OrgStaffItem = {
   id: string;
@@ -28,6 +29,8 @@ export type OrgStaffItem = {
 
   dept_id: string;
   dept: OrgDeptItem;
+  posi_id: string;
+  position: OrgPositionItem;
 
   sort: number;
   is_active: boolean;

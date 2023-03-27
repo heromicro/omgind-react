@@ -188,6 +188,12 @@ class StaffDetail extends React.PureComponent {
               ) : null}
             </ProDescriptions>
             &nbsp;
+            <ProDescriptions column={2} title="岗位">
+              <ProDescriptions.Item label="名称" key="posi_name">
+                {detailData.position ? detailData.position.name : ''}
+              </ProDescriptions.Item>
+            </ProDescriptions>
+            &nbsp;
             <ProDescriptions column={2} title="所属公司">
               <ProDescriptions.Item label="名称" key="org_name">
                 {detailData.org.name}
