@@ -32,6 +32,7 @@ import GenderSelector from '@/components/selectors/GenderSelector';
 import EmployeStatSelector from '@/components/selectors/EmployeStatSelector';
 
 import { collectionDistrictIDs } from '@/scheme/sysaddress';
+import { formatDate } from '@/utils/datetime';
 
 import styles from './staffDetail.less';
 
@@ -76,7 +77,7 @@ class StaffDrawerForm extends React.PureComponent {
       delete formData.resi_addr_district_ids;
     }
 
-    console.log(' ======== === 1111 formData : ', formData);
+    console.log(' === = ==== == = 1111 formData : ', formData);
 
     onSubmit(formData);
 
@@ -214,7 +215,8 @@ class StaffDrawerForm extends React.PureComponent {
       },
     };
 
-    console.log(' -- -- -- = ==== -- form data ', formData);
+    // console.log(' -- -- -- = ==== -- form data ', formData);
+    // console.log(' -- -- -- = ==== -- form data ', formData);
 
     return (
       <Drawer
@@ -624,9 +626,9 @@ class StaffDrawerForm extends React.PureComponent {
                 <Form.Item label="转正日期" name="regular_date">
                   <DatePicker
                     presets={[
-                      { label: '一月后', value: dayjs().add(1, 'm') },
-                      { label: '两月后', value: dayjs().add(2, 'm') },
-                      { label: '三月后', value: dayjs().add(3, 'm') },
+                      { label: '一月后', value: dayjs().add(1, 'M') },
+                      { label: '两月后', value: dayjs().add(2, 'M') },
+                      { label: '三月后', value: dayjs().add(3, 'M') },
                     ]}
                     style={{ width: '100%' }}
                     format={dateFormat}

@@ -69,10 +69,10 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
       return;
     }
 
-    console.log(' ------- aaaaaaa  ------ value ', svalue);
+    // console.log(' ------- aaaaaaa  ------ value ', svalue);
 
     if (Array.isArray(svalue)) {
-      console.log(' ------- ------ cascader value is array ');
+      // console.log(' ------- ------ cascader value is array ');
 
       if (svalue.length > 0) {
         this.queryOptions(svalue[0], orgId, svalue);
@@ -81,7 +81,7 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
         defaultValue: svalue,
       });
     } else {
-      console.log(' ------- ------ cascader value is not array ');
+      // console.log(' ------- ------ cascader value is not array ');
       // let pids = value.split('/');
       // this.setState({
       //   defaultValue: pids,
@@ -125,7 +125,7 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
     let alloptions = [];
     alloptions = alloptions.concat(top);
     alloptions = alloptions.concat(subs);
-    console.log(' ------- qqq alloptions  ------ alloptions ', alloptions);
+    // console.log(' ------- qqq alloptions  ------ alloptions ', alloptions);
 
     let nd = [];
     alloptions.map((item) => {
@@ -144,7 +144,7 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
       svalue: dvalue,
     });
 
-    console.log(' ------- qqq os  ------ opts ', opts);
+    // console.log(' ------- qqq os  ------ opts ', opts);
   };
 
   getOptions = async (idStr: string, orgId: string) => {

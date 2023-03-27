@@ -166,14 +166,15 @@ class DeptList extends PureComponent {
       type: 'orgdept/submit',
       payload: data,
       callback: (success, burden) => {
-        if (success) {
-          const { location } = this.props;
-          history.push({
-            pathname: location.pathname,
-            search: `created_at__order=desc&after=${burden.id}`,
-          });
-          this.refetch();
-        }
+        return { created_at__order: 'desc' };
+        // if (success) {
+        //   const { location } = this.props;
+        //   history.push({
+        //     pathname: location.pathname,
+        //     search: `created_at__order=desc&after=${burden.id}`,
+        //   });
+        //   this.refetch();
+        // }
       },
     });
 

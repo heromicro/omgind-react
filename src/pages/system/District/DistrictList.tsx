@@ -234,15 +234,8 @@ class DistrictList extends PureComponent {
     dispatch({
       type: 'sysdistrict/submit',
       payload: data,
-      callback: (success, burden) => {
-        if (success) {
-          const { location } = this.props;
-          history.push({
-            pathname: location.pathname,
-            search: `tree_id__order=desc&tree_left__order=asc&after=${burden.id}`,
-          });
-          this.refetch();
-        }
+      callback: (success) => {
+        return { tree_id__order: 'desc', tree_left__order: 'asc' };
       },
     });
 

@@ -38,7 +38,7 @@ class PositionDrawerForm extends React.PureComponent {
     let formData = data;
     const { onSubmit } = this.props;
 
-    console.log(' ======== === 1111 formData : ', formData);
+    console.log(' == ====== = == 1111 formData : ', formData);
 
     onSubmit(formData);
 

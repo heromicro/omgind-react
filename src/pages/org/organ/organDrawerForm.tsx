@@ -44,7 +44,7 @@ class OrganDrawerForm extends React.PureComponent {
       delete formData.district_ids;
     }
 
-    console.log(' ======== === 1111 formData : ', formData);
+    console.log(' == ===== = === 1111 formData : ', formData);
 
     onSubmit(formData);
 

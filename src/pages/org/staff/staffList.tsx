@@ -174,15 +174,9 @@ class StaffList extends PureComponent {
     dispatch({
       type: 'orgstaff/submit',
       payload: data,
-      callback: (success, burden) => {
-        if (success) {
-          const { location } = this.props;
-          history.push({
-            pathname: location.pathname,
-            search: `created_at__order=desc&after=${burden.id}`,
-          });
-          this.refetch();
-        }
+      callback: (success) => {
+        console.log(' ------- === sssss == ----- ', success);
+        return { created_at__order: 'desc' };
       },
     });
 

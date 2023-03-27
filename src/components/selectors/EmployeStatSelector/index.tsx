@@ -55,7 +55,7 @@ class EmployeStatSelector extends PureComponent<
       const { code, burden } = res;
       if (code === 0 && burden.length > 0) {
         let gender = burden[0];
-        console.log(' ---- --- --- ==== emp stat = ', gender);
+        // console.log(' ---- --- --- ==== emp stat = ', gender);
         if (gender.items.length > 0) {
           let nd = [];
           gender.items.map((item) => {

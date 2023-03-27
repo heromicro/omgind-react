@@ -46,7 +46,7 @@ class DistrictCascader extends React.PureComponent<
     let alloptions = [];
     alloptions = alloptions.concat(top);
     alloptions = alloptions.concat(subs);
-    console.log(' ------- qqq alloptions  ------ alloptions ', alloptions);
+    // console.log(' ------- qqq alloptions  ------ alloptions ', alloptions);
 
     let nd = [];
     alloptions.map((item) => {
@@ -65,7 +65,7 @@ class DistrictCascader extends React.PureComponent<
       svalue: dvalue,
     });
 
-    console.log(' ------- qqq os  ------ opts ', opts);
+    // console.log(' ----- -- qqq os  ------ opts ', opts);
   };
 
   componentDidMount() {

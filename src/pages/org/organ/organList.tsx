@@ -165,15 +165,16 @@ class OrganList extends PureComponent {
     dispatch({
       type: 'orgorgan/submit',
       payload: data,
-      callback: (success, burden) => {
-        if (success) {
-          const { location } = this.props;
-          history.push({
-            pathname: location.pathname,
-            search: `created_at__order=desc&after=${burden.id}`,
-          });
-          this.refetch();
-        }
+      callback: (success) => {
+        return { created_at__order: 'desc' };
+        // if (success) {
+        //   const { location } = this.props;
+        //   history.push({
+        //     pathname: location.pathname,
+        //     search: `created_at__order=desc&after=${burden.id}`,
+        //   });
+        //   this.refetch();
+        // }
       },
     });
 

@@ -151,15 +151,13 @@ class AddressList extends PureComponent {
     dispatch({
       type: 'sysaddress/submit',
       payload: data,
-      callback: (success, burden) => {
-        if (success) {
-          const { location } = this.props;
-          history.push({
-            pathname: location.pathname,
-            search: `created_at__order=desc&after=${burden.id}`,
-          });
-          this.refetch();
-        }
+      callback: (success) => {
+        // const { location } = this.props;
+        // history.push({
+        //   pathname: location.pathname,
+        //   search: `created_at__order=desc&after=${burden.id}`,
+        // });
+        return { created_at__order: 'desc' };
       },
     });
 

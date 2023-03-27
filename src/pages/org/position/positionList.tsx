@@ -170,16 +170,14 @@ class PositionList extends PureComponent {
     dispatch({
       type: 'orgposition/submit',
       payload: data,
-      callback: (success, burden) => {
-        if (success) {
-          const { location } = this.props;
-          history.push({
-            pathname: location.pathname,
-            search: `created_at__order=desc&after=${burden.id}`,
-          });
+      callback: (success) => {
+        // const { location } = this.props;
+        // history.push({
+        //   pathname: location.pathname,
+        //   search: `created_at__order=desc&after=${burden.id}`,
+        // });
 
-          this.refetch({});
-        }
+        return { created_at__order: 'desc' };
       },
     });
 

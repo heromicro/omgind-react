@@ -188,9 +188,6 @@ export default {
         if (code === 0) {
           success = true;
         }
-        if (callback) {
-          callback(success, burden);
-        }
       }
 
       yield put({
@@ -204,11 +201,16 @@ export default {
           type: 'changeFormDrawerOpen',
           payload: false,
         });
-        if (!callback) {
-          yield put({
-            type: 'fetch',
-          });
+
+        let addition = {};
+        if (callback) {
+          addition = callback(success);
         }
+
+        yield put({
+          type: 'fetch',
+          search: addition,
+        });
       }
     },
     *del({ payload }, { call, put }) {

@@ -42,7 +42,7 @@ class DistrictDrawerForm extends React.PureComponent {
       delete formData.pids;
     }
 
-    console.log(' ======== === 1111 formData : ', formData);
+    console.log(' ======= = === 1111 formData : ', formData);
 
     onSubmit(formData);
 
