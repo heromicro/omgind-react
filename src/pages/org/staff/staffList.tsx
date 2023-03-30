@@ -318,6 +318,11 @@ class StaffList extends PureComponent {
         sorter: true,
       },
       {
+        title: '职级',
+        dataIndex: 'rank',
+        sorter: { multiple: 9 },
+      },
+      {
         title: '入职日期',
         dataIndex: 'entry_date',
         sorter: { multiple: 6 },

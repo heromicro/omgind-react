@@ -589,6 +589,9 @@ class StaffDrawerForm extends React.PureComponent {
                 <Form.Item label="部门" name="dept_id" style={{ display: 'none' }}>
                   <Input type="hidden" allowClear />
                 </Form.Item>
+                <Form.Item label="职级" name="rank" rules={[{ max: 16, message: '最多 16 字符' }]}>
+                  <Input placeholder="请输入职级" allowClear />
+                </Form.Item>
               </Col>
             </Row>
             <Row>

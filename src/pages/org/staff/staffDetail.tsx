@@ -173,6 +173,9 @@ class StaffDetail extends React.PureComponent {
               <ProDescriptions.Item label="工位" key="cubicle">
                 {detailData.cubicle}
               </ProDescriptions.Item>
+              <ProDescriptions.Item label="职级" key="rank">
+                {detailData.rank}
+              </ProDescriptions.Item>
 
               <ProDescriptions.Item label="入职日期" key="entry_date">
                 {formatDate(detailData.entry_date, 'YYYY-MM-DD')}
