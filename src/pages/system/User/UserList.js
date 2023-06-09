@@ -133,13 +133,13 @@ class UserList extends PureComponent {
   };
 
   onSearchFormSubmit = (values) => {
-    if (!values.queryValue && !values.roleIDs) {
+    if (!values.queryValue && !values.role_ids) {
       return;
     }
 
     const formData = { ...values };
-    if (formData.roleIDs) {
-      formData.roleIDs = formData.roleIDs.map((v) => v.role_id).join(',');
+    if (formData.role_ids) {
+      formData.role_ids = formData.role_ids.map((v) => v.role_id).join(',');
     }
     this.refetch({ search: formData });
     this.clearSelectRows();
@@ -179,7 +179,7 @@ class UserList extends PureComponent {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="所属角色" name="roleIDs" style={{ width: '100%' }}>
+            <Form.Item label="所属角色" name="role_ids" style={{ width: '100%' }}>
               <RoleSelect style={{ width: '100%' }} />
             </Form.Item>
           </Col>
