@@ -173,7 +173,7 @@ class DictList extends PureComponent {
           </Col>
 
           {/* <Col span={8}>
-            <Form.Item label="所属角色" name="roleIDs">
+            <Form.Item label="所属角色" name="role_ids">
               <RoleSelect />
             </Form.Item>
           </Col> */}
