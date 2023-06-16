@@ -1,5 +1,6 @@
 import md5 from 'md5';
-import uuid from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
+
 import * as _ from 'lodash';
 
 // md5加密
@@ -9,7 +10,7 @@ export function md5Hash(value) {
 
 // 创建UUID
 export function newUUID() {
-  return uuid();
+  return uuidv4();
 }
 
 export function fillFormKey(data) {
@@ -30,26 +31,6 @@ export function parseValue(value, key) {
     return [];
   }
   return value.map((v) => v[key]);
-}
-
-export function genTreeNode(dataArr, parentId = null, isLeaf = false) {
-  if (!dataArr) {
-    return [];
-  }
-  let rd = [];
-  for (let i = 0; i < dataArr.length; i += 1) {
-    let data = dataArr[i];
-    let oned = {
-      id: data.id,
-      pid: parentId,
-      value: data.id,
-      title: data.name,
-      isLeaf,
-      raw: data,
-    };
-    rd.push(oned);
-  }
-  return rd;
 }
 
 // export function con

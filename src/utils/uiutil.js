@@ -147,3 +147,23 @@ export function plainDataToTree({
 
   return treeData;
 }
+
+export function genTreeNode(dataArr, parentId = null, isLeaf = false) {
+  if (!dataArr) {
+    return [];
+  }
+  let rd = [];
+  for (let i = 0; i < dataArr.length; i += 1) {
+    let data = dataArr[i];
+    let oned = {
+      id: data.id,
+      pid: parentId,
+      value: data.id,
+      title: data.name,
+      isLeaf,
+      raw: data,
+    };
+    rd.push(oned);
+  }
+  return rd;
+}
