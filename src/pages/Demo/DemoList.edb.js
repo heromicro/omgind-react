@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Typography } from 'antd';
+import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Typography, Space } from 'antd';
+import { ReloadOutlined } from '@ant-design/icons';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { showPButtons } from '@/utils/uiutil';
@@ -302,14 +303,19 @@ class DemoList extends PureComponent {
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
-              {showPButtons(
-                selectedRows,
-                this.onAddClick,
-                this.onItemEditClick,
-                this.onItemDelClick,
-                this.onItemEnableClick,
-                this.onItemDisableClick
-              )}
+              <Space>
+                {showPButtons(
+                  selectedRows,
+                  this.onAddClick,
+                  this.onItemEditClick,
+                  this.onItemDelClick,
+                  this.onItemEnableClick,
+                  this.onItemDisableClick
+                )}
+              </Space>
+              <Space>
+                <Button shape="circle" icon={<ReloadOutlined onClick={() => this.refetch()} />} />
+              </Space>
             </div>
             <div>
               <Table
