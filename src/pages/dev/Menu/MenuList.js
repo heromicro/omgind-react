@@ -314,7 +314,7 @@ class MenuList extends PureComponent {
         width: 150,
       },
       {
-        title: '状态',
+        title: '有效',
         dataIndex: 'is_active',
         width: 80,
         render: (val) => {

@@ -153,11 +153,13 @@ class MenuCard extends PureComponent {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item {...formItemLayout} label="状态" name="is_active">
-                    <Radio.Group>
-                      <Radio value="1">启用</Radio>
-                      <Radio value="2">禁用</Radio>
-                    </Radio.Group>
+                  <Form.Item
+                    {...formItemLayout}
+                    label="有效"
+                    name="is_active"
+                    valuePropName="checked"
+                  >
+                    <Switch defaultChecked />
                   </Form.Item>
                 </Col>
               </Row>
