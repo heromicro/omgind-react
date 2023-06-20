@@ -44,14 +44,10 @@ class MenuList extends PureComponent {
   componentDidMount() {
     this.dispatch({
       type: 'menu/fetchTree',
-      // payload: {parentID: ""}
+      // payload: {pid: ""}
     });
 
-    this.dispatch({
-      type: 'menu/fetch',
-      search: {},
-      pagination: {},
-    });
+    this.refetch({ search: { level: 1 } });
   }
 
   onItemDisableClick = (item) => {
@@ -144,19 +140,20 @@ class MenuList extends PureComponent {
 
   onResetFormClick = () => {
     this.formRef.current.resetFields();
-    this.dispatch({
-      type: 'menu/fetch',
-      search: { parent_id: this.getParentID() },
-      pagination: {},
+    let pid = this.getParentID();
+    this.refetch({
+      search: { parent_id: pid ? pid : null, level: 1 },
     });
   };
 
   onSearchFormSubmit = (values) => {
+    let pid = this.getParentID();
+
     this.dispatch({
       type: 'menu/fetch',
       search: {
         ...values,
-        parent_id: this.getParentID(),
+        parent_id: pid ? pid : null,
       },
       pagination: {},
     });
@@ -198,11 +195,11 @@ class MenuList extends PureComponent {
 
   getParentID = () => {
     const { treeSelectedKeys } = this.state;
-    let parentID = '';
+    let pid = '';
     if (treeSelectedKeys.length > 0) {
-      [parentID] = treeSelectedKeys;
+      [pid] = treeSelectedKeys;
     }
-    return parentID;
+    return pid;
   };
 
   handleDelOKClick(id) {
@@ -227,7 +224,7 @@ class MenuList extends PureComponent {
 
     this.dispatch({
       type: 'menu/fetchTree',
-      // payload: {parentID: id}
+      // payload: {pid: id}
     });
 
     console.log(' ---- -- ==== = == ', loadedKeys);
@@ -269,7 +266,7 @@ class MenuList extends PureComponent {
       <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item name="queryValue">
+            <Form.Item name="queryValue" rules={[{ required: true, message: '内容必填' }]}>
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
@@ -396,11 +393,11 @@ class MenuList extends PureComponent {
                 } = this.props;
 
                 const item = {
-                  parentID: undefined,
+                  pid: undefined,
                 };
 
                 if (keys.length > 0) {
-                  [item.parentID] = keys;
+                  [item.parent_id] = keys;
                 }
 
                 this.dispatch({
@@ -444,7 +441,7 @@ class MenuList extends PureComponent {
                         <ReloadOutlined
                           onClick={() => {
                             this.clearTreeSelectedKeys();
-                            this.refetch();
+                            this.refetch({ search: { level: 1 } });
                           }}
                         />
                       }
