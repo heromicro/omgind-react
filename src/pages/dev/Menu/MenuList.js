@@ -399,6 +399,12 @@ class MenuList extends PureComponent {
                   [item.pid] = keys;
                 }
 
+                if (!item.pid) {
+                  search.level = 1;
+                } else {
+                  delete search.level;
+                }
+
                 this.dispatch({
                   type: 'menu/fetch',
                   search: { ...search, ...item },
