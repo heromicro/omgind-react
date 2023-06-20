@@ -140,9 +140,8 @@ class MenuList extends PureComponent {
 
   onResetFormClick = () => {
     this.formRef.current.resetFields();
-    let pid = this.getParentID();
     this.refetch({
-      search: { parent_id: pid ? pid : null, level: 1 },
+      search: { level: 1 },
     });
   };
 
@@ -153,7 +152,7 @@ class MenuList extends PureComponent {
       type: 'menu/fetch',
       search: {
         ...values,
-        parent_id: pid ? pid : null,
+        pid: pid ? pid : null,
       },
       pagination: {},
     });
@@ -397,7 +396,7 @@ class MenuList extends PureComponent {
                 };
 
                 if (keys.length > 0) {
-                  [item.parent_id] = keys;
+                  [item.pid] = keys;
                 }
 
                 this.dispatch({
