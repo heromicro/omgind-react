@@ -109,6 +109,15 @@ class MenuList extends PureComponent {
     });
   };
 
+  refetch = ({ search = {}, pagination = {} } = {}) => {
+    console.log(' --------- ===== 9999 == ');
+    this.dispatch({
+      type: 'menu/fetch',
+      search,
+      pagination,
+    });
+  };
+
   onMainTableSelectRow = (record, selected) => {
     const keys = [];
     const rows = [];
@@ -175,6 +184,11 @@ class MenuList extends PureComponent {
       return;
     }
     this.setState({ selectedRowKeys: [], selectedRows: [] });
+  };
+
+  clearTreeSelectedKeys = () => {
+    const { treeSelectedKeys } = this.state;
+    this.setState({ treeSelectedKeys: [], selectedRowKeys: [], selectedRows: [] });
   };
 
   dispatch = (action) => {
@@ -325,6 +339,17 @@ class MenuList extends PureComponent {
         },
       },
       {
+        title: '新标签',
+        dataIndex: 'open_blank',
+        width: 80,
+        render: (val) => {
+          if (val) {
+            return <Badge status="success" text="是" />;
+          }
+          return <Badge status="error" text="否" />;
+        },
+      },
+      {
         title: '创建时间',
         width: 150,
         dataIndex: 'created_at',
@@ -415,7 +440,14 @@ class MenuList extends PureComponent {
                   <Space>
                     <Button
                       shape="circle"
-                      icon={<ReloadOutlined onClick={() => this.refetch()} />}
+                      icon={
+                        <ReloadOutlined
+                          onClick={() => {
+                            this.clearTreeSelectedKeys();
+                            this.refetch();
+                          }}
+                        />
+                      }
                     />
                   </Space>
                 </div>

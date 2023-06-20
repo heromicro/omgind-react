@@ -110,6 +110,7 @@ class MenuCard extends PureComponent {
                   <Form.Item {...formItemLayout} label="上级菜单" name="parent_id">
                     <TreeSelect
                       showSearch
+                      allowClear
                       treeNodeFilterProp="title"
                       style={{ width: '100%' }}
                       dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
