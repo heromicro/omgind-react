@@ -182,6 +182,18 @@ class MenuCard extends PureComponent {
                 </Col>
               </Row>
               <Row>
+                <Col span={12}>
+                  <Form.Item
+                    {...formItemLayout}
+                    label="打开新窗口"
+                    name="open_blank"
+                    valuePropName="checked"
+                  >
+                    <Switch defaultUnchecked />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row>
                 <Col span={24}>
                   <Card title="动作(按钮)管理" bordered={false}>
                     <Form.Item name="actions">
