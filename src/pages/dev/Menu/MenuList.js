@@ -428,7 +428,7 @@ class MenuList extends PureComponent {
             <Card bordered={false}>
               <div className={styles.tableList}>
                 <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
-                <div className={styles.tableListOperator}>
+                <Space className={styles.tableListOperator}>
                   <Space>
                     {showPButtons(
                       selectedRows,
@@ -452,7 +452,7 @@ class MenuList extends PureComponent {
                       }
                     />
                   </Space>
-                </div>
+                </Space>
                 <Table
                   rowSelection={{
                     selectedRowKeys,
