@@ -79,11 +79,11 @@ class FormDialog extends PureComponent {
           >
             <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item>
-            <Card title="资源管理(服务端接口映射)" bordered={false} name="resources">
+          <Card title="资源管理(服务端接口映射)" bordered={false}>
+            <Form.Item name="resources">
               <MenuActionResource />
-            </Card>
-          </Form.Item>
+            </Form.Item>
+          </Card>
         </Form>
       </Modal>
     );
