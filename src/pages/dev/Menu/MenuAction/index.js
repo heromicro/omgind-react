@@ -98,8 +98,8 @@ export default class MenuAction extends PureComponent {
         resources: [{ method: 'DELETE', path: `${path}/:id` }],
       },
       {
-        code: 'view',
-        name: '查看',
+        code: 'fetch',
+        name: '快取',
         resources: [{ method: 'GET', path: `${path}/:id` }],
       },
       {
