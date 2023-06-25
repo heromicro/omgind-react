@@ -60,6 +60,15 @@ class MenuCard extends PureComponent {
       },
     };
 
+    const formItemLayoutSub = {
+      labelCol: {
+        span: 0,
+      },
+      wrapperCol: {
+        span: 24,
+      },
+    };
+
     console.log(' ----- === ==== treeData: ', treeData);
     // console.log(' ----- === ==== formData: ', formData);
     // console.log(' ----- === ==== formVisible: ', formVisible);
@@ -128,10 +137,12 @@ class MenuCard extends PureComponent {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item {...formItemLayout} label="菜单图标" name="icon">
+                  <Form.Item {...formItemLayout} label="菜单图标">
                     <Row>
                       <Col span={20}>
-                        <Input placeholder="请输入菜单图标" />
+                        <Form.Item {...formItemLayoutSub} name="icon">
+                          <Input placeholder="请输入菜单图标" />
+                        </Form.Item>
                       </Col>
                       <Col span={4} style={{ textAlign: 'center' }}>
                         <Tooltip title="图标仅支持官方Icon图标(V3版本)">
