@@ -22,11 +22,14 @@ import { showPButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
 import MenuCard from './MenuCard';
+import MenuDetail from './MenuDetail';
+
 import styles from './MenuList.less';
 
-@connect(({ menu, loading }) => ({
-  menu,
-  loading: loading.models.menu,
+@connect((state) => ({
+  menu: state.menu,
+  loading: state.loading.models.menu,
+  global: state.global,
 }))
 class MenuList extends PureComponent {
   formRef = React.createRef();
@@ -187,6 +190,26 @@ class MenuList extends PureComponent {
     this.setState({ treeSelectedKeys: [], selectedRowKeys: [], selectedRows: [] });
   };
 
+  onDetailInfoClose = () => {
+    console.log(' ----- === === detail info close ');
+
+    this.dispatch({
+      type: 'menu/changeDrawerDetailVisible',
+      payload: false,
+    });
+  };
+
+  onShowDetailInfo = (item) => {
+    console.log(' ----- === == === --- ', item);
+
+    this.dispatch({
+      type: 'menu/loadDetail',
+      payload: {
+        record: item,
+      },
+    });
+  };
+
   dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
@@ -229,6 +252,10 @@ class MenuList extends PureComponent {
     console.log(' ---- -- ==== = == ', loadedKeys);
   };
 */
+
+  renderDetailInfo() {
+    return <MenuDetail width={600} onClose={this.onDetailInfoClose} />;
+  }
 
   renderDataForm() {
     return <MenuCard onCancel={this.handleFormCancel} onSubmit={this.handleFormSubmit} />;
@@ -471,6 +498,7 @@ class MenuList extends PureComponent {
           </Layout.Content>
         </Layout>
         {this.renderDataForm()}
+        {this.renderDetailInfo()}
       </PageHeaderLayout>
     );
   }

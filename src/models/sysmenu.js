@@ -15,6 +15,8 @@ export default {
     formType: '',
     formTitle: '',
     formID: '',
+    drawerDetailopen: false,
+    detailData: {},
     formModalVisible: false,
     formVisible: false,
     formData: {},
@@ -131,6 +133,23 @@ export default {
             payload: true,
           }),
         ];
+      }
+    },
+    // ------------------------
+    *loadDetail({ payload }, { call, put, select }) {
+      console.log(' ----- menuService  ===== ', payload);
+      let { record } = payload;
+      const response = yield call(menuService.view, record.id);
+      const { code, burden } = response;
+      if (code === 0) {
+        yield put({
+          type: 'changeDrawerDetailVisible',
+          payload: true,
+        });
+        yield put({
+          type: 'saveDetailData',
+          payload: burden,
+        });
       }
     },
     *submit({ payload }, { call, put, select }) {
@@ -255,6 +274,12 @@ export default {
         return { ...state, formModalVisible: payload, formVisible: payload };
       }
       return { ...state, formModalVisible: payload };
+    },
+    changeDrawerDetailVisible(state, { payload }) {
+      return { ...state, drawerDetailopen: payload };
+    },
+    saveDetailData(state, { payload }) {
+      return { ...state, detailData: payload };
     },
     saveFormType(state, { payload }) {
       return { ...state, formType: payload };
