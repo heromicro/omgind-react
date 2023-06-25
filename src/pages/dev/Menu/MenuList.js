@@ -17,6 +17,7 @@ import {
 import { ReloadOutlined } from '@ant-design/icons';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
+import { checkActionPermission } from '@/utils/checkPermission';
 
 import { showPButtons } from '@/utils/uiutil';
 
@@ -319,18 +320,51 @@ class MenuList extends PureComponent {
         treeData,
         expandedKeys,
       },
+      global: { menuPaths },
     } = this.props;
 
     const { selectedRowKeys, selectedRows } = this.state;
+    let hasview = checkActionPermission(menuPaths, 'view');
 
     const columns = [
       {
         title: '菜单名称',
         dataIndex: 'name',
         width: 130,
-        render: (val, row) => {
-          if (row.is_show) {
-            return <Badge status="default" text={val} />;
+        render: (val, record, index) => {
+          let target = null;
+          if (hasview) {
+            if (record.is_show) {
+              return (
+                <Space>
+                  <Badge status="default" />
+                  <a
+                    onClick={() => {
+                      this.onShowDetailInfo(record);
+                    }}
+                  >
+                    {val}
+                  </a>
+                </Space>
+              );
+            }
+            return (
+              <a
+                onClick={() => {
+                  this.onShowDetailInfo(record);
+                }}
+              >
+                <span>{val}</span>
+              </a>
+            );
+          }
+          if (record.is_show) {
+            return (
+              <Space>
+                <Badge status="default" />
+                {val}
+              </Space>
+            );
           }
           return <span>{val}</span>;
         },
@@ -343,7 +377,7 @@ class MenuList extends PureComponent {
       {
         title: '菜单图标',
         dataIndex: 'icon',
-        width: 100,
+        width: 150,
       },
       {
         title: '访问路由',
