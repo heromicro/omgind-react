@@ -217,6 +217,10 @@ class DictList extends PureComponent {
         dataIndex: 'name_en',
       },
       {
+        title: '字典键',
+        dataIndex: 'dict_key',
+      },
+      {
         title: '状态',
         dataIndex: 'is_active',
         render: (val) => {

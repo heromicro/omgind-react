@@ -79,11 +79,8 @@ class DictCard extends PureComponent {
             ref={this.formRef}
             onFinishFailed={this.onFinishFailed}
             initialValues={{
-              name_cn: formData.name_cn,
-              name_en: formData.name_en,
+              ...formData,
               is_active: formData.is_active === undefined ? true : formData.is_active,
-              sort: formData.sort ? formData.sort : 9999,
-              memo: formData.memo,
               items: formData.items,
             }}
           >
