@@ -19,6 +19,22 @@ export type timeparts = {
   updated_at: Date;
 };
 
+export type sortparts = {
+  sort: number;
+};
+
+export type activeparts = {
+  is_active: boolean;
+};
+
+export type memoparts = {
+  memo: string;
+};
+
+export type codeparts = {
+  code: string;
+};
+
 export function calculateGenderShow(gender: number): string {
   if (gender === undefined || gender === null) {
     return '';
