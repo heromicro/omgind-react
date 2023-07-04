@@ -3,9 +3,14 @@
 .tableList {
   .tableListOperator {
     margin-bottom: 16px;
+
     button {
       margin-right: 8px;
     }
+  }
+
+  table tr:nth-child(2n) {
+    background-color: #fbfbfb;
   }
 }
 
@@ -15,20 +20,24 @@
       margin-bottom: 24px;
       margin-right: 0;
       display: flex;
+
       > .ant-form-item-label {
         width: auto;
         line-height: 32px;
         padding-right: 8px;
         margin-left: 10px;
       }
+
       .ant-form-item-control {
         line-height: 32px;
       }
     }
+
     .ant-form-item-control-wrapper {
       flex: 1;
     }
   }
+
   .submitButtons {
     white-space: nowrap;
     margin-bottom: 24px;
