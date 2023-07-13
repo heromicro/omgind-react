@@ -149,7 +149,7 @@ class PositionList extends PureComponent {
   };
 
   onSearchFormSubmit = (values) => {
-    if (!values.queryValue) {
+    if (!values.q) {
       return;
     }
 
@@ -231,7 +231,7 @@ class PositionList extends PureComponent {
       <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item name="queryValue">
+            <Form.Item name="q">
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>

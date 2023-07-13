@@ -13,9 +13,11 @@ export default {
     submitting: false,
     formTitle: '',
     formID: '',
+    drawerDetailOpen: false,
     formModalVisible: false,
     formVisible: false,
     formData: {},
+    detailData: {},
   },
   effects: {
     *fetch({ search, pagination }, { call, put, select }) {
@@ -124,6 +126,20 @@ export default {
       }
     },
 
+    // ------------------------
+    *loadDetail({ payload }, { call, put, select }) {
+      // const response = yield call(assetService.get, payload.id);
+      yield put({
+        type: 'changeDrawerDetailOpen',
+        payload: true,
+      });
+      let { record } = payload;
+      yield put({
+        type: 'saveDetailData',
+        payload: record,
+      });
+    },
+
     *submit({ payload }, { call, put, select }) {
       yield put({
         type: 'changeSubmitting',
@@ -224,6 +240,9 @@ export default {
       }
       return { ...state, formModalVisible: payload };
     },
+    changeDrawerDetailOpen(state, { payload }) {
+      return { ...state, drawerDetailOpen: payload };
+    },
     saveFormTitle(state, { payload }) {
       return { ...state, formTitle: payload };
     },
@@ -235,6 +254,9 @@ export default {
     },
     saveFormData(state, { payload }) {
       return { ...state, formData: payload };
+    },
+    saveDetailData(state, { payload }) {
+      return { ...state, detailData: payload };
     },
     changeSubmitting(state, { payload }) {
       return { ...state, submitting: payload };

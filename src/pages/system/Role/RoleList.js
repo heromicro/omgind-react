@@ -171,7 +171,7 @@ class RoleList extends PureComponent {
       <Form ref={this.formRef} onFinish={this.handleSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item name="queryValue">
+            <Form.Item name="q">
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>

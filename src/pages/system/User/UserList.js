@@ -7,8 +7,10 @@ import { showPButtons } from '@/utils/uiutil';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { formatDate } from '@/utils/datetime';
+import { checkActionPermission } from '@/utils/checkPermission';
 
 import UserCard from './UserCard';
+import UserDetail from './UserDetail';
 import RoleSelect from './RoleSelect';
 
 import styles from './UserList.less';
@@ -16,6 +18,7 @@ import styles from './UserList.less';
 @connect((state) => ({
   loading: state.loading.models.user,
   user: state.user,
+  global: state.global,
 }))
 class UserList extends PureComponent {
   formRef = React.createRef();
@@ -135,7 +138,7 @@ class UserList extends PureComponent {
   };
 
   onSearchFormSubmit = (values) => {
-    if (!values.queryValue && !values.role_ids) {
+    if (!values.q && !values.role_ids) {
       return;
     }
 
@@ -162,6 +165,16 @@ class UserList extends PureComponent {
     });
   };
 
+  onShowDetailInfo = (item) => {
+    console.log(' ----- === == === --- ', item);
+    this.dispatch({
+      type: 'user/loadDetail',
+      payload: {
+        record: item,
+      },
+    });
+  };
+
   dispatch = (action) => {
     const { dispatch } = this.props;
     dispatch(action);
@@ -176,7 +189,7 @@ class UserList extends PureComponent {
       <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item label="模糊查询" name="queryValue">
+            <Form.Item label="模糊查询" name="q">
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
@@ -206,13 +219,29 @@ class UserList extends PureComponent {
       user: {
         data: { list, pagination },
       },
+      global: { menuPaths },
     } = this.props;
 
     const { selectedRows, selectedRowKeys } = this.state;
+    let hasview = checkActionPermission(menuPaths, 'view');
+
     const columns = [
       {
         title: '用户名',
         dataIndex: 'user_name',
+        render: (val, record, index) => {
+          return hasview ? (
+            <a
+              onClick={() => {
+                this.onShowDetailInfo(record);
+              }}
+            >
+              {val}
+            </a>
+          ) : (
+            val
+          );
+        },
       },
       {
         title: '真实姓名',

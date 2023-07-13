@@ -169,7 +169,7 @@ class DictList extends PureComponent {
       <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item label="模糊查询" name="queryValue">
+            <Form.Item label="模糊查询" name="q">
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>

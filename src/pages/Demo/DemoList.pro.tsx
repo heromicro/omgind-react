@@ -87,13 +87,13 @@ class DemoList extends PureComponent {
       type: 'demo/del',
       payload: { id },
     });
-    
-    console.log(" ---- ===== sss clearSelectR ows wwwwww ")
+
+    console.log(' ---- ===== sss clearSelectR ows wwwwww ');
     this.clearSelectRows();
   }
 
   clearSelectRows = () => {
-    console.log(" ---- ===== sss clearSelect Rows ")
+    console.log(' ---- ===== sss clearSelect Rows ');
     const { selectedRowKeys } = this.state;
     if (selectedRowKeys.length === 0) {
       return;
@@ -130,7 +130,7 @@ class DemoList extends PureComponent {
   onMainTableChange = (pagination) => {
     this.refetch({ pagination });
 
-    console.log(" ---- ===== sss clearSelectRows 333333 ")
+    console.log(' ---- ===== sss clearSelectRows 333333 ');
 
     this.clearSelectRows();
   };
@@ -141,7 +141,7 @@ class DemoList extends PureComponent {
   };
 
   onSearchFormSubmit = (values) => {
-    if (!values.queryValue) {
+    if (!values.q) {
       return;
     }
 
@@ -150,7 +150,7 @@ class DemoList extends PureComponent {
       pagination: {},
     });
 
-    console.log(" ---- ===== sss clearSelect Rows 33333 ")
+    console.log(' ---- ===== sss clearSelect Rows 33333 ');
 
     this.clearSelectRows();
   };
@@ -161,7 +161,7 @@ class DemoList extends PureComponent {
       payload: data,
     });
 
-    console.log(" ---- ===== sss clearSelect Rows 22222 ")
+    console.log(' ---- ===== sss clearSelect Rows 22222 ');
     this.clearSelectRows();
   };
 
@@ -195,7 +195,7 @@ class DemoList extends PureComponent {
       <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item name="queryValue">
+            <Form.Item name="q">
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
@@ -259,7 +259,7 @@ class DemoList extends PureComponent {
         // ],
         // onFilter:
         render: (_, entity) => {
-          console.log(" -------- ======= val ", entity);
+          console.log(' -------- ======= val ', entity);
           if (entity.is_active) {
             return <Badge status="success" text="启用" />;
           }

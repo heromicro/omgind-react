@@ -293,7 +293,7 @@ class MenuList extends PureComponent {
       <Form ref={this.formRef} onFinish={this.onSearchFormSubmit}>
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item name="queryValue" rules={[{ required: true, message: '内容必填' }]}>
+            <Form.Item name="q" rules={[{ required: true, message: '内容必填' }]}>
               <Input placeholder="请输入需要查询的内容" />
             </Form.Item>
           </Col>
