@@ -144,7 +144,12 @@ class UserCard extends PureComponent {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="用户状态" name="is_active">
+                <Form.Item
+                  {...formItemLayout}
+                  label="用户状态"
+                  name="is_active"
+                  valuePropName="checked"
+                >
                   <Switch defaultChecked />
                 </Form.Item>
               </Col>

@@ -171,24 +171,24 @@ class DistrictForm extends React.PureComponent {
         </Row>
         <Row>
           <Col span={6}>
-            <Form.Item label="状态" name="is_active">
+            <Form.Item label="状态" name="is_active" valuePropName="checked">
               <Switch defaultChecked />
             </Form.Item>
           </Col>
           <Col span={6}>
-            <Form.Item label="是否主要" name="is_main">
+            <Form.Item label="是否主要" name="is_main" valuePropName="checked">
               <Switch />
             </Form.Item>
           </Col>
 
           <Col span={6}>
-            <Form.Item label="是否真实" name="is_real">
+            <Form.Item label="是否真实" name="is_real" valuePropName="checked">
               <Switch defaultChecked />
             </Form.Item>
           </Col>
 
           <Col span={6}>
-            <Form.Item label="是否热点" name="is_hot">
+            <Form.Item label="是否热点" name="is_hot" valuePropName="checked">
               <Switch />
             </Form.Item>
           </Col>
@@ -196,7 +196,7 @@ class DistrictForm extends React.PureComponent {
         {/* <Row></Row> */}
         <Row>
           <Col span={6}>
-            <Form.Item label="是否直辖" name="is_direct">
+            <Form.Item label="是否直辖" name="is_direct" valuePropName="checked">
               <Switch />
             </Form.Item>
           </Col>

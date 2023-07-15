@@ -121,7 +121,12 @@ class RoleCard extends PureComponent {
             </Row>
             <Row>
               <Col span={12}>
-                <Form.Item {...formItemLayout} label="状态" name="is_active">
+                <Form.Item
+                  {...formItemLayout}
+                  label="状态"
+                  name="is_active"
+                  valuePropName="checked"
+                >
                   <Switch defaultChecked />
                 </Form.Item>
               </Col>

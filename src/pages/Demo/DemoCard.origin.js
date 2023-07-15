@@ -98,7 +98,7 @@ class DemoCard extends PureComponent {
             <Form.Item {...formItemLayout} label="备注" name="memo">
               <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
             </Form.Item>
-            <Form.Item {...formItemLayout} label="状态" name="is_active">
+            <Form.Item {...formItemLayout} label="状态" name="is_active" valuePropName="checked">
               <Switch defaultChecked />
             </Form.Item>
           </Form>

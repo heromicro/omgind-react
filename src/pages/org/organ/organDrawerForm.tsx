@@ -341,7 +341,7 @@ class OrganDrawerForm extends React.PureComponent {
 
             <Row>
               <Col span={12}>
-                <Form.Item label="状态" name="is_active">
+                <Form.Item label="状态" name="is_active" valuePropName="checked">
                   <Switch defaultChecked />
                 </Form.Item>
               </Col>
