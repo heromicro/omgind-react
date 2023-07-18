@@ -270,7 +270,14 @@ class AdminLayout extends React.PureComponent {
           width={siderWidth}
           className="sider"
         >
-          <div className="logo">
+          <div
+            className="logo"
+            style={{
+              position: 'sticky',
+              top: 0,
+              zIndex: 1,
+            }}
+          >
             <Link to="/">
               <img src={logo} alt="logo" />
               <h1>{title}</h1>
@@ -291,6 +298,9 @@ class AdminLayout extends React.PureComponent {
           <Header
             className={classNames('header')}
             style={{
+              position: 'sticky',
+              top: 0,
+              zIndex: 1,
               paddingLeft: 12,
               paddingRight: 12,
             }}
