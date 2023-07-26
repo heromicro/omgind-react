@@ -267,6 +267,12 @@ class AnnexList extends PureComponent {
 
     const columns: ProColumns<SysAnnexItem>[] = [
       {
+        title: '查询',
+        dataIndex: 'q',
+        hideInTable: true,
+        hideInForm: true,
+      },
+      {
         title: '名称',
         dataIndex: 'name',
         fixed: 'left',
