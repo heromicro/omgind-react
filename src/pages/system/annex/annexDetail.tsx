@@ -109,58 +109,12 @@ class AnnexDetail extends React.PureComponent {
               <ProDescriptions.Item label="名称" key="name">
                 {`${detailData.name} `}
               </ProDescriptions.Item>
-              <ProDescriptions.Item label="IP" key="ip">
-                {detailData.ip}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item label="带外管理" key="out_band">
-                {detailData.out_band === true ? (
-                  <span style={{ color: 'darkGreen' }}>
-                    <Tag color="#87d068"> 有 </Tag>
-                  </span>
-                ) : (
-                  <span style={{ color: 'red' }}>
-                    <Tag color="#f50"> 无 </Tag>
-                  </span>
-                )}
-              </ProDescriptions.Item>
-
-              <ProDescriptions.Item label="产品编码" key="sn">
-                {detailData.sn}
-              </ProDescriptions.Item>
-
-              <ProDescriptions.Item label="资产编号" key="numb">
-                {detailData.numb}
-              </ProDescriptions.Item>
-
-              <ProDescriptions.Item label="资产名称" key="product_name">
-                {detailData.product_name}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item label="型号" key="model">
-                {detailData.model}
-              </ProDescriptions.Item>
-
-              <ProDescriptions.Item label="机型" key="form_factor">
-                {detailData.form_factor}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item label="厂商" key="manufacturer">
-                {detailData.manufacturer}
+              <ProDescriptions.Item label="文件路径" key="file_path">
+                {detailData.file_path}
               </ProDescriptions.Item>
 
               <ProDescriptions.Item label="排序" key="sort">
                 {detailData.sort}
-              </ProDescriptions.Item>
-              {/* <ProDescriptions.Item label="" key="blank1" /> */}
-              <ProDescriptions.Item label="机位" key="situs">
-                {detailData.situs ? (
-                  <>
-                    {detailData.situs.name}&nbsp;&nbsp;
-                    <Tooltip placement="right" color="orange" title={detailData.situs.full_name}>
-                      <QuestionCircleOutlined />
-                    </Tooltip>
-                  </>
-                ) : (
-                  ''
-                )}
               </ProDescriptions.Item>
 
               <ProDescriptions.Item label="有效否" key="is_active">
