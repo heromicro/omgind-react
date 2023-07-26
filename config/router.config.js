@@ -41,6 +41,7 @@ export default [
           { path: '/system/dict', component: './system/Dict/DictList' },
           { path: '/system/district', component: './system/District/DistrictList' },
           { path: '/system/address', component: './system/address/addressList' },
+          { path: '/system/annex', component: './system/annex/annexList' },
         ],
       },
       {
