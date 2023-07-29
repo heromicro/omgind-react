@@ -48,7 +48,7 @@ class EduCateSelector extends PureComponent<EduCateSelectorProps, EduCateSelecto
   }
 
   fetchDictItems = (did: string) => {
-    dictService.items(did, { name_en: 'gender' }).then((res) => {
+    dictService.items(did, { dict_key: 'educate' }).then((res) => {
       const { code, burden } = res;
       if (code === 0 && burden.length > 0) {
         let gender = burden[0];

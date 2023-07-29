@@ -35,7 +35,7 @@ class DictCard extends PureComponent {
 
   render() {
     const {
-      dict: { formTitle, formVisible, formModalVisible, formData, submitting },
+      dict: { formTitle, formType, formVisible, formModalVisible, formData, submitting },
       onCancel,
     } = this.props;
 
@@ -110,11 +110,15 @@ class DictCard extends PureComponent {
               <Col span={12}>
                 <Form.Item
                   {...formItemLayout}
-                  label="状态"
-                  name="is_active"
-                  valuePropName="checked"
+                  label="索引[不可改]"
+                  name="dict_key"
+                  rules={[{ required: true, message: '请输入索引' }]}
                 >
-                  <Switch defaultChecked />
+                  {formType === 'E' ? (
+                    <Input placeholder="请输入索引" readOnly disabled />
+                  ) : (
+                    <Input placeholder="请输入索引" />
+                  )}
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -128,7 +132,18 @@ class DictCard extends PureComponent {
                 </Form.Item>
               </Col>
             </Row>
-
+            <Row>
+              <Col span={12}>
+                <Form.Item
+                  {...formItemLayout}
+                  label="状态"
+                  name="is_active"
+                  valuePropName="checked"
+                >
+                  <Switch defaultChecked />
+                </Form.Item>
+              </Col>
+            </Row>
             <Form.Item {...formItemLayout2} label="备注" name="memo">
               <Input.TextArea rows={2} placeholder="请输入备注" />
             </Form.Item>

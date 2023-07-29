@@ -51,7 +51,7 @@ class EmployeStatSelector extends PureComponent<
   }
 
   fetchDictItems = (did: string) => {
-    dictService.items(did, { name_en: 'employemnt stat' }).then((res) => {
+    dictService.items(did, { dict_key: 'employemnt_stat' }).then((res) => {
       const { code, burden } = res;
       if (code === 0 && burden.length > 0) {
         let gender = burden[0];

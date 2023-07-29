@@ -11,6 +11,7 @@ export default {
       pagination: {},
     },
     submitting: false,
+    formType: '',
     formTitle: '',
     formID: '',
     formModalVisible: false,
@@ -49,7 +50,7 @@ export default {
       }
 
       const response = yield call(dictService.query, params);
-      const { code, burden} = response;
+      const { code, burden } = response;
       if (code === 0) {
         yield put({
           type: 'saveData',
