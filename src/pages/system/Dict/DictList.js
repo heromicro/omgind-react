@@ -8,7 +8,9 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { showPButtons } from '@/utils/uiutil';
 
 import { formatDate } from '@/utils/datetime';
-import DictCard from './DictCard';
+
+import DictDetail from './dictDetail';
+import DictDrawerForm from './dictDrawerForm';
 
 import styles from './DictList.less';
 
@@ -160,8 +162,32 @@ class DictList extends PureComponent {
     });
   };
 
-  renderDataForm() {
-    return <DictCard onCancel={this.onDataFormCancel} onSubmit={this.onDataFormSubmit} />;
+  onDetailDrawerClose = () => {
+    console.log(' --- --- === == -- cancel');
+
+    this.dispatch({
+      type: 'dict/changeDetailDrawerOpen',
+      payload: false,
+    });
+  };
+
+  onShowDetailInfo = (item) => {
+    this.dispatch({
+      type: 'dict/loadDetail',
+      payload: {
+        record: item,
+      },
+    });
+  };
+
+  renderItemDetail() {
+    return (
+      <DictDetail width={850} onClose={this.onDetailDrawerClose} onAddClick={this.onAddClick} />
+    );
+  }
+
+  renderDrawerForm() {
+    return <DictDrawerForm width={950} onSubmit={this.onDataFormSubmit} />;
   }
 
   renderSearchForm() {
@@ -292,7 +318,7 @@ class DictList extends PureComponent {
             </div>
           </div>
         </Card>
-        {this.renderDataForm()}
+        {this.renderDrawerForm()}
       </PageHeaderLayout>
     );
   }

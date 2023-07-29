@@ -14,9 +14,14 @@ export default {
     formType: '',
     formTitle: '',
     formID: '',
-    formModalVisible: false,
+
+    detailDrawerOpen: false,
+    formDrawerOpen: false,
+
     formVisible: false,
     formData: {},
+    detailData: {},
+
     selectData: [],
   },
   effects: {
@@ -60,10 +65,16 @@ export default {
     },
 
     *loadForm({ payload }, { put }) {
-      yield put({
-        type: 'changeModalFormVisible',
-        payload: true,
-      });
+      yield [
+        put({
+          type: 'changeDetailDrawerOpen',
+          payload: false,
+        }),
+        put({
+          type: 'changeFormDrawerOpen',
+          payload: true,
+        }),
+      ];
 
       yield [
         put({
@@ -165,7 +176,7 @@ export default {
       if (success) {
         message.success('保存成功');
         yield put({
-          type: 'changeModalFormVisible',
+          type: 'changeFormDrawerOpen',
           payload: false,
         });
         yield put({ type: 'fetch' });
@@ -223,15 +234,9 @@ export default {
     },
     changeFormVisible(state, { payload }) {
       if (payload) {
-        return { ...state, formModalVisible: payload, formVisible: payload };
+        return { ...state, formDrawerOpen: payload, formVisible: payload };
       }
       return { ...state, formVisible: payload };
-    },
-    changeModalFormVisible(state, { payload }) {
-      if (!payload) {
-        return { ...state, formModalVisible: payload, formVisible: payload };
-      }
-      return { ...state, formModalVisible: payload };
     },
     saveFormTitle(state, { payload }) {
       return { ...state, formTitle: payload };
@@ -250,6 +255,25 @@ export default {
     },
     saveSelectData(state, { payload }) {
       return { ...state, selectData: payload };
+    },
+
+    saveDetailData(state, { payload }) {
+      return { ...state, detailData: payload };
+    },
+    changeDetailDrawerOpen(state, { payload }) {
+      return { ...state, detailDrawerOpen: payload };
+    },
+    changeFormDrawerOpen(state, { payload }) {
+      if (!payload) {
+        return {
+          ...state,
+          formDrawerOpen: payload,
+          formVisible: payload,
+          formData: {},
+          formID: '',
+        };
+      }
+      return { ...state, formDrawerOpen: payload };
     },
   },
 };
