@@ -2,7 +2,7 @@ import { message } from 'antd';
 import * as userService from '@/services/sysuser';
 
 export default {
-  namespace: 'user',
+  namespace: 'sysuser',
   state: {
     search: {},
     pagination: {},
@@ -30,7 +30,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.user.search);
+        const s = yield select((state) => state.sysuser.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -43,7 +43,7 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.user.pagination);
+        const p = yield select((state) => state.sysuser.pagination);
         if (p) {
           params = { ...params, ...p };
         }
@@ -147,10 +147,10 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select((state) => state.user.formType);
+      const formType = yield select((state) => state.sysuser.formType);
       let success = false;
       if (formType === 'E') {
-        const id = yield select((state) => state.user.formID);
+        const id = yield select((state) => state.sysuser.formID);
         const response = yield call(userService.update, id, params);
         const { code } = response;
         if (code === 0) {
@@ -203,7 +203,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.user.data);
+        const data = yield select((state) => state.sysuser.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {

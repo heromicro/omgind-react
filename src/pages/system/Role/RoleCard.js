@@ -5,7 +5,7 @@ import { Form, Input, Modal, message, Card, Row, Col, InputNumber, Switch } from
 import RoleMenu from './RoleMenu';
 
 @connect((state) => ({
-  role: state.role,
+  sysrole: state.sysrole,
 }))
 class RoleCard extends PureComponent {
   formRef = React.createRef();
@@ -50,7 +50,7 @@ class RoleCard extends PureComponent {
 
   render() {
     const {
-      role: { formTitle, formVisible, formModalVisible, formData, submitting },
+      sysrole: { formTitle, formVisible, formModalVisible, formData, submitting },
       onCancel,
     } = this.props;
 

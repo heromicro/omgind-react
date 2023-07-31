@@ -26,12 +26,12 @@ import {
 } from '@ant-design/icons';
 
 @connect((state) => ({
-  menu: state.menu,
+  sysmenu: state.sysmenu,
 }))
 class MenuDetail extends PureComponent {
   render() {
-    const { menu, onClose, ...restProps } = this.props;
-    const { drawerDetailopen, detailData } = menu;
+    const { sysmenu, onClose, ...restProps } = this.props;
+    const { drawerDetailopen, detailData } = sysmenu;
     // let detailData = formData;
     console.log(' ---====-- ', detailData);
 

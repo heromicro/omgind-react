@@ -9,15 +9,16 @@ import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { formatDate } from '@/utils/datetime';
 import { checkActionPermission } from '@/utils/checkPermission';
 
+import RoleMSelect from '@/components/selectors/RoleMSelect';
+
 import UserCard from './UserCard';
 import UserDetail from './UserDetail';
-import RoleSelect from './RoleSelect';
 
 import styles from './UserList.less';
 
 @connect((state) => ({
-  loading: state.loading.models.user,
-  user: state.user,
+  loading: state.loading.models.sysuser,
+  sysuser: state.sysuser,
   global: state.global,
 }))
 class UserList extends PureComponent {
@@ -34,7 +35,7 @@ class UserList extends PureComponent {
 
   componentDidMount() {
     this.dispatch({
-      type: 'user/fetch',
+      type: 'sysuser/fetch',
       search: {},
       pagination: {},
     });
@@ -42,21 +43,21 @@ class UserList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'user/changeStatus',
+      type: 'sysuser/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'user/changeStatus',
+      type: 'sysuser/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
   onItemEditClick = (item) => {
     this.dispatch({
-      type: 'user/loadForm',
+      type: 'sysuser/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -66,7 +67,7 @@ class UserList extends PureComponent {
 
   onAddClick = () => {
     this.dispatch({
-      type: 'user/loadForm',
+      type: 'sysuser/loadForm',
       payload: {
         type: 'A',
       },
@@ -75,7 +76,7 @@ class UserList extends PureComponent {
 
   onDelOKClick(id) {
     this.dispatch({
-      type: 'user/del',
+      type: 'sysuser/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -102,7 +103,7 @@ class UserList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'user/fetch',
+      type: 'sysuser/fetch',
       search,
       pagination,
     });
@@ -123,7 +124,7 @@ class UserList extends PureComponent {
 
   onMainTableChange = (pagination) => {
     this.dispatch({
-      type: 'user/fetch',
+      type: 'sysuser/fetch',
       pagination: {
         current: pagination.current,
         pageSize: pagination.pageSize,
@@ -152,7 +153,7 @@ class UserList extends PureComponent {
 
   onDataFormSubmit = (data) => {
     this.dispatch({
-      type: 'user/submit',
+      type: 'sysuser/submit',
       payload: data,
     });
     this.clearSelectRows();
@@ -160,7 +161,7 @@ class UserList extends PureComponent {
 
   onDataFormCancel = () => {
     this.dispatch({
-      type: 'user/changeModalFormVisible',
+      type: 'sysuser/changeModalFormVisible',
       payload: false,
     });
   };
@@ -168,7 +169,7 @@ class UserList extends PureComponent {
   onShowDetailInfo = (item) => {
     console.log(' ----- === == === --- ', item);
     this.dispatch({
-      type: 'user/loadDetail',
+      type: 'sysuser/loadDetail',
       payload: {
         record: item,
       },
@@ -195,7 +196,7 @@ class UserList extends PureComponent {
           </Col>
           <Col span={8}>
             <Form.Item label="所属角色" name="role_ids" style={{ width: '100%' }}>
-              <RoleSelect style={{ width: '100%' }} />
+              <RoleMSelect style={{ width: '100%' }} />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -216,7 +217,7 @@ class UserList extends PureComponent {
   render() {
     const {
       loading,
-      user: {
+      sysuser: {
         data: { list, pagination },
       },
       global: { menuPaths },

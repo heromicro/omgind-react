@@ -28,8 +28,8 @@ import MenuDetail from './MenuDetail';
 import styles from './MenuList.less';
 
 @connect((state) => ({
-  menu: state.menu,
-  loading: state.loading.models.menu,
+  sysmenu: state.sysmenu,
+  loading: state.loading.models.sysmenu,
   global: state.global,
 }))
 class MenuList extends PureComponent {
@@ -47,7 +47,7 @@ class MenuList extends PureComponent {
 
   componentDidMount() {
     this.dispatch({
-      type: 'menu/fetchTree',
+      type: 'sysmenu/fetchTree',
       // payload: {pid: ""}
     });
 
@@ -56,14 +56,14 @@ class MenuList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'menu/changeStatus',
+      type: 'sysmenu/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'menu/changeStatus',
+      type: 'sysmenu/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
@@ -77,7 +77,7 @@ class MenuList extends PureComponent {
     console.log(' ------- --- == editing item ', item);
 
     this.dispatch({
-      type: 'menu/loadForm',
+      type: 'sysmenu/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -87,7 +87,7 @@ class MenuList extends PureComponent {
 
   onAddClick = () => {
     this.dispatch({
-      type: 'menu/loadForm',
+      type: 'sysmenu/loadForm',
       payload: {
         type: 'A',
       },
@@ -112,7 +112,7 @@ class MenuList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'menu/fetch',
+      type: 'sysmenu/fetch',
       search,
       pagination,
     });
@@ -133,7 +133,7 @@ class MenuList extends PureComponent {
 
   onMainTableChange = (pagination) => {
     this.dispatch({
-      type: 'menu/fetch',
+      type: 'sysmenu/fetch',
       pagination: {
         current: pagination.current,
         pageSize: pagination.pageSize,
@@ -153,7 +153,7 @@ class MenuList extends PureComponent {
     let pid = this.getParentID();
 
     this.dispatch({
-      type: 'menu/fetch',
+      type: 'sysmenu/fetch',
       search: {
         ...values,
         pid: pid ? pid : null,
@@ -165,7 +165,7 @@ class MenuList extends PureComponent {
 
   handleFormSubmit = (data) => {
     this.dispatch({
-      type: 'menu/submit',
+      type: 'sysmenu/submit',
       payload: data,
     });
     this.clearSelectRows();
@@ -173,7 +173,7 @@ class MenuList extends PureComponent {
 
   handleFormCancel = () => {
     this.dispatch({
-      type: 'menu/changeModalFormVisible',
+      type: 'sysmenu/changeModalFormVisible',
       payload: false,
     });
   };
@@ -195,7 +195,7 @@ class MenuList extends PureComponent {
     console.log(' ----- === === detail info close ');
 
     this.dispatch({
-      type: 'menu/changeDrawerDetailVisible',
+      type: 'sysmenu/changeDrawerDetailVisible',
       payload: false,
     });
   };
@@ -204,7 +204,7 @@ class MenuList extends PureComponent {
     console.log(' ----- === == === --- ', item);
 
     this.dispatch({
-      type: 'menu/loadDetail',
+      type: 'sysmenu/loadDetail',
       payload: {
         record: item,
       },
@@ -227,7 +227,7 @@ class MenuList extends PureComponent {
 
   handleDelOKClick(id) {
     this.dispatch({
-      type: 'menu/del',
+      type: 'sysmenu/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -246,7 +246,7 @@ class MenuList extends PureComponent {
     }
 
     this.dispatch({
-      type: 'menu/fetchTree',
+      type: 'sysmenu/fetchTree',
       // payload: {pid: id}
     });
 
@@ -315,7 +315,7 @@ class MenuList extends PureComponent {
   render() {
     const {
       loading,
-      menu: {
+      sysmenu: {
         data: { list, pagination },
         treeData,
         expandedKeys,
@@ -449,7 +449,7 @@ class MenuList extends PureComponent {
                 });
 
                 const {
-                  menu: { search },
+                  sysmenu: { search },
                 } = this.props;
 
                 const item = {
@@ -467,14 +467,14 @@ class MenuList extends PureComponent {
                 }
 
                 this.dispatch({
-                  type: 'menu/fetch',
+                  type: 'sysmenu/fetch',
                   search: { ...search, ...item },
                   pagination: {},
                 });
               }}
               onExpand={(keys) => {
                 this.dispatch({
-                  type: 'menu/saveExpandedKeys',
+                  type: 'sysmenu/saveExpandedKeys',
                   payload: keys,
                 });
               }}

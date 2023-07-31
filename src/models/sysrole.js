@@ -2,7 +2,7 @@ import { message } from 'antd';
 import * as roleService from '@/services/sysrole';
 
 export default {
-  namespace: 'role',
+  namespace: 'sysrole',
   state: {
     search: {},
     pagination: {},
@@ -29,7 +29,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.role.search);
+        const s = yield select((state) => state.sysrole.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -42,7 +42,7 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.role.pagination);
+        const p = yield select((state) => state.sysrole.pagination);
         if (p) {
           params = { ...params, ...p };
         }
@@ -148,7 +148,7 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select((state) => state.role.formType);
+      const formType = yield select((state) => state.sysrole.formType);
 
       console.log(' ----- ====== ==== payload == ', payload);
       console.log(' ----- ====== ==== formType == ', formType);
@@ -156,7 +156,7 @@ export default {
 
       let success = false;
       if (formType === 'E') {
-        const id = yield select((state) => state.role.formID);
+        const id = yield select((state) => state.sysrole.formID);
         console.log(' ----- ====== ==== id == ', id);
 
         const response = yield call(roleService.update, id, params);
@@ -222,7 +222,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.role.data);
+        const data = yield select((state) => state.sysrole.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {

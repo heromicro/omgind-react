@@ -15,8 +15,8 @@ import DictDrawerForm from './dictDrawerForm';
 import styles from './DictList.less';
 
 @connect((state) => ({
-  loading: state.loading.models.dict,
-  dict: state.dict,
+  loading: state.loading.models.sysdict,
+  sysdict: state.sysdict,
 }))
 class DictList extends PureComponent {
   formRef = React.createRef();
@@ -36,21 +36,21 @@ class DictList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'dict/changeStatus',
+      type: 'sysdict/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'dict/changeStatus',
+      type: 'sysdict/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
 
   onItemEditClick = (item) => {
     this.dispatch({
-      type: 'dict/loadForm',
+      type: 'sysdict/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -60,7 +60,7 @@ class DictList extends PureComponent {
 
   onAddClick = () => {
     this.dispatch({
-      type: 'dict/loadForm',
+      type: 'sysdict/loadForm',
       payload: {
         type: 'A',
       },
@@ -81,7 +81,7 @@ class DictList extends PureComponent {
     console.log(' - ====== deleting ', id);
 
     this.dispatch({
-      type: 'dict/del',
+      type: 'sysdict/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -135,7 +135,7 @@ class DictList extends PureComponent {
     console.log(' ==== submit ---------  ');
 
     this.dispatch({
-      type: 'dict/submit',
+      type: 'sysdict/submit',
       payload: data,
     });
     this.clearSelectRows();
@@ -143,7 +143,7 @@ class DictList extends PureComponent {
 
   onDataFormCancel = () => {
     this.dispatch({
-      type: 'dict/changeModalFormVisible',
+      type: 'sysdict/changeModalFormVisible',
       payload: false,
     });
   };
@@ -156,7 +156,7 @@ class DictList extends PureComponent {
   refetch = ({ search = {}, pagination = {} } = {}) => {
     console.log(' --------- ===== 9999 == ');
     this.dispatch({
-      type: 'dict/fetch',
+      type: 'sysdict/fetch',
       search,
       pagination,
     });
@@ -166,14 +166,14 @@ class DictList extends PureComponent {
     console.log(' --- --- === == -- cancel');
 
     this.dispatch({
-      type: 'dict/changeDetailDrawerOpen',
+      type: 'sysdict/changeDetailDrawerOpen',
       payload: false,
     });
   };
 
   onShowDetailInfo = (item) => {
     this.dispatch({
-      type: 'dict/loadDetail',
+      type: 'sysdict/loadDetail',
       payload: {
         record: item,
       },
@@ -202,7 +202,7 @@ class DictList extends PureComponent {
 
           {/* <Col span={8}>
             <Form.Item label="所属角色" name="role_ids">
-              <RoleSelect />
+              <RoleMSelect />
             </Form.Item>
           </Col> */}
 
@@ -224,7 +224,7 @@ class DictList extends PureComponent {
   render() {
     const {
       loading,
-      dict: {
+      sysdict: {
         data: { list, pagination },
       },
     } = this.props;
@@ -318,6 +318,7 @@ class DictList extends PureComponent {
             </div>
           </div>
         </Card>
+        {this.renderItemDetail()}
         {this.renderDrawerForm()}
       </PageHeaderLayout>
     );

@@ -18,8 +18,8 @@ import { adaptTreeSelect } from '@/utils/uiutil';
 
 import MenuAction from './MenuAction';
 
-@connect(({ menu }) => ({
-  menu,
+@connect(({ sysmenu }) => ({
+  sysmenu,
 }))
 class MenuCard extends PureComponent {
   formRef = React.createRef();
@@ -47,7 +47,7 @@ class MenuCard extends PureComponent {
 
   render() {
     const {
-      menu: { formVisible, formTitle, formModalVisible, formData, submitting, treeData },
+      sysmenu: { formVisible, formTitle, formModalVisible, formData, submitting, treeData },
       onCancel,
     } = this.props;
 

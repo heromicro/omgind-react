@@ -37,3 +37,10 @@ export function parseValue(value, key) {
 export function isRootUser(cuser) {
   return cuser.user_name === 'root';
 }
+
+export const defaultPagination = {
+  current: 1,
+  pageSize: 10,
+  total: 0,
+  after: '',
+};

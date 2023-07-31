@@ -3,7 +3,7 @@ import * as menuService from '@/services/sysmenu';
 import store from '@/utils/store';
 
 export default {
-  namespace: 'menu',
+  namespace: 'sysmenu',
   state: {
     search: {},
     pagination: {},
@@ -36,7 +36,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.menu.search);
+        const s = yield select((state) => state.sysmenu.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -49,7 +49,7 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.menu.pagination);
+        const p = yield select((state) => state.sysmenu.pagination);
         if (p) {
           params = { ...params, ...p };
         }
@@ -106,7 +106,7 @@ export default {
           }),
         ];
       } else {
-        const search = yield select((state) => state.menu.search);
+        const search = yield select((state) => state.sysmenu.search);
         yield put({
           type: 'saveFormData',
           payload: { parent_id: search.parentID ? search.parentID : '' },
@@ -159,10 +159,10 @@ export default {
       });
 
       const params = { ...payload };
-      const formType = yield select((state) => state.menu.formType);
+      const formType = yield select((state) => state.sysmenu.formType);
       let success = false;
       if (formType === 'E') {
-        const id = yield select((state) => state.menu.formID);
+        const id = yield select((state) => state.sysmenu.formID);
         const response = yield call(menuService.update, id, params);
         const { code } = response;
         if (code === 0) {
@@ -235,7 +235,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.menu.data);
+        const data = yield select((state) => state.sysmenu.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {

@@ -2,7 +2,7 @@ import { message } from 'antd';
 import * as dictService from '@/services/sysdict';
 
 export default {
-  namespace: 'dict',
+  namespace: 'sysdict',
   state: {
     search: {},
     pagination: {},
@@ -35,7 +35,7 @@ export default {
           payload: search,
         });
       } else {
-        const s = yield select((state) => state.dict.search);
+        const s = yield select((state) => state.sysdict.search);
         if (s) {
           params = { ...params, ...s };
         }
@@ -48,7 +48,7 @@ export default {
           payload: pagination,
         });
       } else {
-        const p = yield select((state) => state.dict.pagination);
+        const p = yield select((state) => state.sysdict.pagination);
         if (p) {
           params = { ...params, ...p };
         }
@@ -146,13 +146,13 @@ export default {
       console.log(` = +++++++ vvvvvvvv ===== 111 ${payload}`);
 
       const params = { ...payload };
-      const formType = yield select((state) => state.dict.formType);
+      const formType = yield select((state) => state.sysdict.formType);
       let success = false;
 
       console.log(` = +++++++ vvvvvvvv ===== 111 ${formType}`);
 
       if (formType === 'E') {
-        const id = yield select((state) => state.dict.formID);
+        const id = yield select((state) => state.sysdict.formID);
         const response = yield call(dictService.update, id, params);
         const { code } = response;
         if (code === 0) {
@@ -204,7 +204,7 @@ export default {
           msg = '停用成功';
         }
         message.success(msg);
-        const data = yield select((state) => state.dict.data);
+        const data = yield select((state) => state.sysdict.data);
         const newData = { list: [], pagination: data.pagination };
 
         for (let i = 0; i < data.list.length; i += 1) {

@@ -28,7 +28,7 @@ import styles from './dictDetail.less';
 
 @connect((state) => ({
   cuser: state.global.user,
-  dict: state.dict,
+  sysdict: state.sysdict,
 }))
 class DictDrawerForm extends React.PureComponent {
   formRef = React.createRef<ProFormInstance>();
@@ -72,7 +72,7 @@ class DictDrawerForm extends React.PureComponent {
     console.log(' ---- ====== ==== ', e);
 
     this.dispatch({
-      type: 'dict/changeFormDrawerOpen',
+      type: 'sysdict/changeFormDrawerOpen',
       payload: false,
     });
   };
@@ -80,7 +80,7 @@ class DictDrawerForm extends React.PureComponent {
   render() {
     const {
       onSubmit,
-      dict: { formTitle, formType, formVisible, formDrawerOpen, formData, submitting },
+      sysdict: { formTitle, formType, formVisible, formDrawerOpen, formData, submitting },
       ...restProps
     } = this.props;
 

@@ -12,8 +12,8 @@ import RoleCard from './RoleCard';
 import styles from './RoleList.less';
 
 @connect((state) => ({
-  role: state.role,
-  loading: state.loading.models.role,
+  sysrole: state.sysrole,
+  loading: state.loading.models.sysrole,
 }))
 class RoleList extends PureComponent {
   formRef = React.createRef();
@@ -29,7 +29,7 @@ class RoleList extends PureComponent {
 
   componentDidMount() {
     this.dispatch({
-      type: 'role/fetch',
+      type: 'sysrole/fetch',
       search: {},
       pagination: {},
     });
@@ -37,14 +37,14 @@ class RoleList extends PureComponent {
 
   onItemDisableClick = (item) => {
     this.dispatch({
-      type: 'role/changeStatus',
+      type: 'sysrole/changeStatus',
       payload: { id: item.id, is_active: false },
     });
   };
 
   onItemEnableClick = (item) => {
     this.dispatch({
-      type: 'role/changeStatus',
+      type: 'sysrole/changeStatus',
       payload: { id: item.id, is_active: true },
     });
   };
@@ -64,7 +64,7 @@ class RoleList extends PureComponent {
 
   onAddClick = () => {
     this.dispatch({
-      type: 'role/loadForm',
+      type: 'sysrole/loadForm',
       payload: {
         type: 'A',
       },
@@ -73,7 +73,7 @@ class RoleList extends PureComponent {
 
   onItemEditClick = (item) => {
     this.dispatch({
-      type: 'role/loadForm',
+      type: 'sysrole/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -88,6 +88,15 @@ class RoleList extends PureComponent {
       okType: 'danger',
       cancelText: '取消',
       onOk: this.handleDelOKClick.bind(this, item.id),
+    });
+  };
+
+  refetch = ({ search = {}, pagination = {} } = {}) => {
+    console.log(' --------- ===== 9999 == ');
+    this.dispatch({
+      type: 'sysrole/fetch',
+      search,
+      pagination,
     });
   };
 
@@ -106,7 +115,7 @@ class RoleList extends PureComponent {
 
   onMainTableChange = (pagination) => {
     this.dispatch({
-      type: 'role/fetch',
+      type: 'sysrole/fetch',
       pagination: {
         current: pagination.current,
         pageSize: pagination.pageSize,
@@ -119,7 +128,7 @@ class RoleList extends PureComponent {
     this.formRef.current.resetFields();
 
     this.dispatch({
-      type: 'role/fetch',
+      type: 'sysrole/fetch',
       search: {},
       pagination: {},
     });
@@ -130,7 +139,7 @@ class RoleList extends PureComponent {
       .validateFields()
       .then((values) => {
         this.dispatch({
-          type: 'role/fetch',
+          type: 'sysrole/fetch',
           search: values,
           pagination: {},
         });
@@ -141,7 +150,7 @@ class RoleList extends PureComponent {
 
   handleDataFormSubmit = (data) => {
     this.dispatch({
-      type: 'role/submit',
+      type: 'sysrole/submit',
       payload: data,
     });
     this.clearSelectRows();
@@ -149,14 +158,14 @@ class RoleList extends PureComponent {
 
   handleDataFormCancel = () => {
     this.dispatch({
-      type: 'role/changeModalFormVisible',
+      type: 'sysrole/changeModalFormVisible',
       payload: false,
     });
   };
 
   handleDelOKClick(id) {
     this.dispatch({
-      type: 'role/del',
+      type: 'sysrole/del',
       payload: { id },
     });
     this.clearSelectRows();
@@ -193,7 +202,7 @@ class RoleList extends PureComponent {
   render() {
     const {
       loading,
-      role: {
+      sysrole: {
         data: { list, pagination },
       },
     } = this.props;

@@ -3,10 +3,10 @@ import { connect } from 'dva';
 import { Form, Input, Modal, Radio, Row, Col, Switch } from 'antd';
 import { md5Hash } from '@/utils/utils';
 import { pattern } from '@/utils/regex';
-import RoleSelect from './RoleSelect';
+import RoleMSelect from '@/components/selectors/RoleMSelect';
 
 @connect((state) => ({
-  user: state.user,
+  sysuser: state.sysuser,
 }))
 class UserCard extends PureComponent {
   formRef = React.createRef();
@@ -40,7 +40,7 @@ class UserCard extends PureComponent {
   render() {
     const {
       onCancel,
-      user: { formType, formTitle, formVisible, formModalVisible, formData, submitting },
+      sysuser: { formType, formTitle, formVisible, formModalVisible, formData, submitting },
     } = this.props;
 
     const formItemLayout = {
@@ -72,16 +72,11 @@ class UserCard extends PureComponent {
             ref={this.formRef}
             onFinishFailed={this.onFinishFailed}
             initialValues={{
-              user_name: formData.user_name,
-              password: formData.password,
-              last_name: formData.last_name,
-              first_name: formData.first_name,
+              ...formData,
+
               gender: formData.gender ? formData.gender.toString() : '1',
               is_active: formData.is_active === undefined ? true : formData.is_active,
               sort: formData.sort ? formData.sort : 10000,
-              user_roles: formData.user_roles,
-              email: formData.email,
-              mobile: formData.mobile,
             }}
           >
             <Row>
@@ -161,7 +156,7 @@ class UserCard extends PureComponent {
               name="user_roles"
               rules={[{ required: true, message: '请选择所属角色' }]}
             >
-              <RoleSelect />
+              <RoleMSelect />
             </Form.Item>
 
             <Form.Item {...formItemLayout} label="邮箱" name="email">

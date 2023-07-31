@@ -5,7 +5,6 @@ import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descr
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import * as _ from 'lodash';
-import { SysAnnexItem } from '@/scheme/dict';
 
 import PButton from '@/components/PermButton';
 
@@ -15,7 +14,7 @@ import styles from './dictDetail.less';
 
 @connect((state) => ({
   cuser: state.global.user,
-  dict: state.dict,
+  sysdict: state.sysdict,
 }))
 class AnnexDetail extends React.PureComponent {
   constructor(props) {
@@ -66,7 +65,7 @@ class AnnexDetail extends React.PureComponent {
     console.log(' ---- ==== click edit eee ');
 
     this.dispatch({
-      type: 'dict/loadForm',
+      type: 'sysdict/loadForm',
       payload: {
         type: 'E',
         id: item.id,
@@ -79,15 +78,15 @@ class AnnexDetail extends React.PureComponent {
     const { dispatch } = this.props;
     if (!visible) {
       dispatch({
-        type: 'dict/changeDetailDrawerOpen',
+        type: 'sysdict/changeDetailDrawerOpen',
         payload: false,
       });
     }
   };
 
   render(): React.ReactNode {
-    const { onClose, onAddClick, dict, cuser, ...restProps } = this.props;
-    const { detailDrawerOpen, detailData } = dict;
+    const { onClose, onAddClick, sysdict, cuser, ...restProps } = this.props;
+    const { detailDrawerOpen, detailData } = sysdict;
 
     console.log(' ----- === detailData == == ', detailData);
 

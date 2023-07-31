@@ -8,18 +8,18 @@ import { CloseOutlined, CheckOutlined, ExclamationCircleOutlined } from '@ant-de
 import { checkActionPermission } from '@/utils/checkPermission';
 
 @connect((state) => ({
-  user: state.user,
+  sysuser: state.sysuser,
   global: state.global,
 }))
 class UserDetail extends PureComponent {
   render() {
     const {
-      user,
+      sysuser,
       onClose,
       global: { menuPaths },
       ...restProps
     } = this.props;
-    const { drawerDetailOpen, formData } = user;
+    const { drawerDetailOpen, formData } = sysuser;
 
     let detailData = formData;
     // console.log(' ---====-- ', formData);
