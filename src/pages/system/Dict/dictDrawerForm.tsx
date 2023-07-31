@@ -331,7 +331,7 @@ class DictDrawerForm extends React.PureComponent {
                           }}
                           block
                         >
-                          添加协议
+                          添 加
                         </Button>
                       </Form.Item>
                     </Col>
