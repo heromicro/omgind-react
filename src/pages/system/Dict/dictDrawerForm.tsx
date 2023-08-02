@@ -26,6 +26,15 @@ import PButton from '@/components/PermButton';
 
 import styles from './dictDetail.less';
 
+interface DictDrawerFormProps {
+  width: number | string;
+
+  // onChange?: (value, option) => void;
+}
+interface DictDrawerFormState {
+  valTipe: string;
+}
+
 @connect((state) => ({
   cuser: state.global.user,
   sysdict: state.sysdict,
@@ -85,6 +94,11 @@ class DictDrawerForm extends React.PureComponent {
     } = this.props;
 
     const { valTipe } = this.state;
+
+    let calculatedValTipe = valTipe;
+    if (formType === 'E') {
+      calculatedValTipe = formData.val_tipe;
+    }
 
     const formItemLayout = {
       labelCol: {
@@ -262,7 +276,7 @@ class DictDrawerForm extends React.PureComponent {
                           name={[field.name, 'value']}
                           rules={[{ required: true, message: '字典值必填' }]}
                         >
-                          {valTipe === 'int' ? (
+                          {calculatedValTipe === 'int' ? (
                             <InputNumber
                               allowClear
                               step={1}
