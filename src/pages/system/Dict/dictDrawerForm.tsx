@@ -274,6 +274,7 @@ class DictDrawerForm extends React.PureComponent {
                             <Input
                               allowClear
                               style={{ width: '100%' }}
+                              maxLength={32}
                               placeholder="请输入字典值"
                             />
                           )}

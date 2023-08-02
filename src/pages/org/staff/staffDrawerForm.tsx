@@ -28,8 +28,8 @@ import DistrictCascader from '@/components/cascader/DistrictCascader';
 import DeptCascader from '@/components/cascader/DeptCascader';
 
 import OrganSelector from '@/components/selectors/OrganSelector';
-import GenderSelector from '@/components/selectors/GenderSelector';
-import EmployeStatSelector from '@/components/selectors/EmployeStatSelector';
+
+import DictSelector from '@/components/selectors/DictSelector';
 
 import { collectionDistrictIDs } from '@/scheme/sysaddress';
 import { formatDate } from '@/utils/datetime';
@@ -336,7 +336,12 @@ class StaffDrawerForm extends React.PureComponent {
                   name="gender"
                   rules={[{ required: true, message: '性别必填' }]}
                 >
-                  <GenderSelector placeholder="选择性别" onChange={this.onGenderSelectorChange} />
+                  <DictSelector
+                    dictKey="gender"
+                    dictId={formData ? '-' : formData.gender_dict_id}
+                    placeholder="选择性别"
+                    onChange={this.onGenderSelectorChange}
+                  />
                 </Form.Item>
                 <Form.Item name="gender_dict_id" style={{ display: 'none' }}>
                   <Input type="hidden" allowClear />
@@ -559,7 +564,9 @@ class StaffDrawerForm extends React.PureComponent {
                   name="empy_stat"
                   rules={[{ required: true, message: '在职状态必填' }]}
                 >
-                  <EmployeStatSelector
+                  <DictSelector
+                    dictKey="employemnt_stat"
+                    dictId={formData ? '-' : formData.empyst_dict_id}
                     placeholder="请选择在职状态"
                     onChange={this.onEmployeStatSelectorChange}
                   />

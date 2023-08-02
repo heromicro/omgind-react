@@ -3,24 +3,29 @@ import { Select, SelectProps } from 'antd';
 import * as _ from 'lodash';
 import * as dictService from '@/services/sysdict';
 
-interface GenderSelectorProps extends SelectProps {
+interface DictSelectorProps extends SelectProps {
   dictId?: string;
+  dictKey: string;
   debounceTimeOut?: number;
   // onChange?: (value, option) => void;
 }
 
-interface GenderSelectorState {
+interface DictSelectorState {
   value: string;
   options: [];
   dictId?: string;
+  dictKey: string;
 }
-const defaultProps: GenderSelectorProps = { debounceTimeOut: 400, dictId: '-' };
+const defaultProps: DictSelectorProps = { debounceTimeOut: 400, dictId: '-' };
 
-class GenderSelector extends PureComponent<GenderSelectorProps, GenderSelectorState> {
+class DictSelector extends PureComponent<DictSelectorProps, DictSelectorState> {
   //
 
-  constructor(props: GenderSelectorProps) {
+  constructor(props: DictSelectorProps) {
     super(props);
+
+    console.log(' ---- ======= value : ', props.value);
+
     this.state = {
       value: props.value,
       options: [],
@@ -42,17 +47,17 @@ class GenderSelector extends PureComponent<GenderSelectorProps, GenderSelectorSt
   }
 
   componentDidMount(): void {
-    const { dictId } = this.props;
+    const { dictId, dictKey } = this.props;
 
-    this.fetchDictItems(dictId ? dictId : '-');
+    this.fetchDictItems(dictId ? dictId : '-', dictKey);
   }
 
-  fetchDictItems = (did: string) => {
-    dictService.items(did, { dict_key: 'gender' }).then((res) => {
+  fetchDictItems = (did: string, dictKey: string) => {
+    dictService.items(did, { dict_key: dictKey }).then((res) => {
       const { code, burden } = res;
       if (code === 0 && burden.length > 0) {
         let gender = burden[0];
-        console.log(' ---- --- --- ==== gender = ', gender);
+        console.log(' ---- --- --- ==== simulation_vendor = ', dictKey);
         if (gender.items.length > 0) {
           let nd = [];
           gender.items.map((item) => {
@@ -70,11 +75,14 @@ class GenderSelector extends PureComponent<GenderSelectorProps, GenderSelectorSt
   };
 
   onChange = (value: string, option) => {
-    this.triggerChange(value, option);
+    let val = { label: option.label, value };
+    this.triggerChange(val, option);
   };
 
   onSelect = (value: string, option) => {
-    this.triggerChange(value, option);
+    console.log(' ------- === option == ----- ', option);
+    let val = { label: option.label, value };
+    this.triggerChange(val, option);
   };
 
   triggerChange = (value, option) => {
@@ -105,6 +113,6 @@ class GenderSelector extends PureComponent<GenderSelectorProps, GenderSelectorSt
   }
 }
 
-GenderSelector.defaultProps = defaultProps;
+DictSelector.defaultProps = defaultProps;
 
-export default GenderSelector;
+export default DictSelector;
