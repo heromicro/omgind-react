@@ -195,7 +195,7 @@ class MenuList extends PureComponent {
     console.log(' ----- === === detail info close ');
 
     this.dispatch({
-      type: 'sysmenu/changeDrawerDetailVisible',
+      type: 'sysmenu/changeDetailDrawerOpen',
       payload: false,
     });
   };

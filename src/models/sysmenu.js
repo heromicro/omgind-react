@@ -15,7 +15,7 @@ export default {
     formType: '',
     formTitle: '',
     formID: '',
-    drawerDetailopen: false,
+    detailDrawerOpen: false,
     detailData: {},
     formModalVisible: false,
     formVisible: false,
@@ -143,7 +143,7 @@ export default {
       const { code, burden } = response;
       if (code === 0) {
         yield put({
-          type: 'changeDrawerDetailVisible',
+          type: 'changeDetailDrawerOpen',
           payload: true,
         });
         yield put({
@@ -275,8 +275,8 @@ export default {
       }
       return { ...state, formModalVisible: payload };
     },
-    changeDrawerDetailVisible(state, { payload }) {
-      return { ...state, drawerDetailopen: payload };
+    changeDetailDrawerOpen(state, { payload }) {
+      return { ...state, detailDrawerOpen: payload };
     },
     saveDetailData(state, { payload }) {
       return { ...state, detailData: payload };
