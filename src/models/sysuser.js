@@ -13,7 +13,7 @@ export default {
     submitting: false,
     formTitle: '',
     formID: '',
-    drawerDetailOpen: false,
+    detailDrawerOpen: false,
     formModalVisible: false,
     formVisible: false,
     formData: {},
@@ -130,7 +130,7 @@ export default {
     *loadDetail({ payload }, { call, put, select }) {
       // const response = yield call(assetService.get, payload.id);
       yield put({
-        type: 'changeDrawerDetailOpen',
+        type: 'changeDetailDrawerOpen',
         payload: true,
       });
       let { record } = payload;
@@ -240,8 +240,8 @@ export default {
       }
       return { ...state, formModalVisible: payload };
     },
-    changeDrawerDetailOpen(state, { payload }) {
-      return { ...state, drawerDetailOpen: payload };
+    changeDetailDrawerOpen(state, { payload }) {
+      return { ...state, detailDrawerOpen: payload };
     },
     saveFormTitle(state, { payload }) {
       return { ...state, formTitle: payload };

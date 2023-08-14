@@ -19,7 +19,7 @@ class UserDetail extends PureComponent {
       global: { menuPaths },
       ...restProps
     } = this.props;
-    const { drawerDetailOpen, formData } = sysuser;
+    const { detailDrawerOpen, formData } = sysuser;
 
     let detailData = formData;
     // console.log(' ---====-- ', formData);
@@ -30,7 +30,7 @@ class UserDetail extends PureComponent {
       <Drawer
         {...restProps}
         onClose={onClose}
-        open={drawerDetailOpen}
+        open={detailDrawerOpen}
         title={detailData.name}
         footer={
           <div style={{ textAlign: 'left' }}>
