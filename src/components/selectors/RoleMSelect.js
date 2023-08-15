@@ -1,34 +1,53 @@
 import React, { PureComponent } from 'react';
 import { Select } from 'antd';
+import debounce from 'lodash/debounce';
+import * as _ from 'lodash';
+
 import * as roleService from '@/services/sysrole';
 
 import * as utils from '@/utils/utils';
-
-function parseValue(value) {
-  if (!value) {
-    return [];
-  }
-  return value.map((v) => v.role_id);
-}
 
 export default class RoleSelect extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: parseValue(props.value),
+      notImmediately: props.notImmediately === undefined ? true : props.notImmediately,
+      value: utils.parseValue(props.value, 'role_id'),
       data: [],
       pagination: utils.defaultPagination,
     };
+
+    this.handleSearch = debounce(this.handleSearch, 1200);
   }
 
   componentDidMount() {
-    this.queryRole();
+    const { notImmediately, value } = this.state;
+    if (!notImmediately || !_.isEmpty(value)) {
+      this.queryRole({});
+    }
   }
 
-  queryRole = (qv = null) => {
+  queryRole = ({ qv = null, qp = {} }) => {
     const { pagination } = this.state;
     const { assetPermsNotIn } = this.props;
+
+    const { value } = this.state;
+    let muinIDs = '';
+    if (!_.isEmpty(value)) {
+      muinIDs = value.join(',');
+    }
+
+    let params = { ...qp };
+
+    if (_.isEmpty(muinIDs)) {
+      params = { ...params };
+    }
+    const { queryParams } = this.props;
+
+    if (queryParams) {
+      params = { ...params, ...queryParams };
+    }
 
     roleService
       .querySelectPage({
@@ -63,7 +82,7 @@ export default class RoleSelect extends PureComponent {
 
   static getDerivedStateFromProps(nextProps, state) {
     if ('value' in nextProps) {
-      return { ...state, value: parseValue(nextProps.value) };
+      return { ...state, value: utils.parseValue(nextProps.value, 'role_id') };
     }
     return state;
   }
@@ -81,12 +100,24 @@ export default class RoleSelect extends PureComponent {
     }
   };
 
-  handleSearch = (val) => {
-    // console.log(' ----- === handleSearch: ', val);
-    if (!val) {
+  onDropdownVisibleChange = (open) => {
+    if (!open) {
       return;
     }
-    this.queryRole(val);
+    const { data } = this.state;
+    if (data && data.length > 0) {
+      return;
+    }
+
+    this.queryRole({});
+  };
+
+  handleSearch = (besearched) => {
+    // console.log(' ----- === handleSearch: ', besearched);
+    if (!besearched) {
+      return;
+    }
+    this.queryRole({ qv: besearched });
   };
 
   render() {
@@ -98,6 +129,7 @@ export default class RoleSelect extends PureComponent {
         value={value}
         onChange={this.handleChange}
         onSearch={this.handleSearch}
+        onDropdownVisibleChange={this.onDropdownVisibleChange}
         placeholder="请选择角色"
         style={{ minWidth: '100px' }}
       >
