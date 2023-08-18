@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as sysaddressService from '@/services/sysaddress';
+import * as sysaddressService from '@/services/sysaddress.svc';
 
 export default {
   namespace: 'sysaddress',

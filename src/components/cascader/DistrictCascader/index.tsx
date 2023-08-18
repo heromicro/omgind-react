@@ -2,7 +2,7 @@ import React from 'react';
 import { Cascader } from 'antd';
 import * as _ from 'lodash';
 
-import * as districtService from '@/services/sysdistrict';
+import * as districtService from '@/services/sysdistrict.svc';
 
 import { listToTree } from '@/utils/uiutil';
 

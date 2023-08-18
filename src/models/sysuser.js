@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as userService from '@/services/sysuser';
+import * as userService from '@/services/sysuser.svc';
 
 export default {
   namespace: 'sysuser',

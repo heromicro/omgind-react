@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as demoService from '@/services/demo';
+import * as demoService from '@/services/demo.svc';
 
 export default {
   namespace: 'demo',
@@ -48,7 +48,7 @@ export default {
       }
 
       const response = yield call(demoService.query, params);
-      const {code, burden} = response;
+      const { code, burden } = response;
       if (code === 0) {
         yield put({
           type: 'saveData',
@@ -108,8 +108,8 @@ export default {
     },
     *fetchForm({ payload }, { call, put }) {
       const response = yield call(demoService.get, payload.id);
-      const {code, burden} = response;
-      if ( code === 0) {
+      const { code, burden } = response;
+      if (code === 0) {
         yield [
           put({
             type: 'saveFormData',
@@ -121,7 +121,6 @@ export default {
           }),
         ];
       } else {
-
       }
     },
     *submit({ payload }, { call, put, select }) {
@@ -137,14 +136,14 @@ export default {
         const id = yield select((state) => state.demo.formID);
 
         const response = yield call(demoService.update, id, params);
-        const {code} = response;
-        if ( code === 0) {
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
       } else {
         const response = yield call(demoService.create, params);
-        const {code} = response;
-        if ( code === 0) {
+        const { code } = response;
+        if (code === 0) {
           success = true;
         }
       }
@@ -167,8 +166,8 @@ export default {
     },
     *del({ payload }, { call, put }) {
       const response = yield call(demoService.del, payload.id);
-      const {code} = response;
-      if ( code === 0) {
+      const { code } = response;
+      if (code === 0) {
         message.success('删除成功');
         yield put({ type: 'fetch' });
       }
@@ -181,8 +180,8 @@ export default {
         response = yield call(demoService.disable, payload.id);
       }
 
-      const {code} = response;
-      if ( code === 0) {
+      const { code } = response;
+      if (code === 0) {
         let msg = '启用成功';
         if (payload.is_active === false) {
           msg = '停用成功';

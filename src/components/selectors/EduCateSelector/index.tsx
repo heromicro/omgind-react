@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Select, SelectProps } from 'antd';
 import * as _ from 'lodash';
-import * as dictService from '@/services/sysdict';
+import * as dictService from '@/services/sysdict.svc';
 
 interface EduCateSelectorProps extends SelectProps {
   dictId?: string;

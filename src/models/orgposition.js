@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as orgPositionService from '@/services/orgposition';
+import * as orgPositionService from '@/services/orgposition.svc';
 
 export default {
   namespace: 'orgposition',

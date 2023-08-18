@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Form, Input, Modal, message } from 'antd';
-import { updatePwd } from '@/services/signin';
+import { updatePwd } from '@/services/signin.svc';
 import { md5Hash } from '../../utils/utils';
 
 class UpdatePasswordDialog extends PureComponent {

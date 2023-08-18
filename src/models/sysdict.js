@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as dictService from '@/services/sysdict';
+import * as dictService from '@/services/sysdict.svc';
 
 export default {
   namespace: 'sysdict',

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Select, SelectProps } from 'antd';
 import * as _ from 'lodash';
 
-import * as orgService from '@/services/orgorgan';
+import * as orgService from '@/services/orgorgan.svc';
 
 interface PositionSelectorProps extends SelectProps {
   debounceTimeOut?: number;

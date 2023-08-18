@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as organService from '@/services/orgorgan';
+import * as organService from '@/services/orgorgan.svc';
 import { OrgOrganItem } from '@/scheme/orgorgan';
 
 export default {

@@ -1,4 +1,4 @@
-import * as signinService from '@/services/signin';
+import * as signinService from '@/services/signin.svc';
 import store from '@/utils/store';
 
 export default {

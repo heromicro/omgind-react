@@ -3,7 +3,7 @@ import { Select } from 'antd';
 import debounce from 'lodash/debounce';
 import * as _ from 'lodash';
 
-import * as roleService from '@/services/sysrole';
+import * as roleService from '@/services/sysrole.svc';
 
 import * as utils from '@/utils/utils';
 

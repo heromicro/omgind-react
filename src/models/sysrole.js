@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as roleService from '@/services/sysrole';
+import * as roleService from '@/services/sysrole.svc';
 
 export default {
   namespace: 'sysrole',

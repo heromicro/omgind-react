@@ -1,7 +1,8 @@
 import { history } from 'umi';
 import qs from 'qs';
 import { setToken, signOut } from '@/utils/request';
-import * as signinService from '@/services/signin';
+
+import * as signinService from '@/services/signin.svc';
 
 export default {
   namespace: 'signin',
@@ -46,9 +47,9 @@ export default {
       });
 
       console.log(' ---- pppppp === ', payload);
-      
+
       const response = yield call(signinService.signIn, payload);
-      const { code,  burden } = response;
+      const { code, burden } = response;
       if (code !== 0) {
         // FIXME:
 
@@ -114,7 +115,7 @@ export default {
     *signOut(_, { call }) {
       console.log(' -------- 0000000 ======= ');
       const response = yield call(signinService.signOut);
-      const {code } = response;
+      const { code } = response;
       if (code === 0) {
         signOut();
       }

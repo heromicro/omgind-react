@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as menuService from '@/services/sysmenu';
+import * as menuService from '@/services/sysmenu.svc';
 import store from '@/utils/store';
 
 export default {

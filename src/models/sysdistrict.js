@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import qs from 'qs';
 
-import * as districtService from '@/services/sysdistrict';
+import * as districtService from '@/services/sysdistrict.svc';
 import store from '@/utils/store';
 
 export default {

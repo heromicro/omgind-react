@@ -2,7 +2,7 @@ import React from 'react';
 import { Cascader, CascaderProps } from 'antd';
 import * as _ from 'lodash';
 
-import * as deptService from '@/services/orgdept';
+import * as deptService from '@/services/orgdept.svc';
 
 import { listToTree } from '@/utils/uiutil';
 

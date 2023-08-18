@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import * as annexService from '@/services/sysannex';
+import * as annexService from '@/services/sysannex.svc';
 
 export default {
   namespace: 'sysannex',

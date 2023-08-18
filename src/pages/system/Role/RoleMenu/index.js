@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Table } from 'antd';
-import * as menuService from '@/services/sysmenu';
+import * as menuService from '@/services/sysmenu.svc';
+
 import EditableCell from './EditableCell';
 
 const checkAndAdd = (data, addData) => {
