@@ -6,7 +6,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { OrgDeptItem } from '@/scheme/orgdept';
+import { OrgDeptItem } from '@/scheme/orgdept.sch';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';

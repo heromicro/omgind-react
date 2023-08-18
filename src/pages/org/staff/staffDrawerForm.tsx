@@ -31,7 +31,7 @@ import OrganSelector from '@/components/selectors/OrganSelector';
 
 import DictSelector from '@/components/selectors/DictSelector';
 
-import { collectionDistrictIDs } from '@/scheme/sysaddress';
+import { collectionDistrictIDs } from '@/scheme/sysaddress.sch';
 import { formatDate } from '@/utils/datetime';
 
 import styles from './staffDetail.less';

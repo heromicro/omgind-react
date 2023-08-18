@@ -1,4 +1,4 @@
-import { OrgOrganItem } from './orgorgan';
+import { OrgOrganItem } from './orgorgan.sch';
 
 export type orgmixin = {
   org_id: string;

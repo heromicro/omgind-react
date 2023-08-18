@@ -7,9 +7,9 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import { concatenateDistricts } from '@/scheme/sysaddress';
-import { calculateEmployeStatShow } from '@/scheme/orgstaff';
-import { calculateGenderShow } from '@/scheme/common';
+import { concatenateDistricts } from '@/scheme/sysaddress.sch';
+import { calculateEmployeStatShow } from '@/scheme/orgstaff.sch';
+import { calculateGenderShow } from '@/scheme/common.sch';
 
 import { formatDate } from '@/utils/datetime';
 

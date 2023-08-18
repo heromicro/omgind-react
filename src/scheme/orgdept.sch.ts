@@ -1,5 +1,5 @@
-import { OrgOrganItem } from './orgorgan';
-import { timeparts, treemixin, orgmixin } from './common';
+import { OrgOrganItem } from './orgorgan.sch';
+import { timeparts, treemixin, orgmixin } from './common.sch';
 
 export type OrgDeptItem = {
   id: string;

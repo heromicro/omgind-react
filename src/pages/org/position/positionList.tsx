@@ -7,7 +7,7 @@ import { history } from 'umi';
 import debounce from 'lodash/debounce';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { OrgPositionItem } from '@/scheme/orgposition';
+import { OrgPositionItem } from '@/scheme/orgposition.sch';
 
 import PButton from '@/components/PermButton';
 import OrganSelector from '@/components/selectors/OrganSelector';

@@ -1,4 +1,4 @@
-import { timeparts, treemixin } from './common';
+import { timeparts, treemixin } from './common.sch';
 
 export type SysDistrctItem = {
   id: string;

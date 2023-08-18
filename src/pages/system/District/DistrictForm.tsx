@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Form, Input, Switch, Row, Col } from 'antd';
 import { ProForm, ProFormGroup, ProFormDatePicker, ProFormText } from '@ant-design/pro-components';
 
-import { SysDistrctItem } from '@/scheme/sysdistrict';
+import { SysDistrctItem } from '@/scheme/sysdistrict.sch';
 import DistrictCascader from '@/components/cascader/DistrictCascader';
 
 @connect((state) => ({

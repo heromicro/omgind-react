@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
 import { formatDate } from '@/utils/datetime';
-import { DemoItem } from '@/scheme/demo';
+import { DemoItem } from '@/scheme/demo.sch';
 
 import { showPButtons } from '@/utils/uiutil';
 import { makeupSortKey } from '@/utils/urlutil';

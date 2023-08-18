@@ -1,6 +1,6 @@
-import { timeparts } from './common';
+import { timeparts } from './common.sch';
 
-import { SysAddressItem } from './sysaddress';
+import { SysAddressItem } from './sysaddress.sch';
 
 export type OrgOrganItem = timeparts & {
   id: string;

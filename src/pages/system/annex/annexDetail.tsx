@@ -5,7 +5,7 @@ import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descr
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import * as _ from 'lodash';
-import { SysAnnexItem } from '@/scheme/sysannex';
+import { SysAnnexItem } from '@/scheme/sysannex.sch';
 
 import PButton from '@/components/PermButton';
 

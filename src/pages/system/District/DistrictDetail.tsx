@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
 
-import { SysDistrctItem } from '@/scheme/sysdistrict';
+import { SysDistrctItem } from '@/scheme/sysdistrict.sch';
 
 import styles from './DistrictDetail.less';
 

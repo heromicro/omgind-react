@@ -7,7 +7,7 @@ import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
-import { SysAnnexItem } from '@/scheme/sysannex';
+import { SysAnnexItem } from '@/scheme/sysannex.sch';
 
 import { checkActionPermission } from '@/utils/checkPermission';
 

@@ -6,8 +6,8 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { OrgOrganItem } from '@/scheme/orgorgan';
-import { concatenateDistricts } from '@/scheme/sysaddress';
+import { OrgOrganItem } from '@/scheme/orgorgan.sch';
+import { concatenateDistricts } from '@/scheme/sysaddress.sch';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';

@@ -1,4 +1,4 @@
-import { timeparts } from './common';
+import { timeparts } from './common.sch';
 
 export type DemoItem = timeparts & {
   id: string;

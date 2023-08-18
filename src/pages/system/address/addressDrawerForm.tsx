@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
 import DistrictCascader from '@/components/cascader/DistrictCascader';
-import { collectionDistrictIDs } from '@/scheme/sysaddress';
+import { collectionDistrictIDs } from '@/scheme/sysaddress.sch';
 
 import styles from './addressDetail.less';
 

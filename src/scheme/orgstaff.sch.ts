@@ -1,8 +1,8 @@
-import { timeparts, orgmixin } from './common';
-import { SysAddressItem } from './sysaddress';
-import { SysDictItem } from './sysdict';
-import { OrgDeptItem } from './orgdept';
-import { OrgPositionItem } from './orgposition';
+import { timeparts, orgmixin } from './common.sch';
+import { SysAddressItem } from './sysaddress.sch';
+import { SysDictItem } from './sysdict.sch';
+import { OrgDeptItem } from './orgdept.sch';
+import { OrgPositionItem } from './orgposition.sch';
 
 export type OrgStaffItem = {
   id: string;

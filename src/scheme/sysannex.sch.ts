@@ -1,4 +1,4 @@
-import { timeparts, sortparts, activeparts, memoparts } from './common';
+import { timeparts, sortparts, activeparts, memoparts } from './common.sch';
 
 export type SysAnnexItem = timeparts &
   sortparts &

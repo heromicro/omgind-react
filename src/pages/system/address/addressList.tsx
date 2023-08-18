@@ -6,7 +6,7 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { SysAddressItem } from '@/scheme/sysaddress';
+import { SysAddressItem } from '@/scheme/sysaddress.sch';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';

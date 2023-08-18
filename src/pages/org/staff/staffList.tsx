@@ -6,13 +6,13 @@ import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { history } from 'umi';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
-import { OrgStaffItem, calculateEmployeStatShow } from '@/scheme/orgstaff';
+import { OrgStaffItem, calculateEmployeStatShow } from '@/scheme/orgstaff.sch';
 
 import PButton from '@/components/PermButton';
 import { showPButtons } from '@/utils/uiutil';
 import { makeupSortKey, makeupSorters } from '@/utils/urlutil';
 
-import { calculateGenderShow } from '@/scheme/common';
+import { calculateGenderShow } from '@/scheme/common.sch';
 
 import { formatDate } from '@/utils/datetime';
 
@@ -20,7 +20,7 @@ import StaffDetail from './staffDetail';
 import StaffDrawerForm from './staffDrawerForm';
 
 import styles from './staffList.less';
-import { concatenateDistricts } from '@/scheme/sysaddress';
+import { concatenateDistricts } from '@/scheme/sysaddress.sch';
 
 @connect((state) => ({
   cuser: state.global.user,

@@ -1,6 +1,6 @@
-import { timeparts, orgmixin } from './common';
+import { timeparts, orgmixin } from './common.sch';
 
-import { OrgOrganItem } from './orgorgan';
+import { OrgOrganItem } from './orgorgan.sch';
 
 export type OrgPositionItem = {
   id: string;

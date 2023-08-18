@@ -7,7 +7,7 @@ import { connect } from 'dva';
 import * as _ from 'lodash';
 
 import PButton from '@/components/PermButton';
-import { concatenateDistricts } from '@/scheme/sysaddress';
+import { concatenateDistricts } from '@/scheme/sysaddress.sch';
 import { isRootUser } from '@/utils/utils';
 
 import styles from './positionDetail.less';
