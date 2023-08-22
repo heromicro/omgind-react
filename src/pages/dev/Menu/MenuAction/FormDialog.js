@@ -68,6 +68,7 @@ class FormDialog extends PureComponent {
             label="动作编号"
             name="code"
             rules={[{ required: true, message: '编号必填' }]}
+            normalize={(value, prevValue, prevValues) => value.trim()}
           >
             <Input placeholder="请输入" />
           </Form.Item>
@@ -76,6 +77,7 @@ class FormDialog extends PureComponent {
             label="动作名称"
             name="name"
             rules={[{ required: true, message: '名称必填' }]}
+            normalize={(value, prevValue, prevValues) => value.trim()}
           >
             <Input placeholder="请输入" />
           </Form.Item>

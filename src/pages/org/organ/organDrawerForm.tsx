@@ -170,6 +170,7 @@ class OrganDrawerForm extends React.PureComponent {
                     { max: 256, message: '最多 256 字符' },
                     { required: true, message: '名称必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="名称" allowClear />
                 </Form.Item>
@@ -183,6 +184,7 @@ class OrganDrawerForm extends React.PureComponent {
                     { max: 64, message: '最多 64 字符' },
                     { required: true, message: '短名称必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="短名称" allowClear />
                 </Form.Item>
@@ -194,6 +196,7 @@ class OrganDrawerForm extends React.PureComponent {
                   label="助记码"
                   name="code"
                   rules={[{ max: 16, message: '最多 16 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="短名称" allowClear />
                 </Form.Item>
@@ -206,6 +209,7 @@ class OrganDrawerForm extends React.PureComponent {
                     { max: 20, message: '最多 20 字符' },
                     { required: true, message: '执照号必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="执照号" allowClear />
                 </Form.Item>
@@ -220,6 +224,7 @@ class OrganDrawerForm extends React.PureComponent {
                     label="联系人"
                     name={['haddr', 'first_name']}
                     rules={[{ max: 64, message: '最多 64 字符' }]}
+                    normalize={(value, prevValue, prevValues) => value.trim()}
                   >
                     <Input
                       addonBefore={
@@ -227,6 +232,7 @@ class OrganDrawerForm extends React.PureComponent {
                           name={['haddr', 'last_name']}
                           noStyle
                           rules={[{ max: 64, message: '最多 64 字符' }]}
+                          normalize={(value, prevValue, prevValues) => value.trim()}
                         >
                           <Input style={{ width: 120 }} bordered={false} placeholder="姓" />
                         </Form.Item>
@@ -242,6 +248,7 @@ class OrganDrawerForm extends React.PureComponent {
                     label="联系电话"
                     name={['haddr', 'mobile']}
                     rules={[{ max: 64, message: '最多 64 字符' }]}
+                    normalize={(value, prevValue, prevValues) => value.trim()}
                   >
                     <Input
                       addonBefore={
@@ -249,6 +256,7 @@ class OrganDrawerForm extends React.PureComponent {
                           name={['haddr', 'area_code']}
                           noStyle
                           rules={[{ max: 8, message: '最多 8 字符' }]}
+                          normalize={(value, prevValue, prevValues) => value.trim()}
                         >
                           <Input style={{ width: 80 }} bordered={false} />
                         </Form.Item>
@@ -274,44 +282,68 @@ class OrganDrawerForm extends React.PureComponent {
                   <Form.Item
                     label="国id"
                     name={['haddr', 'country_id']}
-                    style={{ display: 'none' }}
+                    hidden
+                    normalize={(value, prevValue, prevValues) => value.trim()}
                   >
                     <Input type="hidden" allowClear />
                   </Form.Item>
-                  <Form.Item label="国" name={['haddr', 'country']} style={{ display: 'none' }}>
+                  <Form.Item
+                    label="国"
+                    name={['haddr', 'country']}
+                    hidden
+                    normalize={(value, prevValue, prevValues) => value.trim()}
+                  >
                     <Input type="hidden" allowClear />
                   </Form.Item>
 
                   <Form.Item
                     label="省/市id"
                     name={['haddr', 'province_id']}
-                    style={{ display: 'none' }}
+                    hidden
+                    normalize={(value, prevValue, prevValues) => value.trim()}
                   >
                     <Input type="hidden" allowClear />
                   </Form.Item>
-                  <Form.Item label="省/市" name={['haddr', 'province']} style={{ display: 'none' }}>
+                  <Form.Item
+                    label="省/市"
+                    name={['haddr', 'province']}
+                    hidden
+                    normalize={(value, prevValue, prevValues) => value.trim()}
+                  >
                     <Input type="hidden" allowClear />
                   </Form.Item>
 
                   <Form.Item
                     label="市/区id"
                     name={['haddr', 'city_id']}
-                    style={{ display: 'none' }}
+                    hidden
+                    normalize={(value, prevValue, prevValues) => value.trim()}
                   >
                     <Input type="hidden" allowClear />
                   </Form.Item>
-                  <Form.Item label="市/区" name={['haddr', 'city']} style={{ display: 'none' }}>
+                  <Form.Item
+                    label="市/区"
+                    name={['haddr', 'city']}
+                    hidden
+                    normalize={(value, prevValue, prevValues) => value.trim()}
+                  >
                     <Input type="hidden" allowClear />
                   </Form.Item>
 
                   <Form.Item
                     label="县/区id"
                     name={['haddr', 'county_id']}
-                    style={{ display: 'none' }}
+                    hidden
+                    normalize={(value, prevValue, prevValues) => value.trim()}
                   >
                     <Input type="hidden" allowClear />
                   </Form.Item>
-                  <Form.Item label="县/区" name={['haddr', 'county']} style={{ display: 'none' }}>
+                  <Form.Item
+                    label="县/区"
+                    name={['haddr', 'county']}
+                    hidden
+                    normalize={(value, prevValue, prevValues) => value.trim()}
+                  >
                     <Input type="hidden" allowClear />
                   </Form.Item>
                 </Col>
@@ -321,6 +353,7 @@ class OrganDrawerForm extends React.PureComponent {
                     label="邮政编码"
                     name={['haddr', 'zip_code']}
                     rules={[{ max: 128, message: '最多 128 字符' }]}
+                    normalize={(value, prevValue, prevValues) => value.trim()}
                   >
                     <Input placeholder="请输入邮政编码" allowClear />
                   </Form.Item>
@@ -332,6 +365,7 @@ class OrganDrawerForm extends React.PureComponent {
                     label="详细地址"
                     name={['haddr', 'daddr']}
                     rules={[{ max: 256, message: '最多 256 字符' }]}
+                    normalize={(value, prevValue, prevValues) => value.trim()}
                   >
                     <Input.TextArea rows={2} placeholder="请输入邮政编码" allowClear />
                   </Form.Item>

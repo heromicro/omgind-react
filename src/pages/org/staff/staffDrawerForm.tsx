@@ -287,6 +287,7 @@ class StaffDrawerForm extends React.PureComponent {
                     { max: 64, message: '最多 64 字符' },
                     { required: true, message: '姓名必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input
                     addonBefore={
@@ -297,6 +298,7 @@ class StaffDrawerForm extends React.PureComponent {
                           { max: 64, message: '最多 64 字符' },
                           { required: true, message: '姓必填' },
                         ]}
+                        normalize={(value, prevValue, prevValues) => value.trim()}
                       >
                         <Input style={{ width: 120 }} bordered={false} placeholder="姓" />
                       </Form.Item>
@@ -311,6 +313,7 @@ class StaffDrawerForm extends React.PureComponent {
                   label="联系电话"
                   name="mobile"
                   rules={[{ max: 64, message: '最多 64 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input
                     addonBefore={
@@ -318,6 +321,7 @@ class StaffDrawerForm extends React.PureComponent {
                         name="area_code"
                         noStyle
                         rules={[{ max: 8, message: '最多 8 字符' }]}
+                        normalize={(value, prevValue, prevValues) => value.trim()}
                       >
                         <Input style={{ width: 80 }} bordered={false} />
                       </Form.Item>
@@ -343,7 +347,11 @@ class StaffDrawerForm extends React.PureComponent {
                     onChange={this.onGenderSelectorChange}
                   />
                 </Form.Item>
-                <Form.Item name="gender_dict_id" style={{ display: 'none' }}>
+                <Form.Item
+                  name="gender_dict_id"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
@@ -380,6 +388,7 @@ class StaffDrawerForm extends React.PureComponent {
                     { max: 20, message: '最多 20 字符' },
                     { required: true, message: '身份证号必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="身份证号" allowClear />
                 </Form.Item>
@@ -398,25 +407,33 @@ class StaffDrawerForm extends React.PureComponent {
                 <Form.Item
                   label="国id"
                   name={['iden_addr', 'country_id']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
-                <Form.Item label="国" name={['iden_addr', 'country']} style={{ display: 'none' }}>
+                <Form.Item
+                  label="国"
+                  name={['iden_addr', 'country']}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
 
                 <Form.Item
                   label="省/市id"
                   name={['iden_addr', 'province_id']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
                 <Form.Item
                   label="省/市"
                   name={['iden_addr', 'province']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
@@ -424,22 +441,34 @@ class StaffDrawerForm extends React.PureComponent {
                 <Form.Item
                   label="市/区id"
                   name={['iden_addr', 'city_id']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
-                <Form.Item label="市/区" name={['iden_addr', 'city']} style={{ display: 'none' }}>
+                <Form.Item
+                  label="市/区"
+                  name={['iden_addr', 'city']}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
 
                 <Form.Item
                   label="县/区id"
                   name={['iden_addr', 'county_id']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
-                <Form.Item label="县/区" name={['iden_addr', 'county']} style={{ display: 'none' }}>
+                <Form.Item
+                  label="县/区"
+                  name={['iden_addr', 'county']}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
@@ -449,6 +478,7 @@ class StaffDrawerForm extends React.PureComponent {
                   label="身份证详细地址"
                   name={['iden_addr', 'daddr']}
                   rules={[{ max: 256, message: '最多 256 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input.TextArea rows={2} placeholder="请输入身份证详细地址" allowClear />
                 </Form.Item>
@@ -467,25 +497,33 @@ class StaffDrawerForm extends React.PureComponent {
                 <Form.Item
                   label="国id"
                   name={['resi_addr', 'country_id']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
-                <Form.Item label="国" name={['resi_addr', 'country']} style={{ display: 'none' }}>
+                <Form.Item
+                  label="国"
+                  name={['resi_addr', 'country']}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
 
                 <Form.Item
                   label="省/市id"
                   name={['resi_addr', 'province_id']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
                 <Form.Item
                   label="省/市"
                   name={['resi_addr', 'province']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
@@ -493,22 +531,34 @@ class StaffDrawerForm extends React.PureComponent {
                 <Form.Item
                   label="市/区id"
                   name={['resi_addr', 'city_id']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
-                <Form.Item label="市/区" name={['resi_addr', 'city']} style={{ display: 'none' }}>
+                <Form.Item
+                  label="市/区"
+                  name={['resi_addr', 'city']}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
 
                 <Form.Item
                   label="县/区id"
                   name={['resi_addr', 'county_id']}
-                  style={{ display: 'none' }}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input type="hidden" allowClear />
                 </Form.Item>
-                <Form.Item label="县/区" name={['resi_addr', 'county']} style={{ display: 'none' }}>
+                <Form.Item
+                  label="县/区"
+                  name={['resi_addr', 'county']}
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
@@ -517,6 +567,7 @@ class StaffDrawerForm extends React.PureComponent {
                   label="现居详细地址"
                   name={['resi_addr', 'daddr']}
                   rules={[{ max: 256, message: '最多 256 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input.TextArea rows={2} placeholder="现居详细地址" allowClear />
                 </Form.Item>
@@ -571,7 +622,11 @@ class StaffDrawerForm extends React.PureComponent {
                     onChange={this.onEmployeStatSelectorChange}
                   />
                 </Form.Item>
-                <Form.Item name="empyst_dict_id" style={{ display: 'none' }}>
+                <Form.Item
+                  name="empyst_dict_id"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
@@ -593,10 +648,20 @@ class StaffDrawerForm extends React.PureComponent {
                     allowClear
                   />
                 </Form.Item>
-                <Form.Item label="部门" name="dept_id" style={{ display: 'none' }}>
+                <Form.Item
+                  label="部门"
+                  name="dept_id"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
-                <Form.Item label="职级" name="rank" rules={[{ max: 16, message: '最多 16 字符' }]}>
+                <Form.Item
+                  label="职级"
+                  name="rank"
+                  rules={[{ max: 16, message: '最多 16 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input placeholder="请输入职级" allowClear />
                 </Form.Item>
               </Col>
@@ -607,6 +672,7 @@ class StaffDrawerForm extends React.PureComponent {
                   label="工号"
                   name="worker_no"
                   rules={[{ max: 16, message: '最多 16 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入工号" allowClear />
                 </Form.Item>

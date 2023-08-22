@@ -163,6 +163,7 @@ class DeptDrawerForm extends React.Component {
                     { max: 64, message: '最多 64 字符' },
                     { required: true, message: '名称必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入请输入名称" allowClear />
                 </Form.Item>
@@ -172,6 +173,7 @@ class DeptDrawerForm extends React.Component {
                   label="助记码"
                   name="code"
                   rules={[{ max: 16, message: '最多 16 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入助记码" allowClear style={{ width: '100%' }} />
                 </Form.Item>
@@ -203,7 +205,12 @@ class DeptDrawerForm extends React.Component {
                     allowClear
                   />
                 </Form.Item>
-                <Form.Item label="上级" name="pid" style={{ display: 'none' }}>
+                <Form.Item
+                  label="上级"
+                  name="pid"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
@@ -214,6 +221,7 @@ class DeptDrawerForm extends React.Component {
                   label="备注"
                   name="memo"
                   rules={[{ max: 1024, message: '最多 1024 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input.TextArea rows={3} placeholder="请输入备注" allowClear />
                 </Form.Item>

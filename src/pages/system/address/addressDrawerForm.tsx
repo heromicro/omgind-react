@@ -157,6 +157,7 @@ class AddressDrawerForm extends React.PureComponent {
                   label="联系人"
                   name="first_name"
                   rules={[{ max: 64, message: '最多 64 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input
                     addonBefore={
@@ -167,6 +168,7 @@ class AddressDrawerForm extends React.PureComponent {
                           { max: 64, message: '最多 64 字符' },
                           { required: true, message: '姓必填' },
                         ]}
+                        normalize={(value, prevValue, prevValues) => value.trim()}
                       >
                         <Input style={{ width: 120 }} bordered={false} placeholder="姓" />
                       </Form.Item>
@@ -181,6 +183,7 @@ class AddressDrawerForm extends React.PureComponent {
                   label="联系电话"
                   name="mobile"
                   rules={[{ max: 64, message: '最多 64 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input
                     addonBefore={
@@ -188,6 +191,7 @@ class AddressDrawerForm extends React.PureComponent {
                         name="area_code"
                         noStyle
                         rules={[{ max: 8, message: '最多 8 字符' }]}
+                        normalize={(value, prevValue, prevValues) => value.trim()}
                       >
                         <Input style={{ width: 80 }} bordered={false} />
                       </Form.Item>
@@ -209,31 +213,71 @@ class AddressDrawerForm extends React.PureComponent {
                   <DistrictCascader onChange={this.onDistrictChange} allowClear />
                 </Form.Item>
 
-                <Form.Item label="国id" name="country_id" style={{ display: 'none' }}>
+                <Form.Item
+                  label="国id"
+                  name="country_id"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
-                <Form.Item label="国" name="country" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-
-                <Form.Item label="省/市id" name="province_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="省/市" name="province" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-
-                <Form.Item label="市/区id" name="city_id" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
-                </Form.Item>
-                <Form.Item label="市/区" name="city" style={{ display: 'none' }}>
+                <Form.Item
+                  label="国"
+                  name="country"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
 
-                <Form.Item label="县/区id" name="county_id" style={{ display: 'none' }}>
+                <Form.Item
+                  label="省/市id"
+                  name="province_id"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
-                <Form.Item label="县/区" name="county" style={{ display: 'none' }}>
+                <Form.Item
+                  label="省/市"
+                  name="province"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="市/区id"
+                  name="city_id"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item
+                  label="市/区"
+                  name="city"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+
+                <Form.Item
+                  label="县/区id"
+                  name="county_id"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
+                  <Input type="hidden" allowClear />
+                </Form.Item>
+                <Form.Item
+                  label="县/区"
+                  name="county"
+                  hidden
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input type="hidden" allowClear />
                 </Form.Item>
               </Col>
@@ -242,6 +286,7 @@ class AddressDrawerForm extends React.PureComponent {
                   label="邮政编码"
                   name="zip_code"
                   rules={[{ max: 128, message: '最多 128 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入邮政编码" allowClear />
                 </Form.Item>
@@ -253,6 +298,7 @@ class AddressDrawerForm extends React.PureComponent {
                   label="详细地址"
                   name="daddr"
                   rules={[{ max: 256, message: '最多 256 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input.TextArea rows={3} placeholder="详细地址" allowClear />
                 </Form.Item>

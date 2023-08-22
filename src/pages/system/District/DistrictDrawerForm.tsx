@@ -153,6 +153,7 @@ class DistrictDrawerForm extends React.PureComponent {
                     { required: true, message: '请输入名称' },
                     { max: 128, message: '最多 128 字符' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入名称" allowClear />
                 </Form.Item>
@@ -162,6 +163,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="名称[英语]"
                   name="name_en"
                   rules={[{ max: 128, message: '最多 128 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入名称[英语]" allowClear />
                 </Form.Item>
@@ -173,6 +175,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="短名称"
                   name="sname"
                   rules={[{ max: 64, message: '最多 64 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入短名称" allowClear />
                 </Form.Item>
@@ -182,6 +185,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="短名称[英语]"
                   name="sname_en"
                   rules={[{ max: 64, message: '最多 64 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入短名称[英语]" allowClear />
                 </Form.Item>
@@ -193,13 +197,24 @@ class DistrictDrawerForm extends React.PureComponent {
                 <Form.Item label="上级" name="pids">
                   <DistrictCascader onChange={this.onDistrictParentChange} allowClear />
                 </Form.Item>
-                <Form.Item label="上级" name="pid" style={{ display: 'none' }}>
-                  <Input type="hidden" allowClear />
+                <Form.Item
+                  label="上级"
+                  name="pid"
+                  hidden
+                  style={{ display: 'none' }}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
+                  <Input type="hidden" />
                 </Form.Item>
               </Col>
 
               <Col span={12}>
-                <Form.Item label="简称" name="abbr" rules={[{ max: 16, message: '最多 16 字符' }]}>
+                <Form.Item
+                  label="简称"
+                  name="abbr"
+                  rules={[{ max: 16, message: '最多 16 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input placeholder="请输入简称" allowClear />
                 </Form.Item>
               </Col>
@@ -210,6 +225,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="行政名称"
                   name="merge_name"
                   rules={[{ max: 256, message: '最多 256 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入行政名称" allowClear />
                 </Form.Item>
@@ -219,6 +235,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="行政短名称"
                   name="merge_sname"
                   rules={[{ max: 256, message: '最多 256 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入行政短名称" allowClear />
                 </Form.Item>
@@ -230,6 +247,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="行政后缀"
                   name="suffix"
                   rules={[{ max: 32, message: '最多 32 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入行政后缀" allowClear />
                 </Form.Item>
@@ -239,6 +257,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="拼音"
                   name="pinyin"
                   rules={[{ max: 128, message: '最多 128 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入拼音" allowClear />
                 </Form.Item>
@@ -250,6 +269,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="简拼"
                   name="initials"
                   rules={[{ max: 32, message: '最多 32 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入简拼" allowClear />
                 </Form.Item>
@@ -259,6 +279,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="区号"
                   name="area_code"
                   rules={[{ max: 8, message: '最多 8 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入区号" allowClear />
                 </Form.Item>
@@ -271,6 +292,7 @@ class DistrictDrawerForm extends React.PureComponent {
                   label="邮码"
                   name="zip_code"
                   rules={[{ max: 8, message: '最多 8 字符' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入邮码" allowClear />
                 </Form.Item>

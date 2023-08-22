@@ -86,6 +86,7 @@ class UserCard extends PureComponent {
                   label="用户名"
                   name="user_name"
                   rules={[{ required: true, message: '请输入用户名' }, pattern('name')]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入用户名" />
                 </Form.Item>
@@ -96,6 +97,7 @@ class UserCard extends PureComponent {
                   label="登录密码"
                   name="password"
                   rules={[{ required: formType === 'A', message: '请输入登录密码' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input
                     type="password"
@@ -112,6 +114,7 @@ class UserCard extends PureComponent {
                   label="姓"
                   name="last_name"
                   rules={[{ required: true, message: '请输入姓' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入姓" />
                 </Form.Item>
@@ -122,6 +125,7 @@ class UserCard extends PureComponent {
                   label="名"
                   name="first_name"
                   rules={[{ required: true, message: '请输入名' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入名" />
                 </Form.Item>
@@ -159,10 +163,20 @@ class UserCard extends PureComponent {
               <RoleMSelect />
             </Form.Item>
 
-            <Form.Item {...formItemLayout} label="邮箱" name="email">
+            <Form.Item
+              {...formItemLayout}
+              label="邮箱"
+              name="email"
+              normalize={(value, prevValue, prevValues) => value.trim()}
+            >
               <Input placeholder="请输入邮箱" />
             </Form.Item>
-            <Form.Item {...formItemLayout} label="手机号" name="mobile">
+            <Form.Item
+              {...formItemLayout}
+              label="手机号"
+              name="mobile"
+              normalize={(value, prevValue, prevValues) => value.trim()}
+            >
               <Input placeholder="请输入手机号" />
             </Form.Item>
           </Form>

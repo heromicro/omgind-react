@@ -90,11 +90,10 @@ class RoleCard extends PureComponent {
             ref={this.formRef}
             onFinishFailed={this.onFinishFailed}
             initialValues={{
-              name: formData.name,
+              ...formData,
+
               sort: formData.sort === undefined ? 100000 : formData.sort,
-              memo: formData.memo,
               is_active: formData.is_active === undefined ? true : formData.is_active,
-              role_menus: formData.role_menus,
             }}
           >
             <Row>
@@ -104,6 +103,7 @@ class RoleCard extends PureComponent {
                   label="角色名称"
                   name="name"
                   rules={[{ required: true, message: '请输入角色名称' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入角色名称" />
                 </Form.Item>
@@ -132,7 +132,12 @@ class RoleCard extends PureComponent {
               </Col>
             </Row>
 
-            <Form.Item {...formItemLayout2} label="备注" name="memo">
+            <Form.Item
+              {...formItemLayout2}
+              label="备注"
+              name="memo"
+              normalize={(value, prevValue, prevValues) => value.trim()}
+            >
               <Input.TextArea rows={2} placeholder="请输入备注" />
             </Form.Item>
             <Card title="选择菜单权限" bordered={false}>

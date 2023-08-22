@@ -168,6 +168,7 @@ class DictDrawerForm extends React.PureComponent {
                     { max: 128, message: '最多 128 字符' },
                     { required: true, message: '名称(中)必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入名称(中)" allowClear />
                 </Form.Item>
@@ -180,6 +181,7 @@ class DictDrawerForm extends React.PureComponent {
                     { max: 128, message: '最多 128 字符' },
                     { required: true, message: '名称(英)必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="请输入名称(英)" allowClear />
                 </Form.Item>
@@ -191,6 +193,7 @@ class DictDrawerForm extends React.PureComponent {
                   label="索引[不可改]"
                   name="dict_key"
                   rules={[{ required: true, message: '请输入索引' }]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   {formType === 'E' ? (
                     <Input placeholder="请输入索引" readOnly disabled />
@@ -241,7 +244,11 @@ class DictDrawerForm extends React.PureComponent {
 
             <Row>
               <Col span={24}>
-                <Form.Item label="备注" name="memo">
+                <Form.Item
+                  label="备注"
+                  name="memo"
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
                 </Form.Item>
               </Col>
@@ -252,10 +259,22 @@ class DictDrawerForm extends React.PureComponent {
                 <>
                   {fields.map((field) => (
                     <Row key={field.key}>
-                      <Form.Item {...field} noStyle name={[field.name, 'id']}>
+                      <Form.Item
+                        {...field}
+                        noStyle
+                        hidden
+                        name={[field.name, 'id']}
+                        normalize={(value, prevValue, prevValues) => value.trim()}
+                      >
                         <Input hidden />
                       </Form.Item>
-                      <Form.Item {...field} noStyle name={[field.name, 'dict_id']}>
+                      <Form.Item
+                        {...field}
+                        noStyle
+                        hidden
+                        name={[field.name, 'dict_id']}
+                        normalize={(value, prevValue, prevValues) => value.trim()}
+                      >
                         <Input hidden />
                       </Form.Item>
 
@@ -265,6 +284,7 @@ class DictDrawerForm extends React.PureComponent {
                           label="显示值"
                           name={[field.name, 'label']}
                           rules={[{ required: true, message: '显示值必填' }]}
+                          normalize={(value, prevValue, prevValues) => value.trim()}
                         >
                           <Input allowClear style={{ width: '100%' }} placeholder="请输入显示值" />
                         </Form.Item>
@@ -275,10 +295,10 @@ class DictDrawerForm extends React.PureComponent {
                           label="字典值"
                           name={[field.name, 'value']}
                           rules={[{ required: true, message: '字典值必填' }]}
+                          normalize={(value, prevValue, prevValues) => value.trim()}
                         >
                           {calculatedValTipe === 'int' ? (
                             <InputNumber
-                              allowClear
                               step={1}
                               style={{ width: '100%' }}
                               parser={(value) => value.replace(/[^\d]/g, '')}
@@ -320,7 +340,12 @@ class DictDrawerForm extends React.PureComponent {
                       </Col>
 
                       <Col span={5}>
-                        <Form.Item {...field} label="备注" name={[field.name, 'memo']}>
+                        <Form.Item
+                          {...field}
+                          label="备注"
+                          name={[field.name, 'memo']}
+                          normalize={(value, prevValue, prevValues) => value.trim()}
+                        >
                           <Input allowClear style={{ width: '100%' }} placeholder="请输入备注" />
                         </Form.Item>
                       </Col>

@@ -111,6 +111,7 @@ class MenuCard extends PureComponent {
                     label="菜单名称"
                     name="name"
                     rules={[{ required: true, message: '请输入菜单名称' }]}
+                    normalize={(value, prevValue, prevValues) => value.trim()}
                   >
                     <Input placeholder="请输入" />
                   </Form.Item>
@@ -132,7 +133,12 @@ class MenuCard extends PureComponent {
 
               <Row>
                 <Col span={12}>
-                  <Form.Item {...formItemLayout} label="访问路径" name="router">
+                  <Form.Item
+                    {...formItemLayout}
+                    label="访问路径"
+                    name="router"
+                    normalize={(value, prevValue, prevValues) => value.trim()}
+                  >
                     <Input placeholder="请输入前端路径" />
                   </Form.Item>
                 </Col>
@@ -140,7 +146,11 @@ class MenuCard extends PureComponent {
                   <Form.Item {...formItemLayout} label="菜单图标">
                     <Row>
                       <Col span={20}>
-                        <Form.Item {...formItemLayoutSub} name="icon">
+                        <Form.Item
+                          {...formItemLayoutSub}
+                          name="icon"
+                          normalize={(value, prevValue, prevValues) => value.trim()}
+                        >
                           <Input placeholder="请输入菜单图标" />
                         </Form.Item>
                       </Col>
@@ -187,7 +197,12 @@ class MenuCard extends PureComponent {
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item {...formItemLayout} label="备注" name="memo">
+                  <Form.Item
+                    {...formItemLayout}
+                    label="备注"
+                    name="memo"
+                    normalize={(value, prevValue, prevValues) => value.trim()}
+                  >
                     <Input placeholder="请输入备注" />
                   </Form.Item>
                 </Col>

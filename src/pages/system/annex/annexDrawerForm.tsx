@@ -147,6 +147,7 @@ class AssetDeviceDrawerForm extends React.PureComponent {
                     { max: 256, message: '最多 256 字符' },
                     { required: true, message: '名称必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="名称" allowClear />
                 </Form.Item>
@@ -159,6 +160,7 @@ class AssetDeviceDrawerForm extends React.PureComponent {
                     { max: 256, message: '最多 256 字符' },
                     { required: true, message: 'IP必填' },
                   ]}
+                  normalize={(value, prevValue, prevValues) => value.trim()}
                 >
                   <Input placeholder="IP" allowClear />
                 </Form.Item>
@@ -187,7 +189,11 @@ class AssetDeviceDrawerForm extends React.PureComponent {
 
             <Row>
               <Col span={24}>
-                <Form.Item label="备注" name="memo">
+                <Form.Item
+                  label="备注"
+                  name="memo"
+                  normalize={(value, prevValue, prevValues) => value.trim()}
+                >
                   <Input.TextArea rows={2} placeholder="请输入备注" showCount maxLength={256} />
                 </Form.Item>
               </Col>
