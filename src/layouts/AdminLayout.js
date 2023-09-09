@@ -276,6 +276,10 @@ class AdminLayout extends React.PureComponent {
               position: 'sticky',
               top: 0,
               zIndex: 1,
+              // display: 'flex',
+              // paddingLeft: 12,
+              // paddingRight: 12,
+              // justifyContent: 'space-between',
             }}
           >
             <Link to="/">
