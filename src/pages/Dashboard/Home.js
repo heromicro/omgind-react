@@ -5,11 +5,15 @@ import { Typography, Card, Alert } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './Home.less';
 
-function CodePreview({ children }) {
+function CodePreview({ children, copyable = null }) {
   return (
     <pre className={styles.pre}>
       <code>
-        <Typography.Text copyable>{children}</Typography.Text>
+        {copyable ? (
+          <Typography.Text copyable={{ text: copyable }}>{children}</Typography.Text>
+        ) : (
+          <Typography.Text copyable>{children}</Typography.Text>
+        )}
       </code>
     </pre>
   );
