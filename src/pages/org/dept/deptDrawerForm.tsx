@@ -142,6 +142,7 @@ class DeptDrawerForm extends React.Component {
         {/* {((formData.org_id && formType == 'E') || (formType == 'A' && formVisible)) && ( */}
         {formVisible && (
           <Form
+            className="editform"
             ref={this.formRef}
             {...formItemLayout}
             layout="vertical"

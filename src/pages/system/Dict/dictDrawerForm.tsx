@@ -145,6 +145,7 @@ class DictDrawerForm extends React.PureComponent {
       >
         {formVisible && (
           <Form
+            className="editform"
             ref={this.formRef}
             {...formItemLayout}
             layout="vertical"
