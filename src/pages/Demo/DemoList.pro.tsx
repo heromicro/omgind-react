@@ -312,9 +312,12 @@ class DemoList extends PureComponent {
         // },
         search: {
           transform: (value: any, namePath, allValues: any) => {
-            let startd = dayjs(value[0]).startOf('day').valueOf();
-            let entd = dayjs(value[1]).endOf('day').valueOf();
-            return { created_at__st: startd, created_at__ed: entd };
+            // eslint-disable-next-line dot-notation
+            let st = dayjs(value[0]['$d']).format('YYYY-MM-DD');
+            // eslint-disable-next-line dot-notation
+            let ed = dayjs(value[1]['$d']).format('YYYY-MM-DD');
+
+            return { created_at__st: st, created_at__ed: ed };
           },
         },
       },
