@@ -263,6 +263,8 @@ class DictList extends PureComponent {
       {
         title: '备注',
         dataIndex: 'memo',
+        width: '180px',
+        ellipsis: true,
       },
       {
         title: '创建时间',

@@ -602,6 +602,8 @@ class DistrictList extends PureComponent {
         title: '备注',
         dataIndex: 'extra',
         hideInSearch: true,
+        width: '180px',
+        ellipsis: true,
       },
       {
         title: '操作',

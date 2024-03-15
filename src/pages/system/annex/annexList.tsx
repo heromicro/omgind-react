@@ -329,7 +329,8 @@ class AnnexList extends PureComponent {
         title: '备注',
         dataIndex: 'memo',
         hideInSearch: true,
-        width: '70px',
+        width: '180px',
+        ellipsis: true,
       },
       {
         title: '操作',

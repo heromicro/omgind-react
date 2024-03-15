@@ -236,6 +236,8 @@ class RoleList extends PureComponent {
       {
         title: '备注',
         dataIndex: 'memo',
+        width: '180px',
+        ellipsis: true,
       },
     ];
 

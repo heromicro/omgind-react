@@ -408,6 +408,8 @@ class StaffList extends PureComponent {
         title: '备注',
         dataIndex: 'memo',
         hideInSearch: true,
+        width: '180px',
+        ellipsis: true,
       },
       {
         title: '创建时间',

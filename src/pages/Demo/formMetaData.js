@@ -46,6 +46,8 @@ export const DemoFormSchema = {
       placeholder: '请输入备注',
       bind: 'memo',
       props: {},
+      width: '180px',
+      ellipsis: true,
     },
     is_active: {
       title: '状态',
