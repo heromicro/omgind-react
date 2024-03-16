@@ -21,6 +21,7 @@
       "@@/*": ["src/.umi/*"]
     }
   },
+  "types": ["node", "react"],
   "include": ["./src"],
   "exclude": [
     "node_modules",

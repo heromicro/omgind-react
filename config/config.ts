@@ -16,6 +16,7 @@ export default defineConfig({
     default: 'zh-CN',
     antd: true,
   },
+  fastRefresh: true,
 
   // 路由配置
   routes: pageRoutes,
