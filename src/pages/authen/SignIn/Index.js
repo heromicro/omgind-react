@@ -39,7 +39,7 @@ class SignIn extends PureComponent {
       .validateFields()
       .then((values) => {
         dispatch({
-          type: 'signin/submit',
+          type: 'signin/signIn',
           payload: {
             user_name: values.user_name,
             captcha_code: values.captcha_code,
