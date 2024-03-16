@@ -1,5 +1,6 @@
-import { history } from 'umi';
 import qs from 'qs';
+import { history } from 'umi';
+
 import { setToken, signOut } from '@/utils/request';
 
 import * as signinService from '@/services/signin.svc';
@@ -40,7 +41,7 @@ export default {
         payload: `${signinService.captcha(captchaID)}&reload=${Math.random()}`,
       });
     },
-    *submit({ payload }, { call, put }) {
+    *signIn({ payload }, { call, put }) {
       yield put({
         type: 'changeSubmitting',
         payload: true,
@@ -49,40 +50,31 @@ export default {
       console.log(' ---- pppppp === ', payload);
 
       const response = yield call(signinService.signIn, payload);
-      const { code, burden } = response;
+      const { code, burden, message: msg } = response;
       if (code !== 0) {
         // FIXME:
 
         console.log(' ---- response === ', response);
         // console.log(' ---- burden === ', burden);
 
-        if (response.data && response.data.error) {
-          const {
-            data: {
-              error: { message },
-            },
-            status,
-          } = response;
-
-          yield [
-            put({
-              type: 'saveTip',
-              payload: message,
-            }),
-            put({
-              type: 'saveStatus',
-              payload: status >= 500 ? 'ERROR' : 'FAIL',
-            }),
-            put({
-              type: 'changeSubmitting',
-              payload: false,
-            }),
-            put({
-              type: 'loadCaptcha',
-            }),
-          ];
-          return;
-        }
+        yield [
+          put({
+            type: 'saveTip',
+            payload: msg,
+          }),
+          put({
+            type: 'saveStatus',
+            payload: 'FAIL',
+          }),
+          put({
+            type: 'changeSubmitting',
+            payload: false,
+          }),
+          put({
+            type: 'loadCaptcha',
+          }),
+        ];
+        return;
       }
 
       // 保存访问令牌
