@@ -1,4 +1,5 @@
 // https://umijs.org/config/
+import { defineConfig } from '@umijs/max';
 import { theme } from 'antd';
 import pageRoutes from './router.config';
 
@@ -7,21 +8,15 @@ const mapToken = defaultAlgorithm(defaultSeed);
 
 const themevars = require('@ant-design/antd-theme-variable');
 
-export default {
+export default defineConfig({
   // add for transfer to umi
   antd: {},
-  dva: {
-    hmr: true,
-  },
-  targets: {
-    ie: 11,
-  },
   locale: {
     // default zh-CN
     default: 'zh-CN',
     antd: true,
   },
-  dynamicImport: false,
+
   // 路由配置
   routes: pageRoutes,
   hash: true,
@@ -41,8 +36,8 @@ export default {
   manifest: {
     basePath: '/',
   },
-  mfsu: {},
+
   lessLoader: {
     modifyVars: mapToken,
   },
-};
+});
