@@ -20,7 +20,7 @@
     "@ant-design/pro-components": "^2.6.46",
     "@ant-design/pro-descriptions": "^2.5.30",
     "@ant-design/pro-layout": "^7.17.19",
-    "antd": "^5.13.1",
+    "antd": "^5.15.2",
     "axios": "^1.6.5",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
