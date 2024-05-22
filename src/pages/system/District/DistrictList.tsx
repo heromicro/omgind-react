@@ -638,7 +638,7 @@ class DistrictList extends PureComponent {
 
     return (
       <PageHeaderLayout title="行政区域" breadcrumbList={breadcrumbList}>
-        <Card bordered={false}>
+        <Card size="small" bordered={false}>
           <div className={styles.tableList}>
             {/* <div className={styles.tableListForm}>{this.renderSearchForm()}</div> */}
             <div>

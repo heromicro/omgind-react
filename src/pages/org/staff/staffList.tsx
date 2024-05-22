@@ -453,7 +453,7 @@ class StaffList extends PureComponent {
 
     return (
       <PageHeaderLayout title="员工管理" breadcrumbList={breadcrumbList}>
-        <Card bordered={false}>
+        <Card size="small" bordered={false}>
           <div className={styles.tableList}>
             <div>
               <ProTable<OrgStaffItem>

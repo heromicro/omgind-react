@@ -335,7 +335,7 @@ class DemoList extends PureComponent {
     return (
       // <PageHeaderLayout title="基础示例" breadcrumbList={breadcrumbList}>
       <PageHeaderLayout title="基础示例" breadcrumbList={breadcrumbList}>
-        <Card bordered={false}>
+        <Card size="small" bordered={false}>
           <div className={styles.tableList}>
             <div>
               <ProTable<DemoItem>

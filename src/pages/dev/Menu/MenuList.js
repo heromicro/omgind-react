@@ -488,7 +488,7 @@ class MenuList extends PureComponent {
             </Tree>
           </Layout.Sider>
           <Layout.Content>
-            <Card bordered={false}>
+            <Card size="small" bordered={false}>
               <div className={styles.tableList}>
                 <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
                 <Space className={styles.tableListOperator}>

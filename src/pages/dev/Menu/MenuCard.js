@@ -86,7 +86,7 @@ class MenuCard extends PureComponent {
         style={{ top: 20 }}
         bodyStyle={{ maxHeight: 'calc( 100vh - 158px )', overflowY: 'auto' }}
       >
-        <Card bordered={false}>
+        <Card size="small" bordered={false}>
           {formVisible && (
             <Form
               ref={this.formRef}

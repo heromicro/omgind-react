@@ -284,7 +284,7 @@ class DictList extends PureComponent {
 
     return (
       <PageHeaderLayout title="数据字典" breadcrumbList={breadcrumbList}>
-        <Card bordered={false}>
+        <Card size="small" bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderSearchForm()}</div>
             <div className={styles.tableListOperator}>
