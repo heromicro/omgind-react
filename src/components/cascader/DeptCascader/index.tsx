@@ -1,6 +1,7 @@
 import React from 'react';
 import { Cascader, CascaderProps } from 'antd';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import * as deptService from '@/services/orgdept.svc';
 
@@ -34,7 +35,7 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
       orgId: props.orgId || '',
     };
 
-    this.triggerChange = _.debounce(this.triggerChange.bind(this), 300);
+    this.triggerChange = lod.debounce(this.triggerChange.bind(this), 300);
   }
 
   static getDerivedStateFromProps(nextProps, state) {
@@ -64,7 +65,7 @@ class DeptCascader extends React.PureComponent<DeptCascaderProps, DeptCascaderSt
       return;
     }
 
-    if (_.isEmpty(svalue)) {
+    if (lod.isEmpty(svalue)) {
       this.getOptions('-', orgId);
       return;
     }

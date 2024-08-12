@@ -21,7 +21,8 @@ import { SaveFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 import { connect } from 'dva';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import PButton from '@/components/PermButton';
 import DistrictCascader from '@/components/cascader/DistrictCascader';
@@ -221,7 +222,7 @@ class StaffDrawerForm extends React.PureComponent {
     return (
       <Drawer
         {...restProps}
-        title={_.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
+        title={lod.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
         open={formDrawerOpen}
         destroyOnClose
         onClose={this.onClose}
@@ -262,8 +263,8 @@ class StaffDrawerForm extends React.PureComponent {
               ...formData,
               iden_addr_district_ids: collectionDistrictIDs(formData.iden_addr),
               resi_addr_district_ids: collectionDistrictIDs(formData.resi_addr),
-              area_code: _.isEmpty(formData.area_code) ? '+86' : formData.area_code,
-              is_active: _.isEmpty(formData.is_active) ? true : formData.is_active,
+              area_code: lod.isEmpty(formData.area_code) ? '+86' : formData.area_code,
+              is_active: lod.isEmpty(formData.is_active) ? true : formData.is_active,
               sort: formData.sort ? formData.sort : 9999,
               birth_date: formData.birth_date ? dayjs(formData.birth_date, dateFormat) : null,
               entry_date: formData.entry_date ? dayjs(formData.entry_date, dateFormat) : null,

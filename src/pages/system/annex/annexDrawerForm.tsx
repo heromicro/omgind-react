@@ -18,7 +18,8 @@ import {
 import { SaveFilled, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { connect } from 'dva';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import PButton from '@/components/PermButton';
 
@@ -94,7 +95,7 @@ class AssetDeviceDrawerForm extends React.PureComponent {
     return (
       <Drawer
         {...restProps}
-        title={_.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
+        title={lod.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
         open={formDrawerOpen}
         destroyOnClose
         onClose={this.onClose}
@@ -134,7 +135,7 @@ class AssetDeviceDrawerForm extends React.PureComponent {
             initialValues={{
               ...formData,
 
-              is_active: _.isEmpty(formData.is_active) ? true : formData.is_active,
+              is_active: lod.isEmpty(formData.is_active) ? true : formData.is_active,
               sort: formData.sort ? formData.sort : 9999,
               protocols: formData.protocols === undefined ? [] : formData.protocols,
             }}

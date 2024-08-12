@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Select, SelectProps } from 'antd';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 import * as dictService from '@/services/sysdict.svc';
 
 interface EduCateSelectorProps extends SelectProps {
@@ -27,8 +28,8 @@ class EduCateSelector extends PureComponent<EduCateSelectorProps, EduCateSelecto
       dictId: props.dictId,
     };
 
-    this.fetchDictItems = _.debounce(this.fetchDictItems.bind(this), props.debounceTimeOut);
-    this.triggerChange = _.debounce(this.triggerChange.bind(this), 300);
+    this.fetchDictItems = lod.debounce(this.fetchDictItems.bind(this), props.debounceTimeOut);
+    this.triggerChange = lod.debounce(this.triggerChange.bind(this), 300);
   }
 
   static getDerivedStateFromProps(nextProps, state) {

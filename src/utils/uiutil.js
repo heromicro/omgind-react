@@ -1,5 +1,6 @@
 import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 import PButton from '@/components/PermButton';
 
 export const showPButtons = (
@@ -108,7 +109,7 @@ export function plainDataToTree({
   unselectables = [],
 } = {}) {
   const treeData = [];
-  if (!plainArr || !_.isArray(plainArr) || plainArr.length === 0) {
+  if (!plainArr || !lod.isArray(plainArr) || plainArr.length === 0) {
     return treeData;
   }
   let tmpMap = {};

@@ -4,7 +4,8 @@ import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descr
 
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import PButton from '@/components/PermButton';
 
@@ -93,7 +94,7 @@ class AnnexDetail extends React.PureComponent {
     return (
       <Drawer
         {...restProps}
-        title={_.isEmpty(detailData) ? '' : `设备--${detailData.name_cn}`}
+        title={lod.isEmpty(detailData) ? '' : `设备--${detailData.name_cn}`}
         onClose={onClose}
         open={detailDrawerOpen}
         destroyOnClose
@@ -122,7 +123,7 @@ class AnnexDetail extends React.PureComponent {
                 type="primary"
                 onClick={() => this.onClickEdit(detailData)}
                 danger
-                disabled={_.isEmpty(detailData)}
+                disabled={lod.isEmpty(detailData)}
               >
                 编 辑
               </PButton>
@@ -133,7 +134,7 @@ class AnnexDetail extends React.PureComponent {
           </Space>
         }
       >
-        {!_.isEmpty(detailData) && (
+        {!lod.isEmpty(detailData) && (
           <div>
             <ProDescriptions column={2} title="基本信息">
               <ProDescriptions.Item label="名称(中)" key="name_cn">

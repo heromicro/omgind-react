@@ -4,7 +4,8 @@ import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descr
 
 import { PlusOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import PButton from '@/components/PermButton';
 import { concatenateDistricts } from '@/scheme/sysaddress.sch';
@@ -60,7 +61,7 @@ class AddressDetail extends React.PureComponent {
     return (
       <Drawer
         {...restProps}
-        title={_.isEmpty(detailData) ? '' : `地址--${detailData.name}`}
+        title={lod.isEmpty(detailData) ? '' : `地址--${detailData.name}`}
         onClose={onClose}
         open={detailDrawerOpen}
         destroyOnClose
@@ -88,7 +89,7 @@ class AddressDetail extends React.PureComponent {
                 type="primary"
                 onClick={() => this.onClickEdit(detailData)}
                 danger
-                disabled={_.isEmpty(detailData)}
+                disabled={lod.isEmpty(detailData)}
               >
                 编 辑
               </PButton>
@@ -99,7 +100,7 @@ class AddressDetail extends React.PureComponent {
           </Space>
         }
       >
-        {!_.isEmpty(detailData) && (
+        {!lod.isEmpty(detailData) && (
           <div>
             <ProDescriptions column={2} title="基本信息">
               <ProDescriptions.Item label="联系人" key="name">

@@ -5,7 +5,8 @@ import { Form, Button, Switch, message, Drawer, Input, Space, Row, Col, InputNum
 import { SaveFilled } from '@ant-design/icons';
 
 import { connect } from 'dva';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import PButton from '@/components/PermButton';
 import OrganSelector from '@/components/selectors/OrganSelector';
@@ -110,7 +111,7 @@ class DeptDrawerForm extends React.Component {
     return (
       <Drawer
         {...restProps}
-        title={_.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
+        title={lod.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
         open={formDrawerOpen}
         destroyOnClose
         onClose={this.onClose}
@@ -150,7 +151,7 @@ class DeptDrawerForm extends React.Component {
             onFinishFailed={this.onFinishFailed}
             initialValues={{
               ...formData,
-              is_active: _.isEmpty(formData.is_active) ? true : formData.is_active,
+              is_active: lod.isEmpty(formData.is_active) ? true : formData.is_active,
               sort: formData.sort ? formData.sort : 9999,
               pids: formData.tree_path ? formData.tree_path.split('/') : null,
             }}

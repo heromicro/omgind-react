@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Select, SelectProps } from 'antd';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import * as orgService from '@/services/orgorgan.svc';
 
@@ -28,9 +29,9 @@ class PositionSelector extends PureComponent<PositionSelectorProps, PositionSele
     };
     console.log(' ---------- 0s s  debounceTimeOut   ', props.debounceTimeOut);
 
-    this.onSearch = _.debounce(this.onSearch.bind(this), props.debounceTimeOut);
+    this.onSearch = lod.debounce(this.onSearch.bind(this), props.debounceTimeOut);
 
-    this.triggerChange = _.debounce(this.triggerChange.bind(this), 300);
+    this.triggerChange = lod.debounce(this.triggerChange.bind(this), 300);
   }
 
   componentDidMount(): void {

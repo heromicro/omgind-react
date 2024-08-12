@@ -20,7 +20,8 @@ import type { UploadProps } from 'antd';
 import { SaveFilled, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { connect } from 'dva';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import PButton from '@/components/PermButton';
 
@@ -114,7 +115,7 @@ class DictDrawerForm extends React.PureComponent {
     return (
       <Drawer
         {...restProps}
-        title={_.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
+        title={lod.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
         open={formDrawerOpen}
         destroyOnClose
         onClose={this.onClose}

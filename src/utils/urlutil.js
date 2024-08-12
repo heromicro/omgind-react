@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import * as lod from 'lodash';
 
 export const makeupSortKey = (sort) => {
   // { entry_date: "ascend", regular_date: "ascend" }
@@ -15,7 +15,7 @@ export const makeupSorters = (sorters) => {
   // Object { column: {…}, order: "ascend", field: "birth_date", columnKey: "birth_date" }
   let nsort = {};
   if (Array.isArray(sorters)) {
-    _.forEach(sorters, (value, index) => {
+    lod.forEach(sorters, (value, index) => {
       nsort[`${value.field}__order`] = value.order;
     });
   } else {

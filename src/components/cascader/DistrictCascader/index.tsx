@@ -1,6 +1,7 @@
 import React from 'react';
 import { Cascader } from 'antd';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import * as districtService from '@/services/sysdistrict.svc';
 
@@ -21,7 +22,7 @@ class DistrictCascader extends React.PureComponent<
       defaultValue: [],
       svalue: props.value || [],
     };
-    this.triggerChange = _.debounce(this.triggerChange.bind(this), 300);
+    this.triggerChange = lod.debounce(this.triggerChange.bind(this), 300);
   }
 
   static getDerivedStateFromProps(nextProps, state) {
@@ -71,7 +72,7 @@ class DistrictCascader extends React.PureComponent<
   componentDidMount() {
     const { svalue } = this.state;
 
-    if (_.isEmpty(svalue)) {
+    if (lod.isEmpty(svalue)) {
       this.getOptions('-');
       return;
     }

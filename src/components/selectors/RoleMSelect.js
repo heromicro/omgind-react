@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Select } from 'antd';
 import debounce from 'lodash/debounce';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 
 import * as roleService from '@/services/sysrole.svc';
 
@@ -23,7 +24,7 @@ export default class RoleSelect extends PureComponent {
 
   componentDidMount() {
     const { notImmediately, value } = this.state;
-    if (!notImmediately || !_.isEmpty(value)) {
+    if (!notImmediately || !lod.isEmpty(value)) {
       this.queryRole({});
     }
   }
@@ -34,13 +35,13 @@ export default class RoleSelect extends PureComponent {
 
     const { value } = this.state;
     let muinIDs = '';
-    if (!_.isEmpty(value)) {
+    if (!lod.isEmpty(value)) {
       muinIDs = value.join(',');
     }
 
     let params = { ...qp };
 
-    if (_.isEmpty(muinIDs)) {
+    if (lod.isEmpty(muinIDs)) {
       params = { ...params };
     }
     const { queryParams } = this.props;

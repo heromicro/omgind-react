@@ -4,7 +4,8 @@ import { Form, Button, Switch, message, Drawer, Input, Space, Row, Col } from 'a
 import { SaveFilled } from '@ant-design/icons';
 
 import { connect } from 'dva';
-import * as _ from 'lodash';
+
+import * as lod from 'lodash';
 import PButton from '@/components/PermButton';
 
 import DistrictCascader from '@/components/cascader/DistrictCascader';
@@ -92,7 +93,7 @@ class DistrictDrawerForm extends React.PureComponent {
     return (
       <Drawer
         {...restProps}
-        title={_.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
+        title={lod.isEmpty(formData) ? formTitle : `${formTitle}--${formData.name}`}
         open={formDrawerOpen}
         destroyOnClose
         onClose={this.onClose}
