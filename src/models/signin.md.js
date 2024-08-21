@@ -41,7 +41,7 @@ export default {
         payload: `${signinService.captcha(captchaID)}&reload=${Math.random()}`,
       });
     },
-    *signIn({ payload }, { call, put }) {
+    *signIn({ payload, callback = null }, { call, put }) {
       yield put({
         type: 'changeSubmitting',
         payload: true,
@@ -74,6 +74,9 @@ export default {
             type: 'loadCaptcha',
           }),
         ];
+        if (callback) {
+          callback(code, msg);
+        }
         return;
       }
 

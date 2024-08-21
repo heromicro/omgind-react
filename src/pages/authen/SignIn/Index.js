@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'dva';
-import { CodeOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Form, Input, Button, Alert } from 'antd';
 import { md5Hash } from '@/utils/utils';
+import { CodeOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Alert, Button, Form, Input } from 'antd';
+import { connect } from 'dva';
+import React, { PureComponent } from 'react';
 
 import styles from './Index.less';
 
@@ -45,6 +45,13 @@ class SignIn extends PureComponent {
             captcha_code: values.captcha_code,
             captcha_id: signin.captchaID,
             password: md5Hash(values.password),
+          },
+          callback: (code, message) => {
+            //
+            if (code !== 0) {
+              this.formRef.current.setFieldValue('captcha_code', '');
+            }
+            //
           },
         });
       })
