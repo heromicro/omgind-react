@@ -44,3 +44,14 @@ export const defaultPagination = {
   total: 0,
   after: '',
 };
+
+// https://stackoverflow.com/questions/35637770/how-to-avoid-no-param-reassign-when-setting-a-property-on-a-dom-object
+/* eslint-disable no-param-reassign */
+export const idkeyMapItems = (data) => {
+  let result = data.reduce((map, v) => {
+    map[v.id] = v; // eslint-disable-line no-param-reassign
+    return map;
+  }, {});
+  return result;
+};
+/* eslint-enable no-param-reassign */
