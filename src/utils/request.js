@@ -143,6 +143,7 @@ export default function request(url, options = { method: methods.GET }) {
 
 // The backend renews a still-valid access token; expired tokens require sign-in.
 class TokenRefresh {
+  static refreshWindow = 10 * 60 * 1000;
   static timer;
   static pending;
 
@@ -155,7 +156,7 @@ class TokenRefresh {
     TokenRefresh.stop();
     const remaining = token.expires_at * 1000 - Date.now();
     if (remaining <= 0) return;
-    const wait = delay ?? Math.max(1000, remaining - 60000);
+    const wait = delay ?? Math.max(30000, remaining - TokenRefresh.refreshWindow);
     TokenRefresh.timer = setTimeout(() => {
       TokenRefresh.ensureFresh().catch(() => {
         const current = store.get(storeKeys.AccessToken);
@@ -172,7 +173,7 @@ class TokenRefresh {
       signOut();
       throw new Error('The token has expired');
     }
-    if (remaining > 60000) {
+    if (remaining > TokenRefresh.refreshWindow) {
       TokenRefresh.schedule(token);
       return;
     }
