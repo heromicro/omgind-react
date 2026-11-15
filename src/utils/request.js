@@ -50,6 +50,7 @@ export function wrapURLWithToken(url) {
 export function signOut() {
   TokenRefresh.stop();
   store.remove(storeKeys.AccessToken);
+  store.remove(storeKeys.CurrentOrgan);
   store.remove(storeKeys.MenuCache);
   const { redirect } = qs.parse(window.location.href.split('?')[1]);
   if (window.location.pathname !== '/authen/signin' && !redirect) {
@@ -71,6 +72,8 @@ const instance = axios.create({
 async function requestInterceptors(c) {
   if (!c.url.startsWith('/v2/pub/signin')) await TokenRefresh.ensureFresh();
   const config = { ...c };
+  const organ = store.get(storeKeys.CurrentOrgan);
+  if (organ?.id) config.headers['X-Org-ID'] = organ.id;
   const token = store.get(storeKeys.AccessToken);
   if (token) {
     config.headers[headerKeys.Authorization] = `${token.token_type} ${token.access_token}`;
@@ -189,7 +192,7 @@ class TokenRefresh {
     try {
       // Use axios directly to avoid re-entering the request interceptor.
       const response = await axios.post(`${baseURL}/v2/pub/refresh-token`, {}, {
-        headers: { Authorization: `${token.token_type} ${token.access_token}` },
+        headers: { Authorization: `${token.token_type} ${token.access_token}`, 'X-Org-ID': store.get(storeKeys.CurrentOrgan)?.id || '' },
         timeout: 10000,
       });
       const { code, burden } = response.data;
@@ -216,3 +219,13 @@ export function setToken(token) {
 // Restore automatic renewal after a page reload.
 const savedToken = store.get(storeKeys.AccessToken);
 if (savedToken) TokenRefresh.schedule(savedToken);
+
+export function selectOrgan(organ) {
+  store.set(storeKeys.CurrentOrgan, organ);
+  store.remove(storeKeys.MenuCache);
+}
+
+export function clearOrgan() {
+  store.remove(storeKeys.CurrentOrgan);
+  store.remove(storeKeys.MenuCache);
+}

@@ -3,6 +3,7 @@ import { minutesToMilliseconds } from './datetime';
 
 export const storeKeys = {
   AccessToken: 'Access-Token',
+  CurrentOrgan: 'Current-Organ',
   MenuCache: 'admin-current-user-menu-v2',
 };
 export const storeType = { localStorage, sessionStorage };
