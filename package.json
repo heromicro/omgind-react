@@ -1,6 +1,6 @@
 {
   "name": "omgind-react",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "RBAC权限管理脚手架",
   "private": true,
   "scripts": {
