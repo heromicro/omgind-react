@@ -9,7 +9,6 @@
       "dom.iterable"
     ],
     "sourceMap": true,
-    "baseUrl": ".",
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "bundler",
@@ -29,12 +28,16 @@
         "./src/*"
       ],
       "@@/*": [
-        "src/.umi/*"
+        "./src/.umi/*"
       ]
     },
     "noEmit": true,
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": false,
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "./src"
