@@ -1,9 +1,10 @@
+import { useLocation } from '@umijs/max';
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Tag } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
-import { history } from 'umi';
+import { history } from '@umijs/max';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { OrgOrganItem } from '@/scheme/orgorgan.sch';
@@ -441,4 +442,7 @@ class OrganList extends PureComponent {
   }
 }
 
-export default OrganList;
+export default function RoutedPage(props) {
+  const location = useLocation();
+  return <OrganList {...props} location={location} />;
+}

@@ -4,7 +4,7 @@ import type { ProFormInstance } from '@ant-design/pro-components';
 import { Form, Button, Switch, message, Drawer, Input, Space, Row, Col, InputNumber } from 'antd';
 import { SaveFilled } from '@ant-design/icons';
 
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 
 import * as lod from 'lodash';
 

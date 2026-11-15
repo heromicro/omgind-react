@@ -1,9 +1,10 @@
+import { useLocation } from '@umijs/max';
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import { Form, Row, Col, Card, Input, Button, Tooltip, Modal, Badge, Tag, Space } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { history } from 'umi';
+import { history } from '@umijs/max';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 
@@ -438,4 +439,7 @@ class AnnexList extends PureComponent {
   }
 }
 
-export default AnnexList;
+export default function RoutedPage(props) {
+  const location = useLocation();
+  return <AnnexList {...props} location={location} />;
+}

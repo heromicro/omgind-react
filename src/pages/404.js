@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'umi';
+import { Link } from '@umijs/max';
 import Exception from '@/components/Exception';
 
 export default function () {

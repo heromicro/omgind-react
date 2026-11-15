@@ -1,5 +1,6 @@
+import { useLocation } from '@umijs/max';
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import {
   Form,
   Row,
@@ -17,7 +18,7 @@ import {
 import type { ColumnsState, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import qs from 'qs';
-import { history } from 'umi';
+import { history } from '@umijs/max';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';
 import { showPButtons } from '@/utils/uiutil';
@@ -710,4 +711,7 @@ class DistrictList extends PureComponent {
   }
 }
 
-export default DistrictList;
+export default function RoutedPage(props) {
+  const location = useLocation();
+  return <DistrictList {...props} location={location} />;
+}

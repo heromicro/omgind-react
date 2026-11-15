@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { history } from 'umi';
+import { history } from '@umijs/max';
 
 import { setToken, signOut } from '@/utils/request';
 

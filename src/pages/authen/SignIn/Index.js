@@ -1,7 +1,7 @@
 import { md5Hash } from '@/utils/utils';
 import { CodeOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Alert, Button, Form, Input } from 'antd';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import React, { PureComponent } from 'react';
 
 import styles from './Index.less';

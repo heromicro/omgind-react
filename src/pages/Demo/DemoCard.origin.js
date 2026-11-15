@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import { Form, Input, Modal, Switch } from 'antd';
 
 import DistrictCascader from '@/components/cascader/DistrictCascader';

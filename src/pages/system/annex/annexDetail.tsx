@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Drawer, Space, Tooltip, Tag } from 'antd';
-import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 
 import * as lod from 'lodash';
 

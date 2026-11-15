@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 
 import { Button, Input, Radio, Row, Space, Col, Badge, Switch, Card, Drawer, Divider } from 'antd';
 
-import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { CloseOutlined, CheckOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { checkActionPermission } from '@/utils/checkPermission';
 

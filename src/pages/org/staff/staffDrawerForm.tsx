@@ -20,7 +20,7 @@ import { SaveFilled } from '@ant-design/icons';
 
 import dayjs from 'dayjs';
 
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 
 import * as lod from 'lodash';
 

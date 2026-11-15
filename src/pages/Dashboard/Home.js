@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import dayjs from 'dayjs';
 import { Typography, Card, Alert } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';

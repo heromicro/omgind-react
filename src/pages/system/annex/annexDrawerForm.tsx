@@ -17,7 +17,7 @@ import {
 
 import { SaveFilled, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 
 import * as lod from 'lodash';
 

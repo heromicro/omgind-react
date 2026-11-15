@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge, Space } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
 

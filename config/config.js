@@ -1,48 +1,18 @@
-// https://umijs.org/config/
-import { theme } from 'antd';
+import { defineConfig } from '@umijs/max';
 import pageRoutes from './router.config';
 
-const { defaultAlgorithm, defaultSeed } = theme;
-const mapToken = defaultAlgorithm(defaultSeed);
-
-const themevars = require('@ant-design/antd-theme-variable');
-
-export default {
-  // add for transfer to umi
+export default defineConfig({
+  title: 'OMGIND',
   antd: {},
-  dva: {
-    hmr: true,
-  },
-  targets: {
-    ie: 11,
-  },
-  locale: {
-    // default zh-CN
-    default: 'zh-CN',
-    antd: true,
-  },
-  dynamicImport: false,
-  // 路由配置
+  dva: {},
+  locale: { default: 'zh-CN', antd: true, baseNavigator: false },
   routes: pageRoutes,
   hash: true,
-  // Theme for antd
-  // https://ant.design/docs/react/customize-theme-cn
-  theme: {
-    'primary-color': '#1890ff',
-    ...themevars,
-  },
+  esbuildMinifyIIFE: true,
+  fastRefresh: true,
+  mfsu: false,
+  theme: { 'primary-color': '#1890ff', ...require('@ant-design/antd-theme-variable') },
   proxy: {
-    '/api/': {
-      target: 'http://0.0.0.0:10088/',
-      changeOrigin: true,
-    },
+    '/api/': { target: 'http://127.0.0.1:10088/', changeOrigin: true },
   },
-  ignoreMomentLocale: true,
-  manifest: {
-    basePath: '/',
-  },
-  mfsu: {},
-  lessLoader: {
-    modifyVars: mapToken,
-  },
-};
+});

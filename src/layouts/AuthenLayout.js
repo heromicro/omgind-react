@@ -1,5 +1,6 @@
 import React from 'react';
-import { connect } from 'dva';
+import { Outlet } from '@umijs/max';
+import { connect } from '@umijs/max';
 import GlobalFooter from '@/components/GlobalFooter';
 import CopyRight from '@/components/CopyRight';
 import styles from './AuthenLayout.less';
@@ -24,7 +25,7 @@ class AuthenLayout extends React.PureComponent {
           </div>
           <div className={styles.desc} />
         </div>
-        {children}
+        <Outlet />
         <GlobalFooter className={styles.footer} copyright={<CopyRight title={copyRight} />} />
       </div>
     );

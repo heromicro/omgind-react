@@ -3,7 +3,7 @@ import { Form, Row, Col, Card, Input, Button, Table, Modal, Badge } from 'antd';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import dayjs from 'dayjs';
 
 import PageHeaderLayout from '@/layouts/PageHeaderLayout';

@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 
 import { Form, Input, Switch, Row, Col } from 'antd';
 import { ProForm, ProFormGroup, ProFormDatePicker, ProFormText } from '@ant-design/pro-components';

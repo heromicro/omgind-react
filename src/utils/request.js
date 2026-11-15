@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { history } from 'umi';
+import { history } from '@umijs/max';
 import qs from 'qs';
 
 import { notification } from 'antd';

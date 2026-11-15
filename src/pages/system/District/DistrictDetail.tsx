@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Button, Drawer, Space, Badge } from 'antd';
-import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 
 import * as lod from 'lodash';
 

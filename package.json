@@ -1,48 +1,41 @@
 {
   "name": "omgind-react",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "RBAC权限管理脚手架",
   "private": true,
   "scripts": {
-    "start": "NODE_OPTIONS=--openssl-legacy-provider umi dev",
-    "start:no-mock": "cross-env MOCK=none umi dev",
-    "analyze": "cross-env ANALYZE=1 umi build",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider umi build",
+    "start": "max dev",
+    "start:no-mock": "cross-env MOCK=none max dev",
+    "analyze": "cross-env ANALYZE=1 max build",
+    "build": "max build",
     "lint:style": "stylelint \"src/**/*.less\" --custom-syntax postcss-less",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src && npm run lint:style",
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src && npm run lint:style",
     "lint-staged": "lint-staged",
-    "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx src"
+    "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx src",
+    "postinstall": "max setup",
+    "preview": "max preview"
   },
   "dependencies": {
-    "@ant-design/compatible": "^5.1.2",
-    "@ant-design/icons": "5.1.4",
-    "@ant-design/pro-components": "^2.6.46",
-    "@ant-design/pro-descriptions": "^2.5.30",
-    "@ant-design/pro-layout": "^7.17.19",
-    "antd": "^5.13.1",
+    "@ant-design/icons": "^6.3.4",
+    "@ant-design/pro-components": "^3.1.14-2",
+    "antd": "^6.6.7",
     "axios": "^1.6.5",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
-    "dva": "^2.4.1",
     "encrypt-storage": "^2.12.22",
     "form-render": "^2.2.7",
-    "history": "^4.7.2",
     "lodash": "^4.17.21",
     "lodash-decorators": "^6.0.1",
     "md5": "^2.2.1",
     "path-to-regexp": "^6.2.1",
     "qs": "^6.11.2",
-    "react": "^18.2.0",
-    "react-container-query": "^0.11.0",
-    "react-document-title": "^2.0.3",
-    "react-dom": "^18.2.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "setprototypeof": "^1.2.0",
     "superagent": "^8.0.9",
-    "umi": "~3.5.41",
     "url-polyfill": "^1.1.12",
-    "uuid": "^9.0.0",
-    "yarn-check": "^0.0.3"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@ant-design/antd-theme-variable": "^1.0.0",
@@ -50,11 +43,10 @@
     "@babel/plugin-proposal-decorators": "^7.20.13",
     "@babel/plugin-syntax-jsx": "^7.18.6",
     "@babel/preset-react": "^7.18.6",
-    "@types/react": "^16.7.7",
-    "@types/react-dom": "^16.0.10",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
-    "@umijs/preset-react": "^1",
     "cross-env": "^7.0.3",
     "cross-port-killer": "^1.4.0",
     "eslint": "^8.34.0",
@@ -84,7 +76,8 @@
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^5.0.0",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "@umijs/max": "4.7.33"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx,less}": [
@@ -95,7 +88,7 @@
     "**/*.less": "stylelint --custom-syntax postcss-less"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=22.0.0"
   },
   "browserslist": [
     "> 1%",

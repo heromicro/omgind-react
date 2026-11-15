@@ -147,7 +147,7 @@ export default {
   },
   subscriptions: {
     setup({ dispatch, history }) {
-      history.listen(({ pathname }) => {
+      history.listen(({ location: { pathname } }) => {
         dispatch({
           type: 'menuEvent',
           pathname,

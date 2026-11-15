@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import { Form, Input, Modal, message, Card, Row, Col, InputNumber, Switch } from 'antd';
 
 import RoleMenu from './RoleMenu';
