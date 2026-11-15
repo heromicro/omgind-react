@@ -1,7 +1,6 @@
-import qs from 'qs';
 import { history } from '@umijs/max';
 
-import { setToken, signOut } from '@/utils/request';
+import { setToken, signOut, selectOrgan, clearOrgan } from '@/utils/request';
 
 import * as signinService from '@/services/signin.svc';
 
@@ -9,6 +8,7 @@ export default {
   namespace: 'signin',
 
   state: {
+    organizations: null,
     status: '',
     tip: '',
     submitting: false,
@@ -17,6 +17,10 @@ export default {
   },
 
   effects: {
+    *loadOrganizations(_, { call, put }) {
+      const response = yield call(signinService.organizations);
+      if (response.code === 0) yield put({ type: 'saveOrganizations', payload: response.burden || [] });
+    },
     *loadCaptcha(_, { call, put }) {
       const response = yield call(signinService.captchaID);
       const {
@@ -47,7 +51,6 @@ export default {
         payload: true,
       });
 
-      console.log(' ---- pppppp === ', payload);
 
       const response = yield call(signinService.signIn, payload);
       const { code, burden, message: msg } = response;
@@ -81,6 +84,7 @@ export default {
       }
 
       // 保存访问令牌
+      clearOrgan();
       setToken(burden);
 
       yield [
@@ -98,26 +102,40 @@ export default {
         }),
       ];
 
-      const params = qs.parse(window.location.href.split('?')[1]);
-      const { redirect } = params;
-      if (redirect) {
-        window.location.href = redirect;
-        return;
-      }
       history.replace('/');
+
     },
 
-    *signOut(_, { call }) {
+    *skipOrgan() {
+      clearOrgan();
+      history.replace('/');
+    },
+    *chooseOrgan({ payload }, { select }) {
+      const organizations = yield select(state => state.signin.organizations);
+      const organ = organizations?.find(item => item.id === payload);
+      if (!organ) return;
+      selectOrgan(organ);
+      history.replace('/');
+    },
+    *createOrgan({ payload }, { call, put }) {
+      const result = yield call(signinService.createOrganization, { ...payload, is_active: true, haddr: {} });
+      if (result.code !== 0) return;
+      const response = yield call(signinService.organizations);
+      if (response.code === 0) yield put({ type: 'saveOrganizations', payload: response.burden || [] });
+    },
+    *signOut(_, { call, put }) {
       console.log(' -------- 0000000 ======= ');
       const response = yield call(signinService.signOut);
       const { code } = response;
       if (code === 0) {
+        yield put({ type: 'saveOrganizations', payload: null });
         signOut();
       }
     },
   },
 
   reducers: {
+    saveOrganizations(state, { payload }) { return { ...state, organizations: payload }; },
     saveCaptchaID(state, { payload }) {
       return {
         ...state,

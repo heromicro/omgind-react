@@ -13,7 +13,6 @@ export function captcha(id) {
 }
 
 export async function signIn(data) {
-  console.log(' --- === eeeeeee  ', data);
   return request(`/${version}/pub/signin`, {
     method: methods.POST,
     data,
@@ -40,4 +39,12 @@ export async function getCurrentUser() {
 
 export async function queryMenuTree() {
   return request(`/${version}/pub/current/menutree`);
+}
+
+export async function organizations() {
+  return request('/v2/pub/current/organs');
+}
+
+export async function createOrganization(data) {
+  return request('/v2/org-organs', { method: methods.POST, data });
 }
