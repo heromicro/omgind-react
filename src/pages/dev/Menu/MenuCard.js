@@ -1,5 +1,6 @@
+import MenuIconSelect, { MenuIconRegistry } from '@/components/MenuIcon';
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import {
   Form,
@@ -95,7 +96,7 @@ class MenuCard extends PureComponent {
                 name: formData.name,
                 parent_id: formData.parent_id,
                 router: formData.router,
-                icon: formData.icon,
+                icon: MenuIconRegistry.normalize(formData.icon),
                 is_show: formData.is_show !== undefined ? formData.is_show : true,
                 is_active: formData.is_active === undefined ? true : formData.is_active,
                 sort: formData.sort ? formData.sort : 10000,
@@ -149,13 +150,12 @@ class MenuCard extends PureComponent {
                         <Form.Item
                           {...formItemLayoutSub}
                           name="icon"
-                          normalize={(value, prevValue, prevValues) => value.trim()}
                         >
-                          <Input placeholder="请输入菜单图标" />
+                          <MenuIconSelect />
                         </Form.Item>
                       </Col>
                       <Col span={4} style={{ textAlign: 'center' }}>
-                        <Tooltip title="图标仅支持官方Icon图标(V3版本)">
+                        <Tooltip title="选择 Ant Design 6 图标；支持搜索名称和清空">
                           <QuestionCircleOutlined />
                         </Tooltip>
                       </Col>

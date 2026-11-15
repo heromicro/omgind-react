@@ -1,5 +1,6 @@
+import { MenuIconRegistry } from '@/components/MenuIcon';
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 import {
   Form,
   Row,
@@ -377,7 +378,8 @@ class MenuList extends PureComponent {
       {
         title: '菜单图标',
         dataIndex: 'icon',
-        width: 150,
+        width: 240,
+        render: (name) => <Space>{MenuIconRegistry.render(name)}{name || '—'}</Space>,
       },
       {
         title: '访问路由',

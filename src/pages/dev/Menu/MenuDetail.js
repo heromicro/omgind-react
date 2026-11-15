@@ -1,5 +1,6 @@
+import { MenuIconRegistry } from '@/components/MenuIcon';
 import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import { connect } from '@umijs/max';
 
 import {
   Button,
@@ -17,7 +18,7 @@ import {
   Tooltip,
 } from 'antd';
 
-import ProDescriptions, { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
+import { ProDescriptions, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
   CloseOutlined,
   CheckOutlined,
@@ -56,7 +57,7 @@ class MenuDetail extends PureComponent {
             {detailData.name}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="图标" key="icon">
-            {detailData.icon}
+            <Space>{MenuIconRegistry.render(detailData.icon)}{detailData.icon || '—'}</Space>
           </ProDescriptions.Item>
           <ProDescriptions.Item label="路由" key="router">
             {detailData.router}
