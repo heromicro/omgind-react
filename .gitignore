@@ -24,3 +24,6 @@ package-lock.json
 .history
 .umi
 .umi-production
+
+.codex/
+AGENTS.md
