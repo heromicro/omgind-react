@@ -4,10 +4,10 @@
   "description": "RBAC权限管理脚手架",
   "private": true,
   "scripts": {
-    "start": "umi dev",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
     "analyze": "cross-env ANALYZE=1 umi build",
-    "build": "umi build",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider umi build",
     "lint:style": "stylelint \"src/**/*.less\" --custom-syntax postcss-less",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src && npm run lint:style",
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src && npm run lint:style",
@@ -39,7 +39,7 @@
     "react-dom": "^18.2.0",
     "setprototypeof": "^1.2.0",
     "superagent": "^8.0.9",
-    "umi": "^3.5.41",
+    "umi": "~3.5.41",
     "url-polyfill": "^1.1.12",
     "uuid": "^9.0.0",
     "yarn-check": "^0.0.3"
@@ -107,5 +107,6 @@
     "hooks": {
       "pre-commit": "npm run lint-staged"
     }
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
