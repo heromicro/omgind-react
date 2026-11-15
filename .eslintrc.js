@@ -18,7 +18,6 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:compat/recommended',
     // https://typescript-eslint.io/rules/
-    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:compat/recommended',
     'plugin:react/jsx-runtime',
@@ -42,7 +41,6 @@ module.exports = {
     'arrow-body-style': 'warn',
     'import/prefer-default-export': 'warn',
     'compat/compat': 'warn',
-    '@typescript-eslint/no-empty-function': 'warn',
     'class-methods-use-this': 'warn',
     'react/function-component-definition': 'warn',
     'react/display-name': 'warn',

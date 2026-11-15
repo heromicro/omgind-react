@@ -2,26 +2,43 @@
   "compilerOptions": {
     "outDir": "build/dist",
     "module": "esnext",
-    "target": "es2016",
-    "lib": ["es6", "dom"],
+    "target": "es2022",
+    "lib": [
+      "es2022",
+      "dom",
+      "dom.iterable"
+    ],
     "sourceMap": true,
     "baseUrl": ".",
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "rootDirs": ["/src", "/test", "/mock", "./typings"],
+    "moduleResolution": "bundler",
+    "rootDirs": [
+      "./src",
+      "./test",
+      "./mock",
+      "./typings"
+    ],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
-    "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
     "allowJs": true,
     "experimentalDecorators": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "@@/*": ["src/.umi/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ],
+      "@@/*": [
+        "src/.umi/*"
+      ]
+    },
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
-  "include": ["./src"],
+  "include": [
+    "./src"
+  ],
   "exclude": [
     "node_modules",
     "build",
