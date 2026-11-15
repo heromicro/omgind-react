@@ -1,5 +1,5 @@
 import React, { PureComponent, createElement } from 'react';
-import pathToRegexp from 'path-to-regexp';
+import { pathToRegexp } from 'path-to-regexp';
 import { Breadcrumb } from 'antd';
 import styles from './index.less';
 import { urlToList } from '../_utils/pathTools';
