@@ -57,6 +57,7 @@ export default {
       }
     },
     *fetchMenuTree({ pathname }, { call, put }) {
+      store.remove('admin-current-user-menu');
       const skey = storeKeys.MenuCache;
       let list = store.getExpirableItem(skey);
       if (!list) {

@@ -17,6 +17,7 @@ interface MenuNode {
   children?: MenuNode[];
 }
 interface MenuRoute {
+  menuDepth: number;
   icon?: React.ReactNode;
   key: string;
   name: string;
@@ -44,16 +45,17 @@ class AdminLayout extends React.PureComponent<AdminLayoutProps> {
     });
   }
 
-  buildMenuRoutes(items: MenuNode[] = []): MenuRoute[] {
+  buildMenuRoutes(items: MenuNode[] = [], depth = 0): MenuRoute[] {
     const routes: MenuRoute[] = [];
     for (const item of items) {
       if (!item.name || !item.is_show) continue;
       routes.push({
         key: item.id,
+        menuDepth: depth,
         name: item.name,
         icon: MenuIconRegistry.render(item.icon),
         path: item.router || undefined,
-        children: item.children?.length ? this.buildMenuRoutes(item.children) : undefined,
+        children: item.children?.length ? this.buildMenuRoutes(item.children, depth + 1) : undefined,
       });
     }
     return routes;
@@ -71,7 +73,10 @@ class AdminLayout extends React.PureComponent<AdminLayoutProps> {
     this.setState({ passwordVisible: false });
   };
 
-  renderMenuItem = (item: { path?: string }, content: React.ReactNode) => {
+  renderMenuItem = (item: { path?: string; icon?: React.ReactNode; menuDepth?: number }, content: React.ReactNode) => {
+    if (item.menuDepth && item.icon) {
+      content = <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>{item.icon}{content}</span>;
+    }
     if (item.path?.startsWith('http')) {
       return <a href={item.path} target="_blank" rel="noopener noreferrer">{content}</a>;
     }
