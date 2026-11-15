@@ -1,11 +1,12 @@
 import { MenuIconRegistry } from '@/components/MenuIcon';
 import React from 'react';
-import { connect, Link, Outlet, useLocation } from '@umijs/max';
+import { connect, Link, Outlet, useLocation, history } from '@umijs/max';
 import { ProLayout } from '@ant-design/pro-components';
 import { Dropdown } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import UpdatePasswordDialog from '@/components/UpdatePasswordDialog';
 import context from '@/utils/context';
+import { clearOrgan } from '@/utils/request';
 import logo from '../assets/logo.svg';
 
 interface MenuNode {
@@ -62,6 +63,7 @@ class AdminLayout extends React.PureComponent<AdminLayoutProps> {
   }
 
   handleAccountMenu = ({ key }: { key: string }) => {
+    if (key === 'organization') { clearOrgan(); history.replace('/authen/signin'); return; }
     if (key === 'password') {
       this.setState({ passwordVisible: true });
       return;
@@ -86,6 +88,7 @@ class AdminLayout extends React.PureComponent<AdminLayoutProps> {
   renderAccount = (_: unknown, content: React.ReactNode) => (
     <Dropdown menu={{
       items: [
+        { key: 'organization', label: '切换组织' },
         { key: 'password', label: '修改密码' },
         { key: 'signout', label: '退出登录' },
       ],

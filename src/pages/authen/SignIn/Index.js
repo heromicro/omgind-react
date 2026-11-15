@@ -1,10 +1,11 @@
 import { md5Hash } from '@/utils/utils';
 import { CodeOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Alert, Button, Form, Input } from 'antd';
+import { Alert, Button, Form, Input, Select } from 'antd';
 import { connect } from '@umijs/max';
 import React, { PureComponent } from 'react';
 
 import styles from './Index.less';
+import { getAccessToken } from '@/utils/request';
 
 @connect(({ signin }) => ({
   signin,
@@ -15,6 +16,7 @@ class SignIn extends PureComponent {
   vcodeInput = null;
 
   componentDidMount() {
+    if (getAccessToken()) { this.dispatch({ type: 'signin/loadOrganizations' }); return; }
     this.dispatch({
       type: 'signin/loadCaptcha',
     });
@@ -69,6 +71,25 @@ class SignIn extends PureComponent {
 
   render() {
     const { signin } = this.props;
+
+    if (signin.organizations !== null) {
+      return <div className={styles.main}>
+        <Alert type="info" message={signin.organizations.length ? '可选择组织，也可暂不选择' : '你尚未加入组织，可以继续使用系统，也可以创建组织'} />
+        {signin.organizations.length > 0 && <Form onFinish={({ organ }) => this.dispatch({ type: 'signin/chooseOrgan', payload: organ })}>
+          <Form.Item name="organ" rules={[{ required: true, message: '请选择组织' }]}>
+            <Select placeholder="选择组织" options={signin.organizations.map(item => ({ value: item.id, label: item.name || item.id }))} />
+          </Form.Item>
+          <Button type="primary" htmlType="submit">进入组织</Button>
+        </Form>}
+        <Form onFinish={payload => this.dispatch({ type: 'signin/createOrgan', payload })}>
+          <Form.Item name="name" rules={[{ required: true }]}><Input placeholder="组织名称" /></Form.Item>
+          <Form.Item name="sname" rules={[{ required: true }]}><Input placeholder="组织简称" /></Form.Item>
+          <Button htmlType="submit">创建组织</Button>
+        </Form>
+        <Button type="primary" onClick={() => this.dispatch({ type: 'signin/skipOrgan' })}>暂不选择，进入系统</Button>
+        <Button onClick={() => this.dispatch({ type: 'signin/signOut' })}>退出登录</Button>
+      </div>;
+    }
 
     return (
       <div className={styles.main}>
