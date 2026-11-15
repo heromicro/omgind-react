@@ -1,13 +1,11 @@
 import axios from 'axios';
-import dayjs from 'dayjs';
 import { history } from '@umijs/max';
 import qs from 'qs';
 
 import { notification } from 'antd';
 import store, { storeKeys } from '@/utils/store';
 
-let refreshTimeout;
-let lastAccessTime;
+
 
 export const baseURL = '/api';
 
@@ -50,11 +48,9 @@ export function wrapURLWithToken(url) {
 
 // 登出
 export function signOut() {
-  if (refreshTimeout) {
-    clearTimeout(refreshTimeout);
-  }
-
+  TokenRefresh.stop();
   store.remove(storeKeys.AccessToken);
+  store.remove(storeKeys.MenuCache);
   const { redirect } = qs.parse(window.location.href.split('?')[1]);
   if (window.location.pathname !== '/authen/signin' && !redirect) {
     history.replace({
@@ -72,7 +68,8 @@ const instance = axios.create({
 });
 
 // request 拦截器
-function requestInterceptors(c) {
+async function requestInterceptors(c) {
+  if (!c.url.startsWith('/v2/pub/signin')) await TokenRefresh.ensureFresh();
   const config = { ...c };
   const token = store.get(storeKeys.AccessToken);
   if (token) {
@@ -85,17 +82,6 @@ instance.interceptors.request.use(requestInterceptors);
 
 // ajax请求
 export default function request(url, options = { method: methods.GET }) {
-  const oldToken = store.get(storeKeys.AccessToken);
-  if (oldToken && oldToken.expires_at - lastAccessTime <= 0) {
-    if (refreshTimeout) {
-      clearTimeout(refreshTimeout);
-    }
-    signOut();
-    // eslint-disable-next-line compat/compat
-    return Promise.reject(new Error('The token has expired'));
-  }
-  lastAccessTime = dayjs().unix();
-
   const opts = { ...options };
   console.log(' o oo ==== opts: ', opts);
 
@@ -131,9 +117,9 @@ export default function request(url, options = { method: methods.GET }) {
       console.log(' ----- ddddd =error==== ', error);
 
       // const { response } = error;
-      const { status, data } = error;
+      const { status, data } = error.response || {};
       console.log(' ----- ddddd ===== ', data);
-      if (status === 401 && data.error && data.error.code === 9999) {
+      if (status === 401) {
         signOut();
         return error;
       }
@@ -155,31 +141,77 @@ export default function request(url, options = { method: methods.GET }) {
     });
 }
 
-// 放入访问令牌
-export function setToken(token) {
-  lastAccessTime = token.expires_at;
-  store.set(storeKeys.AccessToken, token);
-  if (refreshTimeout) {
-    clearTimeout(refreshTimeout);
+// The backend renews a still-valid access token; expired tokens require sign-in.
+class TokenRefresh {
+  static timer;
+  static pending;
+
+  static stop() {
+    clearTimeout(TokenRefresh.timer);
+    TokenRefresh.timer = undefined;
   }
 
-  // 提前10分钟更新令牌
-  const timeout = token.expires_at - dayjs().unix() - 10;
-  if (timeout > 0) {
-    refreshTimeout = setTimeout(() => {
-      const oldToken = store.get(storeKeys.AccessToken);
-      if (oldToken && oldToken.expires_at - lastAccessTime <= 0) {
-        if (refreshTimeout) {
-          clearTimeout(refreshTimeout);
-        }
-        return;
-      }
-
-      request('/v1/pub/refresh-token', {
-        method: methods.POST,
-      }).then((res) => {
-        setToken(res);
+  static schedule(token, delay) {
+    TokenRefresh.stop();
+    const remaining = token.expires_at * 1000 - Date.now();
+    if (remaining <= 0) return;
+    const wait = delay ?? Math.max(1000, remaining - 60000);
+    TokenRefresh.timer = setTimeout(() => {
+      TokenRefresh.ensureFresh().catch(() => {
+        const current = store.get(storeKeys.AccessToken);
+        if (current) TokenRefresh.schedule(current, 15000);
       });
-    }, timeout * 1000);
+    }, Math.min(wait, 2147483647));
+  }
+
+  static async ensureFresh() {
+    const token = store.get(storeKeys.AccessToken);
+    if (!token) return;
+    const remaining = token.expires_at * 1000 - Date.now();
+    if (remaining <= 0) {
+      signOut();
+      throw new Error('The token has expired');
+    }
+    if (remaining > 60000) {
+      TokenRefresh.schedule(token);
+      return;
+    }
+    if (!TokenRefresh.pending) {
+      TokenRefresh.pending = TokenRefresh.refresh(token).finally(() => {
+        TokenRefresh.pending = undefined;
+      });
+    }
+    await TokenRefresh.pending;
+  }
+
+  static async refresh(token) {
+    try {
+      // Use axios directly to avoid re-entering the request interceptor.
+      const response = await axios.post(`${baseURL}/v2/pub/refresh-token`, {}, {
+        headers: { Authorization: `${token.token_type} ${token.access_token}` },
+        timeout: 10000,
+      });
+      const { code, burden } = response.data;
+      if (code !== 0 || !burden?.access_token || !Number.isFinite(burden.expires_at)
+        || burden.expires_at * 1000 <= Date.now()) {
+        throw new Error('Invalid token refresh response');
+      }
+      const current = store.get(storeKeys.AccessToken);
+      // A late response must not restore a signed-out or replaced session.
+      if (current?.access_token === token.access_token) setToken(burden);
+    } catch (error) {
+      const current = store.get(storeKeys.AccessToken);
+      if (error.response?.status === 401 && current?.access_token === token.access_token) signOut();
+      throw error;
+    }
   }
 }
+
+export function setToken(token) {
+  store.set(storeKeys.AccessToken, token);
+  TokenRefresh.schedule(token);
+}
+
+// Restore automatic renewal after a page reload.
+const savedToken = store.get(storeKeys.AccessToken);
+if (savedToken) TokenRefresh.schedule(savedToken);

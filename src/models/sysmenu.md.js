@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import * as menuService from '@/services/sysmenu.svc';
-import store from '@/utils/store';
+import store, { storeKeys } from '@/utils/store';
 
 export default {
   namespace: 'sysmenu',
@@ -24,6 +24,13 @@ export default {
     expandedKeys: [],
   },
   effects: {
+    *refreshMenuCache(_, { put }) {
+      store.remove(storeKeys.MenuCache);
+      yield put({
+        type: 'global/fetchMenuTree',
+        pathname: window.location.pathname,
+      });
+    },
     *fetch({ search, pagination }, { call, put, select }) {
       let params = {
         parentID: '',
@@ -182,6 +189,7 @@ export default {
       });
 
       if (success) {
+        yield put({ type: 'refreshMenuCache' });
         message.success('保存成功');
         yield put({
           type: 'changeModalFormVisible',
@@ -196,6 +204,7 @@ export default {
       const response = yield call(menuService.del, payload.id);
       const { code } = response;
       if (code === 0) {
+        yield put({ type: 'refreshMenuCache' });
         message.success('删除成功');
         yield put({ type: 'fetchTree' });
         yield put({ type: 'fetch' });
@@ -230,6 +239,7 @@ export default {
 
       const { code } = response;
       if (code === 0) {
+        yield put({ type: 'refreshMenuCache' });
         let msg = '启用成功';
         if (payload.is_active === false) {
           msg = '停用成功';

@@ -1,5 +1,5 @@
 import * as signinService from '@/services/signin.svc';
-import store from '@/utils/store';
+import store, { storeKeys } from '@/utils/store';
 
 export default {
   namespace: 'global',
@@ -57,7 +57,7 @@ export default {
       }
     },
     *fetchMenuTree({ pathname }, { call, put }) {
-      let skey = 'admin-current-user-menu';
+      const skey = storeKeys.MenuCache;
       let list = store.getExpirableItem(skey);
       if (!list) {
         const response = yield call(signinService.queryMenuTree);
